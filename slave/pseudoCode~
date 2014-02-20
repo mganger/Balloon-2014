@@ -15,7 +15,7 @@ loop()
 	getPic(int,int); 	//pins for USB
 	writeData(stuff); 	//stuff for where SD card is
 	borp();			//end send data over radio
-	counter()		//increment counter and add to data structure
+	counter()		/increment counter and add to data structure
 }
 
 
