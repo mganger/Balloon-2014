@@ -6,16 +6,20 @@
 
 #include <dataPoint.h>
 
-struct dataStruct
+struct dataStruct()
 {
-  int bid;
-  int 
-  
-  
+  unsigned int bid;
+  unsigned int temp;
+  unsigned int pressure;
+  unsigned int co2;
+  unsigned int n2;
+  unsigned int picture[];
+  unsigned int time;  
 }
+
 void setup()
 {
-
+	//declare sensor pins here
 }
 
 void loop()
