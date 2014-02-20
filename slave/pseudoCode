@@ -1,0 +1,21 @@
+Programming 
+02/19/2014 21:10
+
+Git server: github Balloon-2014
+
+setup()
+{
+	int tempPint = 8;
+}
+
+loop()
+{
+	getTime();		//Using Arduino Libraries, we may be able to get time from GPSrs
+	getData(str,int); 	//string: ie temp, int = pin
+	getPic(int,int); 	//pins for USB
+	writeData(stuff); 	//stuff for where SD card is
+	borp();			//end send data over radio
+	counter()		/increment counter and add to data structure
+}
+
+
