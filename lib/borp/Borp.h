@@ -18,4 +18,5 @@ class Borp
 		struct data;				//Private variable data structure to store points
 };
 
-#endif
+#endif		//I really don't know what this does, but it was on the Arduino.cc instructions, so I put it here... AR
+
