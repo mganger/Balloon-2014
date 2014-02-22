@@ -7,7 +7,7 @@ Created by Hougthon College Science Honors program 2014
 #ifndef Borp_h		//Checks to see if Borp_h is defined (ie if the Borp Libraries have been included yet).
 #define Borp_h		//Defines Borp_h if it has not yet been defined
 
-#include "Arduino.h"
+#include "Arduino.h"	//includes standard arduino libraries
 
 class Borp
 {
