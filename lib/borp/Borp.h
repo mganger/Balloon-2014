@@ -4,8 +4,8 @@ Balloon Over Radio Protocol (B.O.R.P)
 Created by Hougthon College Science Honors program 2014
 */
 
-#ifndef Borp_h		//Apparently this keeps prevents problems if the same library is include(d) twice
-#define Borp_h
+#ifndef Borp_h		//Checks to see if Borp_h is defined (ie if the Borp Libraries have been included yet).
+#define Borp_h		//Defines Borp_h if it has not yet been defined
 
 #include "Arduino.h"
 
@@ -18,4 +18,5 @@ class Borp
 		struct data;				//Private variable data structure to store points
 };
 
-#endif
+#endif			//Ends check for included libraries
+
