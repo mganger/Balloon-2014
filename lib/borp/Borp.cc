@@ -13,7 +13,8 @@ Borp::Borp(int pin)		//Constructor for Borp declares what pin the serial connect
 	pinMode(pin,Output);		Declares the baud rate to be used in transmission. 
 	_pin = pin;			I picked 115,200 baud because it was the highest rate 
 					that Arduino can handle. It is also a viable option 
-					according to version 1.6 of the MM2 manual. 
+					according to version 1.6 of the MM2 manual. We could make
+					Baud Rate a variable that is passed to the BORP constructor.
 					*/
 }
 
