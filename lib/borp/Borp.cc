@@ -15,7 +15,6 @@ Borp::Borp(int pin, int baud)
 	Serial.begin(baud);	
 	pinMode(pin,Output); 
 	_pin = pin;
-	actualPin = pinConvert();		//still needs to be declared somewhere. actualPin is hex for something like 0x80, and we can directly modify the value (see writeData)
 						//pinConvert can be used to convert the pin numbers (ie pin 13, 10, 4) to the registry values by some sort of mapping we design for the due. 
 	writeData::writeData(struct data, int actualPin);
 }
