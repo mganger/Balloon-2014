@@ -20,12 +20,12 @@ Borp::Borp(int pin, int baud)
 	writeData::writeData(struct data, int actualPin);
 }
 
-//Borp::phoneHome(struct data)
-//{
-//	Serial.write(data.temperature); //this is incorrect. Serial writes to USB. We need to go to the digital pins
-//	Serial.write(data.pressure);
-//	Serial.write(data.altitude);
-//}
+Borp::phoneHome(struct data)
+{
+	Serial.write(data.temperature); //this is correct. Serial writes to both USB as well as serial out. Arduino Due has 4 serial outputs.
+	Serial.write(data.pressure);
+	Serial.write(data.altitude);
+}
 
 Borp::testTransmission(int num)
 {

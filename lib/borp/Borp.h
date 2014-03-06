@@ -15,7 +15,7 @@ class Borp
 	public:
 		Borp(int pin, int baud);		//The constructor initializes the borp, it has to have the same name as the class
 //		void phoneHome(struct data);		//This will be the function that actually pipes data to the radio
-//However, this is actually hanndled by the writeData library.
+//However, this is actually handled by the writeData library.
 		void testTransmission(int num);		//This can be used to test the radios until we build our struct data;
 	private:
 		int pin;				//Stores what pin the serial radio is connected to
