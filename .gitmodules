@@ -1,0 +1,3 @@
+[submodule "ArduinoMD5"]
+	path = ArduinoMD5
+	url = https://github.com/tzikis/ArduinoMD5/
