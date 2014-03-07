@@ -7,9 +7,11 @@ class Data {
 
 	public:
 		int * getData();	//Do we want this to return an array?
+		int * getData(int index);
 		void setTemp();		//Public methods to set private variables
 		void setPres();
 		void setAlt();
+		void writeData();	//Writes data from the buffer to the disk
 	private
 		int temp, pres, alt;	//Three possible measurements
 
@@ -41,4 +43,15 @@ Data::getData()
 	//We need an array because the data will be very long
 	//The largest data type is a "long long"-64bit
 	//64 bits of resolution would give us 5 sensors at 12 bits of resolution.
+}
+
+Data::getData(int index)
+{
+	//Checks to see if current index is in the buffer
+	//Load data from disk into the buffer,then return parsed data
+}
+
+Data::writeData()
+{
+	//Writes data from buffer to Disk
 }
