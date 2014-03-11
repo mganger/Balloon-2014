@@ -57,10 +57,15 @@ void setup()
 
 void loop()
 {
-//	resetData() 		//This should somehow set all values to 1024. Note that we cannot really have a definite reset of the picture values, so we will need a specific bit (i.e. picNew) to handle that 
-//	getData();		//These two should be in an if then statement based on the master request
-//	getPic();
-//	writeData();
-//	borp();
-//	counter();
+	//while (time<alloted){
+	//	check for connection request
+	//	}
+	//send feedback to master
+	//collect data
+	//write data
+	//if (connection = 1){
+	//	check for data request
+	//	prepare data
+	//	send data
+	//	}
 }
