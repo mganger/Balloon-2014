@@ -25,45 +25,41 @@
 class Data { 
 
 	public:
-		int * getData();	//Do we want this to return an array? Yes
+		int * getData();		//Do we want this to return an array? Yes
 		int * getData(int index);
-		void setTemp();		//Public methods to set private variables
+		void setTemp();			//Public methods to set private variables
 		void setPres();
 		void setAlt();
-		void writeData();	//Writes data from the buffer to the disk
+		void writeData();		//Writes data from the buffer to the disk
 	//Stores the pin used by each of the sensors
 	//Should be defined in the slave code for simplicity
 	//Expand as neccessary (maybe we can dynamically assign variables?)
 		short unsigned int tempPin, presPin, altPin
 	private
-		int temp, pres, alt;	//Three possible measurements
+		int temp, pres, alt;		//Three possible measurements
 
 
-Data::Data(int thisTemp, int thisPres, int thisAlt) //Please explain!
+Data::Data(int Temp, int Pres, int Alt)
 {
-	temp = thisTemp;
-	pres = thisPres;
-	alt = thisAlt;
+	_temp = Temp;
+	_pres = Pres;
+	_alt = Alt;
 }
 
-Data::Data()		//Overloaded constructors allow for the same function to 
-				//do different things given different of arguements 
+Data::Data()
 {
-	temp = -1;	//Call an empty data constructor to reset all variables
-	pres = -1;
+
 	alt = -1;
 }
 
 Data::setTemp()	//This needs a better name, maybe readSensor()?
-				//Also, should it store it in thisTemp or just temp?
-				//What's the difference?
 {
 	//take reading from tempPin, store in temp
-	thisTemp = analogRead(tempPin);
+	_Temp = analogRead(tempPin);
 	//take reading from presPin, store in pres
-	thisPres = analogRead(presPin);
+	_Pres = analogRead(presPin);
 	//take reading from altPin, store in alt
-	thisAlt = analogRead(altPin);
+	_Alt = analogRead(altPin);
 }
 
 Data::getData()
