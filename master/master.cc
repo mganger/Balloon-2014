@@ -22,5 +22,13 @@
 
 int main()
 {
-
+	//Transferred from the programFlow chart
+	//
+	//Send message to slave
+	//listen on serial port *We may be able to do this on a different thread
+	//for(time<100ms;;){
+	//	listen for data
+	//	check for error
+	//	Write to file
+	//}
 }
