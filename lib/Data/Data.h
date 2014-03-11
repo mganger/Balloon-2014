@@ -25,35 +25,45 @@
 class Data { 
 
 	public:
-		int * getData();	//Do we want this to return an array?
+		int * getData();	//Do we want this to return an array? Yes
 		int * getData(int index);
 		void setTemp();		//Public methods to set private variables
 		void setPres();
 		void setAlt();
 		void writeData();	//Writes data from the buffer to the disk
+	//Stores the pin used by each of the sensors
+	//Should be defined in the slave code for simplicity
+	//Expand as neccessary (maybe we can dynamically assign variables?)
+		short unsigned int tempPin, presPin, altPin
 	private
 		int temp, pres, alt;	//Three possible measurements
 
 
-Data::Data(int thisTemp, int thisPres, int thisAlt)
+Data::Data(int thisTemp, int thisPres, int thisAlt) //Please explain!
 {
 	temp = thisTemp;
 	pres = thisPres;
 	alt = thisAlt;
 }
 
-Data::Data()		//Overloaded constructors allow for the same function to do different things given different of arguements 
+Data::Data()		//Overloaded constructors allow for the same function to 
+				//do different things given different of arguements 
 {
-	temp = -1;	//We can call an empty data constructor to reset all variables
+	temp = -1;	//Call an empty data constructor to reset all variables
 	pres = -1;
 	alt = -1;
 }
 
-Data::setTemp()
+Data::setTemp()	//This needs a better name, maybe readSensor()?
+				//Also, should it store it in thisTemp or just temp?
+				//What's the difference?
 {
-	//take reading from tempPin, store in temp;
-	//take reading from presPin, store in pres;
-	//take reading from altPin, store in alt;
+	//take reading from tempPin, store in temp
+	thisTemp = analogRead(tempPin);
+	//take reading from presPin, store in pres
+	thisPres = analogRead(presPin);
+	//take reading from altPin, store in alt
+	thisAlt = analogRead(altPin);
 }
 
 Data::getData()
@@ -73,4 +83,17 @@ Data::getData(int index)
 Data::writeData()
 {
 	//Writes data from buffer to Disk
+	if (!SD.begin(4))			//tests for SD card on 50, 51, 52, and 4
+							//4 is the chip select line
+							//connects to pins 11, 12, 13, and 4 on unos
+	{
+	Serial.println("SD initialization failed.");		//Prints fail for testing
+	return;
+	}				//Should this snippet of code go in the setup of slave?
+
+	// On the Ethernet Shield, CS is pin 4. It's set as an output by default.
+	// Note that even if it's not used as the CS pin, the hardware SS pin 
+	// (10 on most Arduino boards, 53 on the Mega) must be left as an output 
+  	// or the SD library functions will not work. 
+	pinMode(10, OUTPUT);	//supposedly, this is neccessary for the code
 }
