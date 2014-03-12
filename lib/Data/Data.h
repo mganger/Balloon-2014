@@ -39,11 +39,11 @@ class Data {
 		int temp, pres, alt;		//Three possible measurements
 
 
-Data::Data(int Temp, int Pres, int Alt)
+Data::Data(int temp, int pres, int alt)
 {
-	_temp = Temp;
-	_pres = Pres;
-	_alt = Alt;
+	_temp = temp;
+	_pres = pres;
+	_alt = alt;
 }
 
 Data::Data()
