@@ -54,6 +54,8 @@ Data::Data()
 
 Data::setTemp()	//This needs a better name, maybe readSensor()?
 {
+	// underscore + Capital letter is bad practice, apparently.
+	//need to change to lowercase
 	//take reading from tempPin, store in temp
 	_Temp = analogRead(tempPin);
 	//take reading from presPin, store in pres
