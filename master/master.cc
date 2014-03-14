@@ -17,8 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
+/*Current Dependencies:
+ *	openssl headers (openssl-devel on fedora)
+ */
+
 
 #include <stdio.h>
+#include <openssl/md5.h>		//includes md5 in program *REQIRES OPENSSL HEADERS
 
 int main()
 {
