@@ -19,11 +19,12 @@
  *
  * Current Dependencies:
  *	openssl headers (openssl-devel on fedora)
+ *		NOT ANYMORE. MD5 capability in the hash-library
  */
 
 
 #include <stdio.h>
-#include <openssl/md5.h>		//includes md5 in program *REQIRES OPENSSL HEADERS
+#include "hash-library/md5.h"
 
 int main()
 {
