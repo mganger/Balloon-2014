@@ -2,11 +2,11 @@
 
 #include <stdio.h>
 #include "../master/hash-library/md5.h"	
+#include "../master/hash-library/md5.cpp"
 #include <string.h>
 #include <iostream>
 
 using namespace std;
-
 
 int main()
 {
