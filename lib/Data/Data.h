@@ -25,6 +25,15 @@ class Data {
 		int * returnData(int index);
 		void saveData();
 		void readSensorData();
+		void readTemp(int pin);
+		void readAlti(int pin);
+		void readHumi(int pin);
+		void readPres(int pin);
+		void readCO2_(int pin);
+		void readN2O_(int pin);
+		void readCO__(int pin);
+		void readIR__(int pin);
+		void readO3__(int pin);
 
 					//Public methods to set private variables
 		void setAltiPin(int pin);
@@ -41,5 +50,4 @@ class Data {
 	private:
 		int temp, pres, alti, humi, CO2_, CO__, N2O_, UV__, O3__;
 		int tempPin, presPin, altiPin, humiPin, CO2_Pin, CO__Pin, N2O_Pin, UV__Pin, O3__Pin;
-
 }

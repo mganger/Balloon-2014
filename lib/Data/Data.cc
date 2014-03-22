@@ -39,11 +39,11 @@ void Data::reset(){
 }
 
 void Data::readSensorData(){
-	
+	//Include necessary functions for specific groups sensor readings.
 }
 
 //Below is a ridiculous number of functions. They are set functions for each of 
-//the possible variables
+//the possible variables, continue at your own risk.
 
 void Data::setTempPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
