@@ -22,8 +22,19 @@
 
 void Data::Data(){
 	//constructor to initialize to -1
+	reset();
+}
+
+void Data::reset(){
+
+}
+
+void Data::readSensorData(){
 	
 }
+
+//Below is a ridiculous number of functions. They are set functions for each of 
+//the possible variables
 
 void Data::setTempPin(int pin){
 	if(pin <= 65){
