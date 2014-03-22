@@ -18,20 +18,15 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-#include <getData.h>
-
 class Data { 
 
 	public:
 		int * returnData();
 		int * returnData(int index);
-		void Data();
-		void Data(int temp, int pres, int alt);
+		void Data(int temp, int pres, int alti);
 		void setTempPin(int pin);
-		int[] returnData();
-		int[] returnData(int index);
+		int returnData();
+		int returnData(int index);
 		void writeData();
 
 					//Public methods to set private variables
@@ -48,7 +43,13 @@ class Data {
 
 		void writeData();				//Writes data from the buffer to the disk
 		void setAltPin();
+		void readSensorData();
 
 	private:
 		int temp, pres, alti;				//Three possible measurements
-		short unsigned int tempPin, presPin, altPin, 
+		short unsigned int tempPin, presPin, altiPin, humiPin, CO2_Pin, CO__Pin, N2O_Pin, UV__Pin, O3__Pin;
+
+}
+
+
+
