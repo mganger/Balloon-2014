@@ -25,8 +25,6 @@ class Data {
 		int * returnData(int index);
 		void Data(int temp, int pres, int alti);
 		void setTempPin(int pin);
-		int returnData();
-		int returnData(int index);
 		void writeData();
 
 					//Public methods to set private variables
@@ -50,6 +48,3 @@ class Data {
 		short unsigned int tempPin, presPin, altiPin, humiPin, CO2_Pin, CO__Pin, N2O_Pin, UV__Pin, O3__Pin;
 
 }
-
-
-
