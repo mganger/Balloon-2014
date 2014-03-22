@@ -20,13 +20,22 @@
 
  #include "Data.h"
 
-void Data::Data(){
+Data::Data(){
 	//constructor to initialize to -1
 	reset();
 }
 
 void Data::reset(){
-
+	//Set the pin values to sentinal value
+	int tempPin = -1
+	int altiPin = -1
+	int presPin = -1
+	int humiPin = -1
+	int CO2_Pin = -1
+	int CO__Pin = -1
+	int N2O_Pin = -1
+	int UV__Pin = -1
+	int O3__Pin = -1
 }
 
 void Data::readSensorData(){
@@ -37,7 +46,7 @@ void Data::readSensorData(){
 //the possible variables
 
 void Data::setTempPin(int pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int tempPin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy:  ");
@@ -46,7 +55,7 @@ void Data::setTempPin(int pin){
 }
 
 void Data::setAltiPin(int pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int altiPin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -55,7 +64,7 @@ void Data::setAltiPin(int pin){
 }
 
 void Data::setPresPin(int pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int presPin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -64,7 +73,7 @@ void Data::setPresPin(int pin){
 }
 
 void Data::setCO2_Pin(int pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int CO2_Pin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -73,7 +82,7 @@ void Data::setCO2_Pin(int pin){
 }
 
 void Data::setCO__Pin(int pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int CO__Pin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -82,7 +91,7 @@ void Data::setCO__Pin(int pin){
 }
 
 void Data::setN20_Pin(int pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int N2O_Pin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -91,7 +100,7 @@ void Data::setN20_Pin(int pin){
 }
 
 void Data::setCO__Pin(int pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int CO__Pin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -100,7 +109,7 @@ void Data::setCO__Pin(int pin){
 }
 
 void Data::setIR__Pin(int pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int IR__Pin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -109,7 +118,7 @@ void Data::setIR__Pin(int pin){
 }
 
 void Data::setHumiPin(pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int humiPin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -118,7 +127,7 @@ void Data::setHumiPin(pin){
 }
 
 void Data::UV__Pin(pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int UV__Pin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
@@ -127,7 +136,7 @@ void Data::UV__Pin(pin){
 }
 
 void Data::setCO__Pin(pin){
-	if(pin <= 65){
+	if((pin <= 65) && (pin >= 0 )){
 		int CO__Pin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");

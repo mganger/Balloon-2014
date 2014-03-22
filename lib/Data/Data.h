@@ -23,9 +23,8 @@ class Data {
 	public:
 		int * returnData();
 		int * returnData(int index);
-		void Data(int temp, int pres, int alti);
-		void setTempPin(int pin);
-		void writeData();
+		void saveData();
+		void readSensorData();
 
 					//Public methods to set private variables
 		void setAltiPin(int pin);
@@ -39,12 +38,8 @@ class Data {
 		void setUV__Pin(int pin);
 		void setO3__Pin(int pin);
 
-		void writeData();				//Writes data from the buffer to the disk
-		void setAltPin();
-		void readSensorData();
-
 	private:
-		int temp, pres, alti;				//Three possible measurements
-		short unsigned int tempPin, presPin, altiPin, humiPin, CO2_Pin, CO__Pin, N2O_Pin, UV__Pin, O3__Pin;
+		int temp, pres, alti, humi, CO2_, CO__, N2O_, UV__, O3__;
+		int tempPin, presPin, altiPin, humiPin, CO2_Pin, CO__Pin, N2O_Pin, UV__Pin, O3__Pin;
 
 }
