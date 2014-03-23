@@ -21,24 +21,15 @@
 class Data { 
 
 	public:
-		int * returnData();
-		int * returnData(int index);
-		void saveData();
-		void readSensorData();
-		void readTemp(int pin);
-		void readAlti(int pin);
-		void readHumi(int pin);
-		void readPres(int pin);
-		void readCO2_(int pin);
-		void readN2O_(int pin);
-		void readCO__(int pin);
-		void readIR__(int pin);
-		void readO3__(int pin);
+		int * returnData();				//returns a pointer to an array of
+		int * returnData(int index);		//newest or specified index
 
-					//Public methods to set private variables
-		void setAltiPin(int pin);
-		void setHumiPin(int pin);
-		void setPresPin(int pin);
+		void saveData();				//writes to the SD card
+		void readSensorData();			//reads from the sensors
+
+		void setAltiPin(int pin);		//Public methods to set 
+		void setHumiPin(int pin);		//private variables
+		void setPresPin(int pin);		//They only accept valid pins 0-64
 		void setTempPin(int pin);
 		void setCO2_Pin(int pin);
 		void setN2O_Pin(int pin);
@@ -48,6 +39,20 @@ class Data {
 		void setO3__Pin(int pin);
 
 	private:
-		int temp, pres, alti, humi, CO2_, CO__, N2O_, UV__, O3__;
-		int tempPin, presPin, altiPin, humiPin, CO2_Pin, CO__Pin, N2O_Pin, UV__Pin, O3__Pin;
+		int temp, pres, alti, humi;		//Private variables to hold sensor
+		int CO2_, CO__, N2O_, UV__, O3__;	//values for different measurements
+
+		int tempPin, presPin, altiPin;	//Private variables to hold the pin
+		int humiPin, CO2_Pin, CO__Pin;	//for each sensor
+		int N2O_Pin, UV__Pin, O3__Pin;
+
+		void readTemp(int pin);			//these functions should be private
+		void readAlti(int pin);			//and called by readSensorData()
+		void readHumi(int pin);			//Each group should customize that
+		void readPres(int pin);			//funciton to only call the needed
+		void readCO2_(int pin);			//read****() for their project
+		void readN2O_(int pin);
+		void readCO__(int pin);
+		void readIR__(int pin);
+		void readO3__(int pin);
 }
