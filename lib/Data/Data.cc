@@ -19,6 +19,11 @@
  */
 
  #include "Data.h"
+//#include "Arduino.h"
+
+
+////////////////////////////////////////////////////////////////////////////////
+//Constructor to initialize and rest function
 
 Data::Data(){
 	//constructor to initialize to -1
@@ -38,10 +43,77 @@ void Data::reset(){
 	int O3__Pin = -1
 }
 
+//End initialize/reset
+//****************************************************************************//
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//Functions to return data (to pass to borp, etc.)
+
+int * Data::returnData(){
+	//looks for the newest data point to send back
+	//should already be in the memory
+}
+
+int *Data::returnData(int index){
+	//retrieves data point with a certain index
+	//it probably is on the SD card, could be on the EEPROM
+}
+
+//End return data functions
+//****************************************************************************//
+
+
+////////////////////////////////////////////////////////////////////////////////
+//Functions for reading the data
+
 void Data::readSensorData(){
 	//Include necessary functions for specific groups sensor readings.
 }
 
+void Data::readTemp(int pin){
+	//read from the sensor and write to **** variable
+}
+
+void Data::readAlti(int pin){
+	//read from the sensor and write to **** variable
+}
+
+void Data::readHumi(int pin){
+	//read from the sensor and write to **** variable
+}
+
+void Data::readPres(int pin){
+	//read from the sensor and write to **** variable
+}
+
+void Data::readCO2_(int pin){
+	//read from the sensor and write to **** variable
+}
+
+void Data::readN2O_(int pin){
+	//read from the sensor and write to **** variable
+}
+
+void Data::readCO__(int pin){
+	//read from the sensor and write to **** variable
+}
+
+void Data::readIR__(int pin){
+	//read from the sensor and write to **** variable
+}
+
+void Data::readO3__(int pin){
+	//read from the sensor and write to **** variable
+}
+
+//End read functions
+//****************************************************************************//
+
+
+
+////////////////////////////////////////////////////////////////////////////////
 //Below is a ridiculous number of functions. They are set functions for each of 
 //the possible variables, continue at your own risk.
 
@@ -143,3 +215,7 @@ void Data::setCO__Pin(pin){
 		Serial.println(pin);
 	}
 }
+//End set functions
+//****************************************************************************//
+
+
