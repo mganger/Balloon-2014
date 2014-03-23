@@ -18,6 +18,12 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __DATA_H_INCLUDED__		//If this library is not defined..
+#define __DATA_H_INCLUDED__		//Define this variable and read the code
+							//Otherwise, go to the bottom (and skip)
+							//This is to prevent defining it twice
+
+
 class Data { 
 
 	public:
@@ -56,3 +62,5 @@ class Data {
 		void readIR__(int pin);
 		void readO3__(int pin);
 }
+
+#endif
