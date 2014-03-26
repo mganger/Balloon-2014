@@ -37,6 +37,10 @@ Baud rate is set by:
 
 There is also the program called setserial, which does lets you configure just
 about anything for the serial.
+
+See these for more information about /dev and serial:
+http://www.linuxjournal.com/article/2597
+http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/025/2597/2597s1.html
 */
 
 class Communications {
