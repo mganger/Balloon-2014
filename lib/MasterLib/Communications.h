@@ -43,6 +43,11 @@ http://www.linuxjournal.com/article/2597
 http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/025/2597/2597s1.html
 */
 
+#include <string>
+
+
+
+
 class Communications {
 	public:
 		//Begins serial on path (/dev/ttyS*), returns error code as int
