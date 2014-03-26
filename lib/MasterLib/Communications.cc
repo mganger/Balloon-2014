@@ -28,7 +28,7 @@ int Communications::begin(std::string path){
 	std::fstream device;
 	device.open(path.c_str());
 	if(device.is_open() == 0){		//if device is not open
-		std::cout << "Error opening device\n";
+		std::cerr << "Error opening device\n";
 		device.close();
 		return 0;					//return 0 (false) if unsuccessful
 	}
