@@ -31,12 +31,14 @@ EASY WAY TO TEST:
 	echo $STRING > /dev/ttyS0
 
 		->with Arduino plugged in, where $String is "something"
+
+Baud rate is set by: 
+	stty -F /dev/ttyS* 115200
 */
 
 class Communications {
 	public:
 		//Begins serial on path (/dev/ttyS*), returns error code as int
-		//I don't think we can control baud rate
 		int begin(std::string path);
 
 		//writes a string to serial device, no println; just add "\n" to above
