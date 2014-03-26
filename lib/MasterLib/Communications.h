@@ -34,6 +34,9 @@ EASY WAY TO TEST:
 
 Baud rate is set by: 
 	stty -F /dev/ttyS* 115200
+
+There is also the program called setserial, which does lets you configure just
+about anything for the serial.
 */
 
 class Communications {
