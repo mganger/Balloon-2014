@@ -43,6 +43,9 @@ http://www.linuxjournal.com/article/2597
 http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/025/2597/2597s1.html
 */
 
+#ifndef __COMMUN_H__
+#define __COMMUN_H__
+
 #include <string>
 
 
@@ -87,4 +90,4 @@ class Communications {
 		std::string serialPath;			//String to hold the USB location
 } Serial;
 
-
+#endif
