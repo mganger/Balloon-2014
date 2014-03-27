@@ -20,9 +20,17 @@ produced; these can be used within iframes in various places (like the Science
 Honors blog).
 
 Compiling is currently acheived directly through the use of G++.
-	g++ -o foo foo.cc
+
+```
+g++ -o foo foo.cc
+```
+
 While simple todo, it has the disadvantage of explicit includes:
-	#include "foo.h"
-	#include "foo.cc"
+
+```
+#include "foo.h"
+#include "foo.cc"
+```
+
 However, for the relative simplicity of this program, this is the method which
 will be employed until a makefile can be produced.
