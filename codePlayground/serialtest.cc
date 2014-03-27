@@ -20,11 +20,13 @@
 #include <stdlib.h>
 
 using namespace std;
+int fd = -1;						//global to hold the file descriptor
+
 
 int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 
 
-	int fd = open(path,O_NDELAY);
+	fd = open(path,O_NDELAY);
 	if (fd<0){
 	   cerr<<"Opening failed"<<endl;
 	   return 0;
@@ -113,9 +115,17 @@ int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 
 int main(int argc, char* argv[]){
 //	string path = "/dev/tty10";
+
 	cout << "Opening "<< argv[1] <<endl;
 	if(setupSerial(atoi(argv[2]), argv[1])){
 		cout << "Success. You just changed the baud rate to "<< argv[2] << endl;
+
+		cout << "Listening:" << endl;
+		char buff[1];					//create temporary read buffer
+		while(1){						//listen forever!
+			read(fd, buff,1);			//read 1 character into the buffer
+			cout << buff[0];			//print that character
+		}	
 		return 0;
 	}else return 1;
 }
