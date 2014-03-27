@@ -21,21 +21,82 @@
 
 using namespace std;
 
-int setupSerial(unsigned int baud, const char* path){		//see $man termios
+int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 
 
 	int fd = open(path,O_NDELAY);
 	if (fd<0){
-	   cerr<<"opening failed"<<endl;
-	   fd=-1;
-	   return 1;
+	   cerr<<"Opening failed"<<endl;
+	   return 0;
 	}
 
-	struct termios options;			//create a structure to hold serial info
-	tcgetattr(fd, &options);			//get current options for port
+	long baudFloat;
+	switch (baudInt)
+	{
+		case 0:
+			default:
+			cerr << baudInt << " is an invalid baud rate" << endl;
+			break;
+		case 38400:
+			baudFloat = B38400;
+			break;
+		case 19200:
+			baudFloat  = B19200;
+			break;
+		case 9600:
+			baudFloat  = B9600;
+			break;
+		case 4800:
+			baudFloat  = B4800;
+			break;
+		case 2400:
+			baudFloat  = B2400;
+			break;
+		case 1800:
+			baudFloat  = B1800;
+			break;
+		case 1200:
+			baudFloat  = B1200;
+			break;
+		case 600:
+			baudFloat  = B600;
+			break;
+		case 300:
+			baudFloat  = B300;
+			break;
+		case 200:
+			baudFloat  = B200;
+			break;
+		case 150:
+			baudFloat  = B150;
+			break;
+		case 134:
+			baudFloat  = B134;
+			break;
+		case 110:
+			baudFloat  = B110;
+			break;
+		case 75:
+			baudFloat  = B75;
+			break;
+		case 50:
+			baudFloat  = B50;
+			break;
+	}
 
-	cfsetispeed(&options, baud);		//set input baud
-	cfsetospeed(&options, baud);		//set output baud
+
+
+	struct termios options;		//create a structure to hold serial info
+	tcgetattr(fd, &options);		//get current options for port
+
+	if(cfsetispeed(&options, baudFloat)<0){		//set input baud
+		cerr << "Cannot set the input baud to " << baudInt << endl;
+		return 0;
+	}
+	if(cfsetospeed(&options, baudFloat)<0){		//set output baud
+		cerr << "Cannot set the output baud to " << baudInt << endl;
+		return 0;
+	}
 
 //	options.c_cflags |= (CLOCAL | CREAD);	//set the flags
 //	options.c_cflags &= ~PARENB			//*These options say no parity bit
@@ -44,8 +105,8 @@ int setupSerial(unsigned int baud, const char* path){		//see $man termios
 //	options.c_cflags |= CS8;				//*
 
 
-	if(tcsetattr(fd, TCSANOW, &options)<0){	//set new options 
-	cerr << "You did something wrong, dummy." << endl;
+	if(tcsetattr(fd, TCSANOW, &options)<0){	//set new options
+	cerr << "Cannot set attributes." << endl;
 	return 0;
 	} else return 1;					//return happiness
 }
