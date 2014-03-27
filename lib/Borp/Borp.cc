@@ -29,8 +29,12 @@
 #include "borp.h"		//Includes header file for B.O.R.P. Libraries
 
 
-//Constructor for Borp declares what pin the serial connection to the radio is and and the baud rate to be used in transmission.
-//Baud rate should probably be 115200, as it is the highest rate that the Arduino can handle. It is also a viable option according to version 1.6 of the MM2 manual.  
+//*Constructor for Borp declares what pin the serial connection to the radio is 
+*and and the baud rate to be used in transmission.
+*Baud rate should be the lowest baud rate required to transmit the amount of 
+*data we are collecting. Baud rates that are too high can max out the 
+*//processing power of the Arduino and ultimately slow transmissions down.
+
 Borp::Borp(int pin, int baud)		
 {
 	Serial.begin(baud);	
