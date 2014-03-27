@@ -1,14 +1,15 @@
 //This program is designed to test configuration of a device in C++
 //If it can be successfully designed, the code will probably be copied under
 //the Serial.begin() function in the Communications class
-//
+//After testing the specified baud rate, it attempts to set the specified tty
+//to that baud. Then, it listens on the device (forever and inefficiently) for
+//any incoming serial data. The best way to test is to set up the Arduino to
+//print continously at a non-standard baud, and try to listen.
 //	Use:
 //		./serialTest $PATH_TO_TTY $BAUD
 //
-//TODO:	Check validity of baud rate
-//		Figure out the flags that need to be set (may be none)
-//		Write to the specified tty and read after that
-//			->we can bounce the characters from the Arduino
+//TODO:	Figure out the flags that need to be set (may be none)
+
 
 #include <termios.h>
 #include <string.h>
