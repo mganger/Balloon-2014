@@ -28,13 +28,13 @@ int Communications::begin(std::string path){
 	std::fstream device;
 	device.open(path.c_str());
 	if(device.is_open() == 0){		//if device is not open
-		std::cerr << "Error opening device\n";
+		std::cerr << "Error opening device" << std::endl;
 		device.close();
 		return 0;					//return 0 (false) if unsuccessful
 	}
 	else {
 		serialPath = path;			//save the path within the object
-		std::cout << "Successfully opened device\n";
+		std::cout << "Successfully opened device" << std::endl;
 		device.close();
 		return 1;					//return 1 (true) if successful
 	}
