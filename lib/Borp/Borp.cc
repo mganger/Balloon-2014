@@ -36,7 +36,6 @@ Borp::Borp(int pin, int baud)
 	Serial.begin(baud);	
 	pinMode(pin,Output); 
 	_pin = pin;
-						//pinConvert can be used to convert the pin numbers (ie pin 13, 10, 4) to the registry values by some sort of mapping we design for the due. 
 	writeData::writeData(struct data, int actualPin);
 }
 
