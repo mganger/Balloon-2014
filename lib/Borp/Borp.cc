@@ -34,9 +34,7 @@
 Borp::Borp(int pin, int baud)		
 {
 	Serial.begin(baud);	
-	pinMode(pin,Output); 
-	_pin = pin;
-	writeData::writeData(struct data, int actualPin);
+	pinMode(pin,OUTPUT);
 }
 
 Borp::phoneHome(Data point)
