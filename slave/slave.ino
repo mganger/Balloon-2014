@@ -20,39 +20,15 @@
 
 
 
-//#include <dataPoint.h>
-//#include <arduino.h>
+#include <arduino.h>
 #include <stdio.h>
-//#include <MD5.h>
-
-struct trans
-{
-	int transferIndex;
-	int transferTime;
-	short unsigned int errorCode;		//0 - 255, Might include corrupted transmission, no data to send, low battery, etc. 0 = ok
-	
-} dataTran, picturesTran;
-
-
-struct data			//this gets written to the SD
-{
-	int bid;
-	int priority;
-	unsigned long int dataIndex;		//this is how the data is indexed. 32 bits, so keep below 4 billion points
-	int temp;		
-	int pressure;
-	int co2;
-	int n2;
-	bool picNew;		//0 means that the picture has not been updated, 1 that it has (
-	int picture[300];	//this is to store the picture as a series of 16 bit ints
-	int picName;		//Picture file name
-	int picIndex;		//index to recompile the picture in order
-	int dataTime;  		
-} dataStruct;
+#include <MD5.h>
 
 void setup()
 {
-	//declare sensor pins here
+	Borp radio;
+	radio.Borp(1,9600);
+		//Baud rate and pin should be hardcoded by each group.
 }
 
 void loop()
@@ -63,9 +39,13 @@ void loop()
 	//send feedback to master
 	//collect data
 	//write data
-	//if (connection = 1){
+	//if (connection == 1){
 	//	check for data request
 	//	prepare data
 	//	send data
 	//	}
+	Data point;
+	point.recordData(temp,pres,CO2_); //Fill in collected data baszed on group.
+	radio.phoneHome(point);
+	
 }
