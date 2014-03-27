@@ -53,7 +53,7 @@ http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/025/259
 
 class Communications {
 	public:
-		//Begins serial on path (/dev/ttyS*), returns error code as int
+		//Begins serial on path (/dev/tty*), returns error code as int
 		int begin(std::string path);
 
 		//writes a string to serial device, no println; just add "\n" to above
