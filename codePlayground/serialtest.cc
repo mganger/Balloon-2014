@@ -9,6 +9,8 @@
 //		./serialTest $PATH_TO_TTY $BAUD
 //
 //TODO:	Figure out the flags that need to be set (may be none)
+//
+//	CONFIRMED TO WORK (at 9600 and 19200 baud, so far)
 
 
 #include <termios.h>
