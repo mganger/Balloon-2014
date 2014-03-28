@@ -124,8 +124,9 @@ int main(int argc, char* argv[]){
 		cout << "Listening:" << endl;
 		char buff[1];					//create temporary read buffer
 		while(1){						//listen forever!
-			read(fd, buff,1);			//read 1 character into the buffer
-			cout << buff[0];			//print that character
+			if(read(fd, buff,1)){		//read 1 character into the buffer
+				cout << buff[0];		//print that character
+			}
 		}	
 		return 0;
 	}else return 1;
