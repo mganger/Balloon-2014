@@ -88,6 +88,10 @@ class Communications {
 		int clean();
 	private:
 		std::string serialPath;			//String to hold the USB location
+		int fileDescriptor = -1;			//used to manipulate file opened
+
+		//This will scan for existing files, i.e. give /dev/ACM* get /dev/ACM1
+		std::string scanPath(std::string);
 } Serial;
 
 #endif
