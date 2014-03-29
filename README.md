@@ -25,7 +25,7 @@ Compiling is currently acheived directly through the use of G++.
 g++ -o foo foo.cc
 ```
 
-While simple todo, it has the disadvantage of explicit includes:
+While simple to do, it has the disadvantage of explicit includes:
 
 ```
 #include "foo.h"
