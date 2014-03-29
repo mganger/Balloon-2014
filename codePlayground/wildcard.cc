@@ -1,4 +1,8 @@
 //This program is for testing the wildcard function
+//Use:
+//		./wildcard $PATH
+//
+//	Where $PATH is something like /dev/ttyACM!
 
 #include <iostream>
 #include <fstream>
