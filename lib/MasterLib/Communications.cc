@@ -23,19 +23,99 @@
 #include <string>					//library to create string objects
 #include <fstream>					//library for reading and writing files
 #include <iostream>					//necessary for cout
+#include <termios.h>
+#include <fcntl.h>					//required to open and create files
+#include <unistd.h>					//required to close the file
+#include <stdio.h>
+#include <stdlib.h>
 
-int Communications::begin(std::string path){
-	std::fstream device;
-	device.open(path.c_str());
-	if(device.is_open() == 0){		//if device is not open
-		std::cerr << "Error opening device" << std::endl;
-		device.close();
-		return 0;					//return 0 (false) if unsuccessful
+
+
+int Communications::setup(unsigned int baudInt,const char* path){
+	fileDescriptor = open(path,O_NDELAY);
+	if (fileDescriptor<0){
+	   std::cerr<<"Opening failed"<<std::endl;
+	   return 0;
 	}
-	else {
-		serialPath = path;			//save the path within the object
-		std::cout << "Successfully opened device" << std::endl;
-		device.close();
-		return 1;					//return 1 (true) if successful
+
+	long baudFloat;
+	switch (baudInt)				//take int and return 
+	{
+		case 0:
+			default:
+			std::cerr << baudInt << " is an invalid baud rate" << std::endl;
+			break;
+		case 38400:
+			baudFloat = B38400;
+			break;
+		case 19200:
+			baudFloat  = B19200;
+			break;
+		case 9600:
+			baudFloat  = B9600;
+			break;
+		case 4800:
+			baudFloat  = B4800;
+			break;
+		case 2400:
+			baudFloat  = B2400;
+			break;
+		case 1800:
+			baudFloat  = B1800;
+			break;
+		case 1200:
+			baudFloat  = B1200;
+			break;
+		case 600:
+			baudFloat  = B600;
+			break;
+		case 300:
+			baudFloat  = B300;
+			break;
+		case 200:
+			baudFloat  = B200;
+			break;
+		case 150:
+			baudFloat  = B150;
+			break;
+		case 134:
+			baudFloat  = B134;
+			break;
+		case 110:
+			baudFloat  = B110;
+			break;
+		case 75:
+			baudFloat  = B75;
+			break;
+		case 50:
+			baudFloat  = B50;
+			break;
 	}
+
+
+
+	struct termios options;		//create a structure to hold serial info
+	tcgetattr(fileDescriptor, &options);		//get current options for port
+
+	if(cfsetispeed(&options, baudFloat)<0){		//set input baud
+		std::cerr << "Cannot set the input baud to " << baudInt << std::endl;
+		return 0;
+	}
+	if(cfsetospeed(&options, baudFloat)<0){		//set output baud
+		std::cerr << "Cannot set the output baud to " << baudInt << std::endl;
+		return 0;
+	}
+
+//	options.c_cflags |= (CLOCAL | CREAD);	//set the flags
+//	options.c_cflags &= ~PARENB			//*These options say no parity bit
+//	options.c_cflags &= ~CSTOPB			//*Not sure how to use them
+//	options.c_cflags &= ~CSIZE;			//*
+//	options.c_cflags |= CS8;				//*
+
+
+	if(tcsetattr(fileDescriptor, TCSANOW, &options)<0){	//set new options
+	std::cerr << "Cannot set attributes." << std::endl;
+	return 0;
+	} else return 1;								//return happiness
+
 }

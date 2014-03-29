@@ -77,7 +77,7 @@ class Communications {
 		//returns the byte as an int
 		short int readByte();
 
-		//reads the bytes into an array
+		//reads the bytes into afn array
 		int readArray(int * array, int size);
 
 		//checks the Serial device for stuff, period between iterations is in
@@ -88,7 +88,10 @@ class Communications {
 		int clean();
 	private:
 		std::string serialPath;			//String to hold the USB location
-		int fileDescriptor = -1;			//used to manipulate file opened
+		int fileDescriptor;				//used to manipulate file opened
+
+		//used to setup the serial deivce; copied from serialtest
+		int setup(unsigned int baudInt, const char* path);
 
 		//This will scan for existing files, i.e. give /dev/ACM* get /dev/ACM1
 		std::string scanPath(std::string);
