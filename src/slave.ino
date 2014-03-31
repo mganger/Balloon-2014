@@ -20,15 +20,18 @@
 
 
 
-#include <arduino.h>
+
 #include <stdio.h>
-#include <MD5.h>
+#include "../lib/MD5.h"
+#include "../lib/MD5.cpp"
+#include "../lib/Borp.h"
+#include "../lib/Borp.cc"
+#include "../lib/Data.h"
+#include "../lib/Data.cc"
 
 void setup()
 {
-	Borp radio;
-	radio.Borp(1,9600);
-		//Baud rate and pin should be hardcoded by each group.
+	
 }
 
 void loop()
@@ -45,7 +48,8 @@ void loop()
 	//	send data
 	//	}
 	Data point;
-	point.recordData(temp,pres,CO2_); //Fill in collected data baszed on group.
-	radio.phoneHome(point);
+	point.readSensorData(); //Fill in collected data baszed on group.
+	Borp radio(1,9600);	//Baud rate and pin should be hardcoded by each group.
+	radio.phoneHome(point.returnData());
 	
 }

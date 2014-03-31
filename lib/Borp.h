@@ -23,18 +23,24 @@
 #ifndef Borp_h		//Checks to see if this library has been included already
 #define Borp_h		//This ensures that it is not inlcuded twice
 
-//#include "Arduino.h"	//includes standard arduino libraries
 
 class Borp
 {
 
 	public:
-		Borp(int pin, int baud);		//The constructor initializes the borp, it has to have the same name as the class
-		void phoneHome(struct data);		//This will be the function that actually pipes data to the radio
-		void testTransmission(int num);		//This can be used to test the radios until we build our struct data;
+
+		//constuctor initializes the Serial communication. Pin refers to 
+		//which Serial it uses (Serial1, Serial2, Serial3, etc)
+		Borp(int pin, int baud);
+
+		//This function takes an array (from the data class) and sends it
+		void phoneHome(int * data);
+
+		//This is used to test the transmission
+		void testTransmission(int num);
 	private:
-		int pin;				//Stores what pin the serial radio is connected to
-		int baud;				//Stores the defined baud rate.
+		int pin;					//Stores the Serial pin (i.e. tx3)
+		int baud;					//Stores the baud rate.
 };
 
 #endif			//Ends check for included libraries

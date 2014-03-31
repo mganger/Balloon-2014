@@ -23,10 +23,11 @@
 							//Otherwise, go to the bottom (and skip)
 							//This is to prevent defining it twice
 
-
 class Data { 
 
 	public:
+		Data();					//Constructor
+
 		int * returnData();				//returns a pointer to an array of
 		int * returnData(int index);		//newest or specified index
 
@@ -61,6 +62,8 @@ class Data {
 		void readCO__(int pin);
 		void readIR__(int pin);
 		void readO3__(int pin);
-}
+
+		void reset();					//resets all readings to null
+};
 
 #endif

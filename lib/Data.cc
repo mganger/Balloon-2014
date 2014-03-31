@@ -18,8 +18,6 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
- #include "Data.h"
-//#include "Arduino.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,15 +30,15 @@ Data::Data(){
 
 void Data::reset(){
 	//Set the pin values to sentinal value
-	int tempPin = -1
-	int altiPin = -1
-	int presPin = -1
-	int humiPin = -1
-	int CO2_Pin = -1
-	int CO__Pin = -1
-	int N2O_Pin = -1
-	int UV__Pin = -1
-	int O3__Pin = -1
+	int tempPin = -1;
+	int altiPin = -1;
+	int presPin = -1;
+	int humiPin = -1;
+	int CO2_Pin = -1;
+	int CO__Pin = -1;
+	int N2O_Pin = -1;
+	int UV__Pin = -1;
+	int O3__Pin = -1;
 }
 
 //End initialize/reset
@@ -162,18 +160,9 @@ void Data::setCO__Pin(int pin){
 	}
 }
 
-void Data::setN20_Pin(int pin){
+void Data::setN2O_Pin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
 		int N2O_Pin = pin;
-	}else {
-		Serial.print("Error: pin invalid, dummy: ");
-		Serial.println(pin);
-	}
-}
-
-void Data::setCO__Pin(int pin){
-	if((pin <= 65) && (pin >= 0 )){
-		int CO__Pin = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
@@ -189,7 +178,7 @@ void Data::setIR__Pin(int pin){
 	}
 }
 
-void Data::setHumiPin(pin){
+void Data::setHumiPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
 		int humiPin = pin;
 	}else {
@@ -198,7 +187,7 @@ void Data::setHumiPin(pin){
 	}
 }
 
-void Data::UV__Pin(pin){
+void Data::setUV__Pin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
 		int UV__Pin = pin;
 	}else {
@@ -207,14 +196,6 @@ void Data::UV__Pin(pin){
 	}
 }
 
-void Data::setCO__Pin(pin){
-	if((pin <= 65) && (pin >= 0 )){
-		int CO__Pin = pin;
-	}else {
-		Serial.print("Error: pin invalid, dummy: ");
-		Serial.println(pin);
-	}
-}
 //End set functions
 //****************************************************************************//
 

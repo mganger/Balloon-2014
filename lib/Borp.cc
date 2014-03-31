@@ -25,15 +25,14 @@
 
  
 
-#include "Arduino.h" 		//Includes all the standard Arduino Libraries
-#include "borp.h"		//Includes header file for B.O.R.P. Libraries
 
 
-//*Constructor for Borp declares what pin the serial connection to the radio is 
-*and and the baud rate to be used in transmission.
-*Baud rate should be the lowest baud rate required to transmit the amount of 
-*data we are collecting. Baud rates that are too high can max out the 
-*//processing power of the Arduino and ultimately slow transmissions down.
+
+//Constructor for Borp declares what pin the serial connection to the radio is 
+//and and the baud rate to be used in transmission.
+//Baud rate should be the lowest baud rate required to transmit the amount of 
+//data we are collecting. Baud rates that are too high can max out the 
+//processing power of the Arduino and ultimately slow transmissions down.
 
 Borp::Borp(int pin, int baud)		
 {
@@ -41,14 +40,12 @@ Borp::Borp(int pin, int baud)
 	pinMode(pin,OUTPUT);
 }
 
-Borp::phoneHome(Data point)
+void Borp::phoneHome(int* data)			//takes an array
 {
-	Serial.write(point.temperature); 
-	Serial.write(point.pressure);
-	Serial.write(point.altitude);
+
 }
 
-Borp::testTransmission(int num)
+void Borp::testTransmission(int num)
 {
 	Serial.write(num);
 }
