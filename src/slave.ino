@@ -19,6 +19,7 @@
  */
 
 
+
 #include "../lib/MD5.h"
 #include "../lib/MD5.cpp"
 #include "../lib/Borp.h"
@@ -26,13 +27,11 @@
 #include "../lib/Data.h"
 #include "../lib/Data.cc"
 
-void setup()
-{
+void setup(){
 	
 }
 
-void loop()
-{
+void loop(){
 	//while (time<alloted){
 	//	check for connection request
 	//	}
