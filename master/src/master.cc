@@ -24,7 +24,7 @@
 
 
 #include <stdio.h>
-#include "hash-library/md5.h"
+#include "../lib/md5.h"
 
 int main()
 {
