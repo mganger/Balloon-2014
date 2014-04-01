@@ -44,6 +44,18 @@ void Data::reset(){
 	int N2O_Pin = -1;
 	int UV__Pin = -1;
 	int O3__Pin = -1;
+	//Set the readings to sentinal value
+	temp = -1;
+	alti = -1;
+	pres = -1;
+	humi = -1;
+	CO2_ = -1;
+	CO__ = -1;
+	N2O_ = -1;
+	UV__ = -1;
+	O3__ = -1;
+
+	index++;						//increment the index by 1 on
 }
 
 //End initialize/reset
