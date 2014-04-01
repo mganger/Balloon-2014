@@ -18,6 +18,10 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define DATACOUNT 9					//number of sensors being read
+#define PERIOD 1000/FREQ				//period in milliseconds
+#define FREQ 10						//frequency of readings
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
