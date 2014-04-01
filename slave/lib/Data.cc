@@ -34,16 +34,6 @@ Data::Data(){
 }
 
 void Data::reset(){
-	//Set the pin values to sentinal value
-	int tempPin = -1;
-	int altiPin = -1;
-	int presPin = -1;
-	int humiPin = -1;
-	int CO2_Pin = -1;
-	int CO__Pin = -1;
-	int N2O_Pin = -1;
-	int UV__Pin = -1;
-	int O3__Pin = -1;
 	//Set the readings to sentinal value
 	temp = -1;
 	alti = -1;
@@ -66,14 +56,38 @@ void Data::reset(){
 ////////////////////////////////////////////////////////////////////////////////
 //Functions to return data (to pass to borp, etc.)
 
-int * Data::returnData(){
-	//looks for the newest data point to send back
-	//should already be in the memory
+void Data::returnData(int * dataArray){
+
+	//Makes an int array with the size representing the number of readings
+
+	dataArray[0] = temp;
+	dataArray[1] = alti;
+	dataArray[2] = pres;
+	dataArray[3] = humi;
+	dataArray[4] = CO2_;
+	dataArray[5] = CO__;
+	dataArray[6] = N2O_;
+	dataArray[7] = UV__;
+	dataArray[8] = O3__;
+	return;
+
+//	memcpy(&dataArray[10], &point.timeCollect, 4);
+//		Serial.println(dataArray[10]);
+//	dataArray[11] = *((int*)&index);
+//	dataArray[12] = *((int*)&timeCollect);
+//		Serial.println(dataArray[12]);
+//	dataArray[13] = *((int*)&timeCollect);
+
 }
 
-int *Data::returnData(int index){
-	//retrieves data point with a certain index
-	//it probably is on the SD card, could be on the EEPROM
+int *Data::returnData(int * dataArray, int index){
+
+	if((millis() - timeCollect) >= PERIOD){		//time since last reading
+		returnData(dataArray);				//return newest reading
+	}else{
+		//retrieves data point with a certain index
+		//it probably is on the SD card, could be on the EEPROM
+	}
 }
 
 //End return data functions
@@ -84,11 +98,13 @@ int *Data::returnData(int index){
 //Functions for reading the data
 
 void Data::readSensorData(){
-	//Include necessary functions for specific groups sensor readings.
+	timeCollect = millis();
+//	Serial.println(timeCollect);
+	readTemp(tempPin);
 }
 
 void Data::readTemp(int pin){
-	//read from the sensor and write to **** variable
+	temp = analogRead(pin);
 }
 
 void Data::readAlti(int pin){
