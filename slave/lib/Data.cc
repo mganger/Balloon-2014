@@ -30,6 +30,7 @@
 Data::Data(){
 	//constructor to initialize to -1
 	reset();
+	pinMode(tempPin,OUTPUT);
 }
 
 void Data::reset(){
