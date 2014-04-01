@@ -18,6 +18,7 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define BAUD 9600
 
 
 #include "../lib/MD5.h"
@@ -28,7 +29,8 @@
 #include "../lib/Data.cc"
 
 void setup(){
-	
+	Serial.begin(BAUD);
+	point.setTempPin(14);
 }
 
 void loop(){
@@ -43,9 +45,37 @@ void loop(){
 	//	prepare data
 	//	send data
 	//	}
-	Data point;
-	point.readSensorData(); //Fill in collected data baszed on group.
-	Borp radio(1,9600);	//Baud rate and pin should be hardcoded by each group.
-	radio.phoneHome(point.returnData());
-	
+//	point.readSensorData(); //Fill in collected data baszed on group.
+//	Borp radio(1,9600);	//Baud rate and pin should be hardcoded by each group.
+//	radio.phoneHome(point.returnData());
+
+	//This is to test the functions of the data library
+
+	point.readSensorData();
+	int array[50] = {0};
+	point.returnData(array);
+	for(int i = 0; i < 25; i++){
+//		Serial.print(array[i]);
+	}
+	Serial.println(point.timeCollect);
+
+
+//Below is a load of code designed to test the ability to copy between pointers
+	int shorta[4] = {0};
+	long int cool = 23758239475;
+	memcpy(&shorta, &cool, 4);
+	Serial.println(shorta[0]);
+	Serial.println(shorta[1]);
+	Serial.println(shorta[2]);
+	Serial.println(shorta[3]);
+
+//This just waits until the time to the last collect is equal to PERIOD
+	while((millis() - point.timeCollect)<PERIOD){}
 }
+
+
+
+
+
+
+
