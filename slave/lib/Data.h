@@ -26,13 +26,16 @@
 class Data { 
 
 	public:
-		Data();					//Constructor
+		Data();						//Constructor
 
-		int * returnData();				//returns a pointer to an array of
-		int * returnData(int index);		//newest or specified index
+		unsigned long int timeCollect;	//milliseconds, collection time
+
+		void returnData(int* dataArray);				//returns a pointer to an array of
+		int * returnData(int * dataArray, int index);	//newest or specified index
 
 		void saveData();				//writes to the SD card
 		void readSensorData();			//reads from the sensors
+
 
 		void setAltiPin(int pin);		//Public methods to set 
 		void setHumiPin(int pin);		//private variables
@@ -49,9 +52,14 @@ class Data {
 		int temp, pres, alti, humi;		//Private variables to hold sensor
 		int CO2_, CO__, N2O_, UV__, O3__;	//values for different measurements
 
+
+		//TODO If we put these in an array, it will be easier to set things up
 		int tempPin, presPin, altiPin;	//Private variables to hold the pin
 		int humiPin, CO2_Pin, CO__Pin;	//for each sensor
 		int N2O_Pin, UV__Pin, O3__Pin;
+
+		unsigned long int index;			//Holds current collection index
+
 
 		void readTemp(int pin);			//these functions should be private
 		void readAlti(int pin);			//and called by readSensorData()
@@ -64,6 +72,6 @@ class Data {
 		void readO3__(int pin);
 
 		void reset();					//resets all readings to null
-};
+} point;								//defines the object point
 
 #endif
