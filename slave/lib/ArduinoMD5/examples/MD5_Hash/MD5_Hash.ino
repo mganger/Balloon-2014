@@ -6,16 +6,21 @@ one to generate the hex encoding of the hash, which is frequently used.
 */
 void setup()
 {
-  //initialize serial
-  Serial.begin(9600);
-  //give it a second
-  delay(1000);
-  //generate the MD5 hash for our string
-  unsigned char* hash=MD5::make_hash("hello world");
-  //generate the digest (hex encoding) of our hash
-  char *md5str = MD5::make_digest(hash, 16);
-  //print it on our serial monitor
-  Serial.println(md5str);
+	//initialize serial
+	Serial.begin(9600);
+	//give it a second
+	delay(1000);
+	
+	//generate the MD5 hash for our string
+	
+	int a[] = {0,1,2,3,4,5,6,7,8,9};
+	unsigned char* hash = MD5::make_hash(a);
+	
+	//generate the digest (hex encoding) of our hash
+	char *md5str = MD5::make_digest(hash, 16);
+	
+	//print it on our serial monitor
+	Serial.println(md5str);
 }
 
 void loop()

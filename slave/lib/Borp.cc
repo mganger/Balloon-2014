@@ -42,10 +42,13 @@ Borp::Borp(int pin, int baud)
 
 void Borp::phoneHome(int* data)			//takes an array
 {
-
+	//Calculate MD5 Hash, then broadcast the hash as well as the data itself.
+	unsigned char* hash = MD5::make_hash((char*)data);
+	Serial.write(hash);
+	Serial.write(data,sizeof(data) / sizeof(data[0]));
 }
 
 void Borp::testTransmission(int num)
 {
-	Serial.write(num);
+	Serial.println(num);
 }
