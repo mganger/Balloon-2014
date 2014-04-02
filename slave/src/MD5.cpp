@@ -1,4 +1,5 @@
 #include "MD5.h"
+#include "Arduino.h"
 
 MD5::MD5()
 {

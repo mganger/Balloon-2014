@@ -34,6 +34,10 @@
 //data we are collecting. Baud rates that are too high can max out the 
 //processing power of the Arduino and ultimately slow transmissions down.
 
+#include "Borp.h"
+#include "Arduino.h"
+#include "MD5.h"
+
 Borp::Borp(int pin, int baud)		
 {
 	Serial.begin(baud);	
@@ -44,8 +48,9 @@ void Borp::phoneHome(int* data)			//takes an array
 {
 	//Calculate MD5 Hash, then broadcast the hash as well as the data itself.
 	unsigned char* hash = MD5::make_hash((char*)data);
-	Serial.write(hash);
-	Serial.write(data,sizeof(data) / sizeof(data[0]));
+	Serial.write((char*)hash);
+//	Serial.write(data,sizeof(data) / sizeof(data[0]));
+//				^Prevents compilation
 }
 
 void Borp::testTransmission(int num)

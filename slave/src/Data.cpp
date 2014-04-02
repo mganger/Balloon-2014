@@ -19,10 +19,9 @@
  */
 
 #define DATACOUNT 9					//number of sensors being read
-#define PERIOD 1000/FREQ				//period in milliseconds
-#define FREQ 10						//frequency of readings
 
-
+#include "Data.h"
+#include "Arduino.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 //Constructor to initialize and rest function
@@ -30,7 +29,6 @@
 Data::Data(){
 	//constructor to initialize to -1
 	reset();
-	pinMode(tempPin,OUTPUT);
 }
 
 void Data::reset(){
@@ -80,14 +78,10 @@ void Data::returnData(int * dataArray){
 
 }
 
-int *Data::returnData(int * dataArray, int index){
-
-	if((millis() - timeCollect) >= PERIOD){		//time since last reading
+void Data::returnData(int * dataArray, int index){
 		returnData(dataArray);				//return newest reading
-	}else{
 		//retrieves data point with a certain index
 		//it probably is on the SD card, could be on the EEPROM
-	}
 }
 
 //End return data functions

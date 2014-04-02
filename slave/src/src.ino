@@ -19,21 +19,24 @@
  */
 
 #define BAUD 9600
+#define PERIOD 1000/FREQ				//period in milliseconds
+#define FREQ 10						//frequency of readings
 
 
-#include "../lib/MD5.h"
-#include "../lib/MD5.cpp"
-#include "../lib/Borp.h"
-#include "../lib/Borp.cc"
-#include "../lib/Data.h"
-#include "../lib/Data.cc"
+#include "MD5.h"
+#include "Borp.h"
+#include "Data.h"
+
+
+
 
 void setup(){
 	Serial.begin(BAUD);
-	point.setTempPin(14);
+//	point.setTempPin(14);
 }
 
 void loop(){
+Data point;
 	//while (time<alloted){
 	//	check for connection request
 	//	}
