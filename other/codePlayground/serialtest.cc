@@ -6,9 +6,12 @@
 //any incoming serial data. The best way to test is to set up the Arduino to
 //print continously at a non-standard baud, and try to listen.
 //	Use:
-//		./serialTest $PATH_TO_TTY $BAUD
+//		./serialTest $BAUD $PATH_TO_TTY (can be multiple)
+//					NOTE:
+//						If multiple files are given, only the first
+//						only the first one is used
 //
-//TODO:	Figure out the flags that need to be set (may be none)
+//TODO:	Determine if other flags (for setting the baud) are needed
 //
 //	CONFIRMED TO WORK (at 9600 and 19200 baud, so far)
 
@@ -18,9 +21,10 @@
 #include <iostream>
 #include <fstream>
 #include <fcntl.h>					//required to open and create files
-#include <unistd.h>					//required to close the file
+#include <unistd.h>					//required to close the file and sleep function
 #include <stdio.h>
 #include <stdlib.h>
+
 
 using namespace std;
 int fd = -1;						//global to hold the file descriptor
@@ -29,9 +33,9 @@ int fd = -1;						//global to hold the file descriptor
 int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 
 
-	fd = open(path,O_NDELAY);
+	fd = open(path,O_NDELAY | O_RDWR); 
 	if (fd<0){
-	   cerr<<"Opening failed"<<endl;
+	   cerr<<"Opening "<< path << " failed"<<endl;
 	   return 0;
 	}
 
@@ -41,6 +45,9 @@ int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 		case 0:
 			default:
 			cerr << baudInt << " is an invalid baud rate" << endl;
+			break;
+		case 115200:
+			baudFloat = B115200;
 			break;
 		case 38400:
 			baudFloat = B38400;
@@ -116,21 +123,49 @@ int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 	} else return 1;					//return happiness
 }
 
+void useThatSerial(){
+	cout << "Listening:" << endl;
+	char buff[2];					//create temporary read buffer
+	while(1){						//listen forever!
+	
+		while(read(fd, buff,1) == 1){		//read 1 character into the buffer
+			//log what it is reading from the device
+				ofstream myfile("readlog.txt",std::ofstream::out | std::ofstream::app);
+			//write it to a file
+				myfile << buff[0];
+			//print that character to stdout
+				cout << buff[0];
+			//close the file
+			myfile.close();
+		}
+	
+		while(cin.peek() != '\0'){			//check for chars in the buffer
+			//log what you are sending to the device
+				ofstream myfile("writelog.txt",std::ofstream::out | std::ofstream::app);
+			//read a char from the buffer (and remove it)
+				cin >> buff[0];
+			//write to the log
+				myfile << buff[0];
+			//write to the device
+				write(fd, buff,1);
+			//close the file
+			myfile.close();
+		}
+		usleep(10000);				//so we don't use up all the cpu
+	}
+}
+
+
 int main(int argc, char* argv[]){
-//	string path = "/dev/tty10";
 
-	cout << "Opening "<< argv[1] <<endl;
-	if(setupSerial(atoi(argv[2]), argv[1])){
-		cout << "Success. You just changed the baud rate to "<< argv[2] << endl;
-
-		cout << "Listening:" << endl;
-		char buff[1];					//create temporary read buffer
-		while(1){						//listen forever!
-			if(read(fd, buff,1)){		//read 1 character into the buffer
-				cout << buff[0];		//print that character
-			}
-		}	
-		return 0;
-	}else return 1;
+	for(int i = 2; i <= argc; i++){
+	
+		cout << "Opening "<< argv[i] <<endl;
+		if(setupSerial(atoi(argv[1]), argv[i])){
+				cout << "Success. You just changed the baud rate to "<< argv[1] << endl;
+				useThatSerial();
+			}	
+		}
+	return 0;
 }
 
