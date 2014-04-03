@@ -60,14 +60,14 @@ Data point;
 	for(int i = 0; i < 25; i++){
 		Serial.print(array[i]);
 	}
-	Serial.println(point.timeCollect);
+	Serial.println(point.timeSince());
 
 
 //Below is a load of code designed to test the ability to copy between pointers
 
 
 //This just waits until the time to the last collect is equal to PERIOD
-	while((millis() - point.timeCollect)<PERIOD){}
+	while((millis() - point.timeSince())<PERIOD){}
 }
 
 
