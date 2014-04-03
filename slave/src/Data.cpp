@@ -49,32 +49,40 @@ void Data::reset(){
 //End initialize/reset
 //****************************************************************************//
 
+////////////////////////////////////////////////////////////////////////////////
+//Other
+
+unsigned long int Data::timeSince(){
+	return timeCollect;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 //Functions to return data (to pass to borp, etc.)
 
-void Data::returnData(int * dataArray){
+unsigned char * Data::returnData(int * dataArray){
 
-	//Makes an int array with the size representing the number of readings
+	//updates the dataUnion
 
-	dataArray[0] = indexArray[0];
-	dataArray[1] = indexArray[1];
-	dataArray[2] = timeArray[0];
-	dataArray[3] = timeArray[1];
-	dataArray[4] = temp;
-	dataArray[5] = alti;
-	dataArray[6] = pres;
-	dataArray[7] = humi;
-	dataArray[8] = CO2;
-	dataArray[9] = CO;
-	dataArray[10] = N2O;
-	dataArray[11] = UV;
-	dataArray[12] = O3;
-	return;
+	dataUnion.dataArray[0] = indexArray[0];
+	dataUnion.dataArray[1] = indexArray[1];
+	dataUnion.dataArray[2] = timeArray[0];
+	dataUnion.dataArray[3] = timeArray[1];
+	dataUnion.dataArray[4] = temp;
+	dataUnion.dataArray[5] = alti;
+	dataUnion.dataArray[6] = pres;
+	dataUnion.dataArray[7] = humi;
+	dataUnion.dataArray[8] = CO2;
+	dataUnion.dataArray[9] = CO;
+	dataUnion.dataArray[10] = N2O;
+	dataUnion.dataArray[11] = UV;
+	dataUnion.dataArray[12] = O3;
+
+	return &dataUnion.packet;
 
 }
 
+	//This function does not actually use the variable int index. What does this function do differently than returnData(int * dataArray) ?
 void Data::returnData(int * dataArray, int index){
 		returnData(dataArray);				//return newest reading
 		//retrieves data point with a certain index

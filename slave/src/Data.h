@@ -28,12 +28,14 @@ class Data {
 	public:
 		Data();						//Constructor
 
-		union{
-			unsigned long int timeCollect;	//milliseconds
-			int timeArray[2];				//to make concatenation easy
-		};
+		union{				//union to hold the array
+			int dataArray[9];
+			unsigned char packet;
+		} dataUnion;
 
-		void returnData(int* dataArray);				//returns a pointer to an array of
+		unsigned long int timeSince();	//returns time since last collect
+
+		unsigned char* returnData(int* dataArray);				//returns a pointer to an array of
 		void returnData(int * dataArray, int index);	//newest or specified index
 
 		void saveData();				//writes to the SD card
@@ -52,6 +54,12 @@ class Data {
 		void setO3Pin(int pin);
 
 	private:
+
+		union{
+			unsigned long int timeCollect;	//milliseconds
+			int timeArray[2];				//to make concatenation easy
+		};
+
 		int temp, pres, alti, humi;		//Private variables to hold sensor
 		int CO2, CO, N2O, UV, O3;		//values for different measurements
 
