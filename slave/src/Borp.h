@@ -34,7 +34,7 @@ class Borp
 		Borp(int pin, int baud);
 
 		//This function takes an array (from the data class) and sends it
-		void phoneHome(unsigned char data);
+		void phoneHome(unsigned char * data);
 
 		//This is used to test the transmission
 		void testTransmission(int num);
