@@ -30,7 +30,7 @@ class Data {
 
 		unsigned long int timeCollect;	//milliseconds, collection time
 
-		void returnData(int* dataArray);				//returns a pointer to an array of
+		unsigned char returnData(int* dataArray);				//returns a pointer to an array of
 		void returnData(int * dataArray, int index);	//newest or specified index
 
 		void saveData();				//writes to the SD card

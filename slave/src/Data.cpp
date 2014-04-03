@@ -54,20 +54,29 @@ void Data::reset(){
 ////////////////////////////////////////////////////////////////////////////////
 //Functions to return data (to pass to borp, etc.)
 
-void Data::returnData(int * dataArray){
+unsigned char Data::returnData(int * dataArray){
 
 	//Makes an int array with the size representing the number of readings
 
-	dataArray[0] = temp;
-	dataArray[1] = alti;
-	dataArray[2] = pres;
-	dataArray[3] = humi;
-	dataArray[4] = CO2_;
-	dataArray[5] = CO__;
-	dataArray[6] = N2O_;
-	dataArray[7] = UV__;
-	dataArray[8] = O3__;
-	return;
+	//Create Union of char and int arrays
+	union dataUnion_t 
+	{
+		int dataArray[9];
+		unsigned char packet;
+	} dataUnion;
+	
+	//Moved the dataArray into a union with unsigned char packet.
+	dataUnion.dataArray[0] = temp;
+	dataUnion.dataArray[1] = alti;
+	dataUnion.dataArray[2] = pres;
+	dataUnion.dataArray[3] = humi;
+	dataUnion.dataArray[4] = CO2_;
+	dataUnion.dataArray[6] = N2O_;
+	dataUnion.dataArray[5] = CO__;
+	dataUnion.dataArray[7] = UV__;
+	dataUnion.dataArray[8] = O3__;
+
+	return dataUnion.packet;
 
 //	memcpy(&dataArray[10], &point.timeCollect, 4);
 //		Serial.println(dataArray[10]);
@@ -78,6 +87,7 @@ void Data::returnData(int * dataArray){
 
 }
 
+	//This function does not actually use the variable int index. What does this function do differently than returnData(int * dataArray) ?
 void Data::returnData(int * dataArray, int index){
 		returnData(dataArray);				//return newest reading
 		//retrieves data point with a certain index
