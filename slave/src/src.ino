@@ -55,22 +55,16 @@ Data point;
 	//This is to test the functions of the data library
 
 	point.readSensorData();
-	int array[50] = {0};
+	int array[13] = {0};
 	point.returnData(array);
 	for(int i = 0; i < 25; i++){
-//		Serial.print(array[i]);
+		Serial.print(array[i]);
 	}
 	Serial.println(point.timeCollect);
 
 
 //Below is a load of code designed to test the ability to copy between pointers
-	int shorta[4] = {0};
-	long int cool = 23758239475;
-	memcpy(&shorta, &cool, 4);
-	Serial.println(shorta[0]);
-	Serial.println(shorta[1]);
-	Serial.println(shorta[2]);
-	Serial.println(shorta[3]);
+
 
 //This just waits until the time to the last collect is equal to PERIOD
 	while((millis() - point.timeCollect)<PERIOD){}

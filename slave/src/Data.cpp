@@ -37,11 +37,11 @@ void Data::reset(){
 	alti = -1;
 	pres = -1;
 	humi = -1;
-	CO2_ = -1;
-	CO__ = -1;
-	N2O_ = -1;
-	UV__ = -1;
-	O3__ = -1;
+	CO2 = -1;
+	CO = -1;
+	N2O = -1;
+	UV = -1;
+	O3 = -1;
 
 	index++;						//increment the index by 1 on
 }
@@ -58,23 +58,20 @@ void Data::returnData(int * dataArray){
 
 	//Makes an int array with the size representing the number of readings
 
-	dataArray[0] = temp;
-	dataArray[1] = alti;
-	dataArray[2] = pres;
-	dataArray[3] = humi;
-	dataArray[4] = CO2_;
-	dataArray[5] = CO__;
-	dataArray[6] = N2O_;
-	dataArray[7] = UV__;
-	dataArray[8] = O3__;
+	dataArray[0] = indexArray[0];
+	dataArray[1] = indexArray[1];
+	dataArray[2] = timeArray[0];
+	dataArray[3] = timeArray[1];
+	dataArray[4] = temp;
+	dataArray[5] = alti;
+	dataArray[6] = pres;
+	dataArray[7] = humi;
+	dataArray[8] = CO2;
+	dataArray[9] = CO;
+	dataArray[10] = N2O;
+	dataArray[11] = UV;
+	dataArray[12] = O3;
 	return;
-
-//	memcpy(&dataArray[10], &point.timeCollect, 4);
-//		Serial.println(dataArray[10]);
-//	dataArray[11] = *((int*)&index);
-//	dataArray[12] = *((int*)&timeCollect);
-//		Serial.println(dataArray[12]);
-//	dataArray[13] = *((int*)&timeCollect);
 
 }
 
@@ -93,43 +90,42 @@ void Data::returnData(int * dataArray, int index){
 
 void Data::readSensorData(){
 	timeCollect = millis();
-//	Serial.println(timeCollect);
-	readTemp(tempPin);
+	readTemp();
 }
 
-void Data::readTemp(int pin){
-	temp = analogRead(pin);
+void Data::readTemp(){
+	temp = analogRead(sensorPin[0]);
 }
 
-void Data::readAlti(int pin){
+void Data::readAlti(){
 	//read from the sensor and write to **** variable
 }
 
-void Data::readHumi(int pin){
+void Data::readHumi(){
 	//read from the sensor and write to **** variable
 }
 
-void Data::readPres(int pin){
+void Data::readPres(){
 	//read from the sensor and write to **** variable
 }
 
-void Data::readCO2_(int pin){
+void Data::readCO2(){
 	//read from the sensor and write to **** variable
 }
 
-void Data::readN2O_(int pin){
+void Data::readN2O(){
 	//read from the sensor and write to **** variable
 }
 
-void Data::readCO__(int pin){
+void Data::readCO(){
 	//read from the sensor and write to **** variable
 }
 
-void Data::readIR__(int pin){
+void Data::readIR(){
 	//read from the sensor and write to **** variable
 }
 
-void Data::readO3__(int pin){
+void Data::readO3(){
 	//read from the sensor and write to **** variable
 }
 
@@ -144,7 +140,7 @@ void Data::readO3__(int pin){
 
 void Data::setTempPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int tempPin = pin;
+		sensorPin[0] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy:  ");
 		Serial.println(pin);
@@ -153,7 +149,7 @@ void Data::setTempPin(int pin){
 
 void Data::setAltiPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int altiPin = pin;
+		sensorPin[1] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
@@ -162,43 +158,43 @@ void Data::setAltiPin(int pin){
 
 void Data::setPresPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int presPin = pin;
+		sensorPin[2] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
 	}
 }
 
-void Data::setCO2_Pin(int pin){
+void Data::setCO2Pin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int CO2_Pin = pin;
+		sensorPin[3] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
 	}
 }
 
-void Data::setCO__Pin(int pin){
+void Data::setCOPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int CO__Pin = pin;
+		sensorPin[4] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
 	}
 }
 
-void Data::setN2O_Pin(int pin){
+void Data::setN2OPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int N2O_Pin = pin;
+		sensorPin[5] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
 	}
 }
 
-void Data::setIR__Pin(int pin){
+void Data::setIRPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int IR__Pin = pin;
+		sensorPin[6] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
@@ -207,16 +203,16 @@ void Data::setIR__Pin(int pin){
 
 void Data::setHumiPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int humiPin = pin;
+		sensorPin[7] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
 	}
 }
 
-void Data::setUV__Pin(int pin){
+void Data::setUVPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
-		int UV__Pin = pin;
+		sensorPin[8] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);

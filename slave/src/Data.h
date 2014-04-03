@@ -28,7 +28,10 @@ class Data {
 	public:
 		Data();						//Constructor
 
-		unsigned long int timeCollect;	//milliseconds, collection time
+		union{
+			unsigned long int timeCollect;	//milliseconds
+			int timeArray[2];				//to make concatenation easy
+		};
 
 		void returnData(int* dataArray);				//returns a pointer to an array of
 		void returnData(int * dataArray, int index);	//newest or specified index
@@ -41,35 +44,33 @@ class Data {
 		void setHumiPin(int pin);		//private variables
 		void setPresPin(int pin);		//They only accept valid pins 0-64
 		void setTempPin(int pin);
-		void setCO2_Pin(int pin);
-		void setN2O_Pin(int pin);
-		void setCO__Pin(int pin);
-		void setIR__Pin(int pin);
-		void setUV__Pin(int pin);
-		void setO3__Pin(int pin);
+		void setCO2Pin(int pin);
+		void setN2OPin(int pin);
+		void setCOPin(int pin);
+		void setIRPin(int pin);
+		void setUVPin(int pin);
+		void setO3Pin(int pin);
 
 	private:
 		int temp, pres, alti, humi;		//Private variables to hold sensor
-		int CO2_, CO__, N2O_, UV__, O3__;	//values for different measurements
+		int CO2, CO, N2O, UV, O3;		//values for different measurements
 
+		int sensorPin[15];				//Array to hold the snesor pins
 
-		//TODO If we put these in an array, it will be easier to set things up
-		int tempPin, presPin, altiPin;	//Private variables to hold the pin
-		int humiPin, CO2_Pin, CO__Pin;	//for each sensor
-		int N2O_Pin, UV__Pin, O3__Pin;
+		union {
+			int indexArray[2];			//used to concatenate into array
+			unsigned long int index;		//Holds current collection index
+		};
 
-		unsigned long int index;			//Holds current collection index
-
-
-		void readTemp(int pin);			//these functions should be private
-		void readAlti(int pin);			//and called by readSensorData()
-		void readHumi(int pin);			//Each group should customize that
-		void readPres(int pin);			//funciton to only call the needed
-		void readCO2_(int pin);			//read****() for their project
-		void readN2O_(int pin);
-		void readCO__(int pin);
-		void readIR__(int pin);
-		void readO3__(int pin);
+		void readTemp();			//these functions should be private
+		void readAlti();			//and called by readSensorData()
+		void readHumi();			//Each group should customize that
+		void readPres();			//funciton to only call the needed
+		void readCO2();			//read****() for their project
+		void readN2O();
+		void readCO();
+		void readIR();
+		void readO3();
 
 		void reset();					//resets all readings to null
 } ;								//defines the object point
