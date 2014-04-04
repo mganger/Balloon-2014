@@ -24,8 +24,11 @@
 
 
 #include "MD5.h"
+#include "MD5.cpp"
 #include "Borp.h"
+#include "Borp.cpp"
 #include "Data.h"
+#include "Data.cpp"
 
 
 
