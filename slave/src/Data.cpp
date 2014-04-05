@@ -18,7 +18,7 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define DATACOUNT 9					//number of sensors being read
+#define DATACOUNT 10					//number of sensors being read
 
 #include "Data.h"
 #include "Arduino.h"
