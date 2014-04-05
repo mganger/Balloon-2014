@@ -23,8 +23,8 @@
 #include "Data.h"
 #include "Arduino.h"
 
-////////////////////////////////////////////////////////////////////////////////
-//Constructor to initialize and rest function
+//******************************************************************************
+//Constructor, reset, init
 
 Data::Data(){
 	//constructor to initialize to -1
@@ -47,19 +47,12 @@ void Data::reset(){
 	index++;						//increment the index by 1 on
 }
 
-//End initialize/reset
-//****************************************************************************//
-
-////////////////////////////////////////////////////////////////////////////////
-//Other
-
 unsigned long int Data::timeSince(){
 	return timeCollect;
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-//Functions to return data (to pass to borp, etc.)
+//******************************************************************************
+//Functions to return data as array
 
 unsigned char * Data::returnData(int * dataArray){
 
@@ -91,11 +84,7 @@ void Data::returnData(int * dataArray, int index){
 		//it probably is on the SD card, could be on the EEPROM
 }
 
-//End return data functions
-//****************************************************************************//
-
-
-////////////////////////////////////////////////////////////////////////////////
+//******************************************************************************
 //Functions for reading the data
 
 void Data::readSensorData(){
@@ -151,14 +140,13 @@ void Data::readO3(){
 	//read from the sensor and write to **** variable
 }
 
-//End read functions
-//****************************************************************************//
+
+//******************************************************************************
+//Getters
 
 
-
-////////////////////////////////////////////////////////////////////////////////
-//Below is a ridiculous number of functions. They are set functions for each of 
-//the possible variables, continue at your own risk.
+//******************************************************************************
+//Setters
 
 void Data::setTempPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
@@ -248,8 +236,3 @@ void Data::setUVPin(int pin){
 		Serial.println(pin);
 	}
 }
-
-//End set functions
-//****************************************************************************//
-
-
