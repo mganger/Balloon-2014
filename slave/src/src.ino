@@ -21,7 +21,7 @@
 #define BAUD 9600
 #define PERIOD 1000/FREQ				//period in milliseconds
 #define FREQ 10					//frequency of readings
-
+#define SIZE 14					//keep updated with actual number
 
 #include "MD5.h"
 #include "Borp.h"
@@ -31,43 +31,50 @@
 
 
 void setup(){
-	Serial.begin(BAUD);
-//	point.setTempPin(14);
+	//Constuct the objects to collect the data and send it.
+	Borp radio(9600);
+	Data point;
+
+	//Set the pins for the sensors. If not defined, pinMode will not be set
+	point.setAltiPin(1);
+	point.setHumiPin(2);
+	point.setPresPin(3);
+	point.setTempPin(4);
+	point.setCO2Pin(5);
+	point.setN2OPin(6);
+	point.setCOPin(7);
+	point.setIRPin(8);
+	point.setUVPin(9);
+	point.setO3Pin(10);
+
+	point.initPins();
+
+	union{						//Temporary union. The Borp should 
+		int dataIntArray[SIZE];		//be overloaded to take int arrays
+		unsigned char* dataCharArray;	//as well (instead of this).
+	};
+
+
+	for(;;){
+
+		point.readSensorData();
+		point.returnData(dataIntArray);
+		radio.phoneHome(dataCharArray);
+
+		//This just waits until the time to the last collect is equal to PERIOD
+		while((millis() - point.timeSince())<PERIOD){}
+	}
+
+//If we want to try this for kicks and giggles:
+//	loop();
 }
 
+//Leave loop empty; let's try using the setup as a main function (or better,
+//call loop from the setup program). However, if putting everything in setup 
+//doesn't work, we can put everything within loop and never let it finish
 void loop(){
-Data point;
-	//while (time<alloted){
-	//	check for connection request
-	//	}
-	//send feedback to master
-	//collect data
-	//write data
-	//if (connection == 1){
-	//	check for data request
-	//	prepare data
-	//	send data
-	//	}
-//	point.readSensorData(); //Fill in collected data baszed on group.
-//	Borp radio(1,9600);	//Baud rate and pin should be hardcoded by each group.
-//	radio.phoneHome(point.returnData());
-
-	//This is to test the functions of the data library
-
-	point.readSensorData();
-	int array[13] = {0};
-	point.returnData(array);
-	for(int i = 0; i < 25; i++){
-		Serial.print(array[i]);
-	}
-	Serial.println(point.timeSince());
-
-
-//Below is a load of code designed to test the ability to copy between pointers
-
-
-//This just waits until the time to the last collect is equal to PERIOD
-	while((millis() - point.timeSince())<PERIOD){}
+	Serial.println("ERROR: Completed setup and entered loop");
+	delay(1000);
 }
 
 
