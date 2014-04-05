@@ -47,6 +47,14 @@ void Data::reset(){
 	index++;						//increment the index by 1 on
 }
 
+void Data::initPins(){
+	//loop through the pins in the array
+	for(int i = 0; i < sizeof(sensorPin); i++){
+		//only set pinMode if they are positive (i.e. sentinel value is < 1) 
+		if(sensorPin[i] > 0){
+			pinMode(sensorPin[i],INPUT);
+		}
+	}
 }
 
 //******************************************************************************
