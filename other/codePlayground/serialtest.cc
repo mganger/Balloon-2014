@@ -28,7 +28,7 @@
 #include <ctime>
 #include <sstream>
 
-#define PERIOD 0					//Change if stuff is getting cut off
+#define PERIOD 1					//Change if stuff is getting cut off
 
 using namespace std;
 int fd = -1;						//global to hold the file descriptor
