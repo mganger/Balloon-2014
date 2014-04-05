@@ -106,30 +106,42 @@ void Data::readTemp(){
 }
 
 void Data::readAlti(){
+	alti = analogRead(sensorPin[1]);
 	//read from the sensor and write to **** variable
 }
 
 void Data::readHumi(){
+	humi = analogRead(sensorPin[7]);
 	//read from the sensor and write to **** variable
 }
 
 void Data::readPres(){
+	pres = analogRead(sensorPin[2]);
 	//read from the sensor and write to **** variable
 }
 
 void Data::readCO2(){
+	CO2 = analogRead(sensorPin[3]);
 	//read from the sensor and write to **** variable
 }
 
 void Data::readN2O(){
+	N2O = analogRead(sensorPin[5]);
 	//read from the sensor and write to **** variable
 }
 
 void Data::readCO(){
+	CO = analogRead(sensorPin[4]);
 	//read from the sensor and write to **** variable
 }
 
 void Data::readIR(){
+	IR = analogRead(sensorPin[6]);
+	//read from the sensor and write to **** variable
+}
+
+void Data::readUV(){
+	UV = analogRead(sensorPin[8]);
 	//read from the sensor and write to **** variable
 }
 
@@ -212,6 +224,14 @@ void Data::setIRPin(int pin){
 void Data::setHumiPin(int pin){
 	if((pin <= 65) && (pin >= 0 )){
 		sensorPin[7] = pin;
+	}else {
+		Serial.print("Error: pin invalid, dummy: ");
+		Serial.println(pin);
+	}
+}
+void Data::setO3Pin(int pin){
+	if((pin <= 65) && (pin >=0 )){
+		sensorPin[9] = pin;
 	}else {
 		Serial.print("Error: pin invalid, dummy: ");
 		Serial.println(pin);
