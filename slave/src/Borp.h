@@ -29,9 +29,9 @@ class Borp
 
 	public:
 
-		//constuctor initializes the Serial communication. Pin refers to 
-		//which Serial it uses (Serial1, Serial2, Serial3, etc)
-		Borp(int pin, int baud);
+		//constuctor initializes the Serial communication.
+		//If we use Dues, this can be changed to accept the pin (i.e. Serial2)
+		Borp(int baud);
 
 		//This function takes an array (from the data class) and sends it
 		void phoneHome(unsigned char * data);

@@ -38,10 +38,9 @@
 #include "Arduino.h"
 #include "MD5.h"
 
-Borp::Borp(int pin, int baud)		
+Borp::Borp(int baud)		
 {
 	Serial.begin(baud);	
-	pinMode(pin,OUTPUT);
 }
 
 void Borp::phoneHome(unsigned char * data)			//takes an array
