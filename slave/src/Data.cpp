@@ -47,8 +47,6 @@ void Data::reset(){
 	index++;						//increment the index by 1 on
 }
 
-unsigned long int Data::timeSince(){
-	return timeCollect;
 }
 
 //******************************************************************************
@@ -143,6 +141,10 @@ void Data::readO3(){
 
 //******************************************************************************
 //Getters
+
+unsigned long int Data::timeSince(){
+	return timeCollect;
+}
 
 
 //******************************************************************************
