@@ -44,15 +44,13 @@ Borp::Borp(int pin, int baud)
 	pinMode(pin,OUTPUT);
 }
 
-void Borp::phoneHome(unsigned char data)			//takes an array
+void Borp::phoneHome(unsigned char * data)			//takes an array
 {
 	//Calculate MD5 Hash, then broadcast the hash as well as the data itself.
-	unsigned char* hash = MD5::make_hash((char*)data);
+	unsigned char * hash = MD5::make_hash((char*)data);
 	Serial.write((char*)hash);
 
-	//Turn data into a pointer and send it.
-	unsigned char * packet = &data;
-	Serial.write(packet,sizeof(packet));
+	Serial.write(data,sizeof(data));
 }
 
 void Borp::testTransmission(int num)

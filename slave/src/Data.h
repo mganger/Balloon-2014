@@ -20,22 +20,22 @@
 
 #ifndef __DATA_H_INCLUDED__		//If this library is not defined..
 #define __DATA_H_INCLUDED__		//Define this variable and read the code
-							//Otherwise, go to the bottom (and skip)
-							//This is to prevent defining it twice
+					//Otherwise, go to the bottom (and skip)
+					//This is to prevent defining it twice
 
 class Data { 
 
 	public:
-		Data();						//Constructor
+		Data();				//Constructor
 
-		union{				//union to hold the array
+		union{				//union to allow the data array to be accessed as a char
 			int dataArray[9];
 			unsigned char packet;
 		} dataUnion;
 
 		unsigned long int timeSince();	//returns time since last collect
 
-		unsigned char* returnData(int* dataArray);				//returns a pointer to an array of
+		unsigned char * returnData(int* dataArray);				//returns a pointer to an array of
 		void returnData(int * dataArray, int index);	//newest or specified index
 
 		void saveData();				//writes to the SD card
