@@ -53,6 +53,7 @@ class Data {
 		void setUVPin(int pin);
 		void setO3Pin(int pin);
 		
+		void initPins();				//sets pinMode to input for pins
 
 	private:
 
