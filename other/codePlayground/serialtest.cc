@@ -21,10 +21,14 @@
 #include <iostream>
 #include <fstream>
 #include <fcntl.h>					//required to open and create files
-#include <unistd.h>					//required to close the file and sleep function
+#include <unistd.h>					//required to close the file and sleep
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/poll.h>
+#include <ctime>
+#include <sstream>
 
+#define PERIOD 0					//Change if stuff is getting cut off
 
 using namespace std;
 int fd = -1;						//global to hold the file descriptor
@@ -125,34 +129,69 @@ int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 
 void useThatSerial(){
 	cout << "Listening:" << endl;
-	char buff[2];					//create temporary read buffer
-	while(1){						//listen forever!
-	
-		while(read(fd, buff,1) == 1){		//read 1 character into the buffer
+
+	//timestamp----------------------------------------------------------------
+	ostringstream timeStream;
+	time_t now = time(0);
+	tm *ltm = localtime(&now);		//make new time structure
+
+	//create the stream for the timestamp
+	timeStream << endl << "--------------------------"<< endl;
+	timeStream << ltm->tm_hour <<":"<< ltm->tm_min <<":"<< ltm->tm_sec;
+	timeStream << ", " ;
+	timeStream << 1+ltm->tm_mon <<"-"<< ltm->tm_mday <<"-"<< 1900+ltm->tm_year;
+	timeStream << endl << endl;
+
+	//log the time to the log files
+	ofstream writefile("logWrite.txt",std::ofstream::out | std::ofstream::app);
+	writefile << timeStream.str();
+	writefile.close();
+	ofstream readfile("logRead.txt",std::ofstream::out | std::ofstream::app);
+	readfile << timeStream.str();
+	readfile.close();
+	//timestamp----------------------------------------------------------------
+
+
+	struct pollfd fds;					//necessary so that stdin does not
+	fds.fd = 0;						//block our program
+	fds.events = POLLIN;				//
+
+
+	char outBuff[2];					//create read buffer
+	char inBuff[2];					//create write buffer
+
+	//loop forever!!!!!
+	for(;;){
+		while(read(fd, outBuff,1) > 0){	//read 1 character into the buffer
 			//log what it is reading from the device
-				ofstream myfile("readlog.txt",std::ofstream::out | std::ofstream::app);
+				ofstream myfile("logRead.txt",std::ofstream::out | std::ofstream::app);
 			//write it to a file
-				myfile << buff[0];
+				myfile << outBuff[0];
 			//print that character to stdout
-				cout << buff[0];
+				cout << outBuff[0];
 			//close the file
 			myfile.close();
+			usleep(PERIOD);
 		}
 	
-		while(cin.peek() != '\0'){			//check for chars in the buffer
+		while(poll(&fds, 1, 0) > 0){	//read character from stdin
 			//log what you are sending to the device
-				ofstream myfile("writelog.txt",std::ofstream::out | std::ofstream::app);
-			//read a char from the buffer (and remove it)
-				cin >> buff[0];
+				ofstream myfile("logWrite.txt",std::ofstream::out | std::ofstream::app);
 			//write to the log
-				myfile << buff[0];
+				myfile << inBuff[0];
 			//write to the device
-				write(fd, buff,1);
+				read(0, inBuff, 1);
+				write(fd, inBuff,1);
 			//close the file
 			myfile.close();
+			usleep(PERIOD);
 		}
 		usleep(10000);				//so we don't use up all the cpu
 	}
+}
+
+void time(ostringstream timeStream){			//reads time into a string
+
 }
 
 
