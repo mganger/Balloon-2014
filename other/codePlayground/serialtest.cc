@@ -29,6 +29,9 @@
 #include <sstream>
 
 #define PERIOD 1					//Change if stuff is getting cut off
+#define SENDNEW 0					//0 to skip \n and \r, 1 to send them
+								//It will still log them, though (this
+								//is a good thing)
 
 using namespace std;
 int fd = -1;						//global to hold the file descriptor
@@ -175,13 +178,18 @@ void useThatSerial(){
 		}
 	
 		while(poll(&fds, 1, 0) > 0){	//read character from stdin
+			//read the char into buffer
+			read(0, inBuff, 1);
+
 			//log what you are sending to the device
 				ofstream myfile("logWrite.txt",std::ofstream::out | std::ofstream::app);
 			//write to the log
 				myfile << inBuff[0];
 			//write to the device
-				read(0, inBuff, 1);
-				write(fd, inBuff,1);
+			//Doesn't send a newline character (who wants 'em, anyway?)
+				if(((inBuff[0] != '\n') & (inBuff[0] != '\r')) | SENDNEW){
+					write(fd, inBuff,1);
+				}
 			//close the file
 			myfile.close();
 			usleep(PERIOD);
