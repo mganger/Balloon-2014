@@ -1,0 +1,125 @@
+
+--------------------------
+20:37:14, 4-4-2014
+`Hello Arduino
+This is the Arduino sending stuff back
+
+
+
+Hello?
+is the buffer too big
+
+
+
+
+
+1
+2
+123
+1243
+123456
+1234567
+1234567890
+12345678901234567890
+
+
+1234567890123456789
+I can send this man
+y?
+--------------------------
+20:39:48, 4-4-2014
+
+`1234567890
+12345678901234567890
+123456789012345678901234567890
+I think that I was either reading or writing too fast
+Apparently it works with looooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnng strings
+--------------------------
+20:41:30, 4-4-2014
+
+`Hellllllllllllllllllllllllllllllllllllooooooooooooooooooooooooooooooooooooooooooo!!!!!!!!!!!!!!!!!!!!!!!!!
+--------------------------
+20:41:53, 4-4-2014
+
+`haewfuisssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+This is better
+Way faster
+iwpyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyneusleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+That's about right, I think
+Let
+s
+Let's up the baud
+This is 9600 by the way
+--------------------------
+20:46:10, 4-4-2014
+
+
+--------------------------
+20:46:28, 4-4-2014
+
+`This is baud rate 19200
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+Reasonably fast
+Let's go faster
+--------------------------
+20:48:13, 4-4-2014
+
+
+--------------------------
+20:48:58, 4-4-2014
+
+`This is baud rate 38400
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+Reasonably fast. Still not wonderful. Let's turn it up!
+--------------------------
+20:50:21, 4-4-2014
+
+`This is the fastest possible
+Still works
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+Not shabby
+I think that now I am being limited by the speed which I am reading them.
+This is 115200, by the wat
+*way
+--------------------------
+20:52:8, 4-4-2014
+
+`Back, at a faster read/write speed
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+This is a
+
+What I am actually doing is usleep(100) between each char retrieval. Let's change that to 10 now...
+--------------------------
+20:53:37, 4-4-2014
+
+`This should be instantaneous
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+It pretty much is
+Now, I want to see if I can change it to 1 now
+--------------------------
+20:54:42, 4-4-2014
+
+`This is with usleep(1)
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)usleep(10000)
+Apparently it doesn't make a difference at such high speeds
+Which is good
+I will put a define in that changes it
+--------------------------
+20:56:49, 4-4-2014
+
+`This is with no delay
+kasbjfbPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIOD
+
+Interesting
+Just needs one microsecond
+Weird.......................................
+PERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIOD
+PERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIOD
+PERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIOD
+PERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIOD
+PERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIOD
+Wait nevermind
+PERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIODPERIOD
