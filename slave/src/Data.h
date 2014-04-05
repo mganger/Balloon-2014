@@ -65,8 +65,8 @@ class Data {
 		int temp, pres, alti, humi;		//Private variables to hold sensor
 		int CO2, CO, N2O, UV, O3, IR;		//values for different measurements
 
-		int sensorPin[15];				//Array to hold the sensor pins
-
+		int sensorPin[30];				//Array to hold the sensor pins
+									//Shrink once # of pins is certain
 		union {
 			unsigned long int index;		//Holds current collection index
 			int indexArray[2];		//<----So we can throw it around easily
@@ -81,6 +81,7 @@ class Data {
 		void readCO();
 		void readIR();
 		void readO3();
+		void readUV();
 
 		void reset();					//resets all readings to null
 };
