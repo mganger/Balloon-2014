@@ -52,6 +52,7 @@ class Data {
 		void setIRPin(int pin);
 		void setUVPin(int pin);
 		void setO3Pin(int pin);
+		
 
 	private:
 
@@ -61,9 +62,9 @@ class Data {
 		};
 
 		int temp, pres, alti, humi;		//Private variables to hold sensor
-		int CO2, CO, N2O, UV, O3;		//values for different measurements
+		int CO2, CO, N2O, UV, O3, IR;		//values for different measurements
 
-		int sensorPin[15];				//Array to hold the snesor pins
+		int sensorPin[15];				//Array to hold the sensor pins
 
 		union {
 			int indexArray[2];			//used to concatenate into array
