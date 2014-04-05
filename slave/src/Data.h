@@ -29,7 +29,7 @@ class Data {
 		Data();				//Constructor
 
 		union{				//union to allow the data array to be accessed as a char
-			int dataArray[9];
+			int dataArray[10];
 			unsigned char packet;
 		} dataUnion;
 
