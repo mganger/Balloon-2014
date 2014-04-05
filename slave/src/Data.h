@@ -35,7 +35,7 @@ class Data {
 
 		unsigned long int timeSince();	//returns time since last collect
 
-		unsigned char * returnData(int* dataArray);				//returns a pointer to an array of
+		unsigned char * returnData(int* dataArray);	//returns a pointer to an array of
 		void returnData(int * dataArray, int index);	//newest or specified index
 
 		void saveData();				//writes to the SD card
@@ -68,14 +68,14 @@ class Data {
 		int sensorPin[15];				//Array to hold the sensor pins
 
 		union {
-			int indexArray[2];			//used to concatenate into array
 			unsigned long int index;		//Holds current collection index
+			int indexArray[2];		//<----So we can throw it around easily
 		};
 
 		void readTemp();			//these functions should be private
 		void readAlti();			//and called by readSensorData()
 		void readHumi();			//Each group should customize that
-		void readPres();			//funciton to only call the needed
+		void readPres();			//function to only call the needed
 		void readCO2();			//read****() for their project
 		void readN2O();
 		void readCO();
@@ -83,6 +83,6 @@ class Data {
 		void readO3();
 
 		void reset();					//resets all readings to null
-} ;								//defines the object point
+};
 
 #endif
