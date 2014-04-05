@@ -20,7 +20,7 @@
 
 #define BAUD 9600
 #define PERIOD 1000/FREQ				//period in milliseconds
-#define FREQ 10						//frequency of readings
+#define FREQ 10					//frequency of readings
 
 
 #include "MD5.h"
