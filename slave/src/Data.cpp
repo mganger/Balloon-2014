@@ -42,6 +42,7 @@ void Data::reset(){
 	N2O = -1;
 	UV = -1;
 	O3 = -1;
+	IR = -1;
 
 	index++;						//increment the index by 1 on
 }
@@ -77,6 +78,7 @@ unsigned char * Data::returnData(int * dataArray){
 	dataUnion.dataArray[10] = N2O;
 	dataUnion.dataArray[11] = UV;
 	dataUnion.dataArray[12] = O3;
+	dataUnion.dataArray[13] = IR;
 
 	return &dataUnion.packet;
 
