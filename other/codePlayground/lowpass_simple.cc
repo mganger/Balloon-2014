@@ -2,6 +2,7 @@
 //derived from filteredValue = oldValue + (newValue - oldValue) / (smoothing / timeSinceLastUpdate)
 //from http://phrogz.net/js/framerate-independent-low-pass-filter.html
 //Usage ./lowpass <amount> <file>
+//10 is probably good enough for the amount
 
 #include <fstream>
 #include <iostream>
