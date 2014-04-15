@@ -23,18 +23,32 @@
  */
 
 
+#include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include "../lib/md5.h"
+#include "../lib/Communications.h"
+#define SIZE 14
+
+using namespace std;
 
 int main()
 {
-	//Transferred from the programFlow chart
-	//
-	//Send message to slave
-	//listen on serial port *We may be able to do this on a different thread
-	//for(time<100ms;;){
-	//	listen for data
-	//	check for error
-	//	Write to file
-	//}
+	union{
+		short array [SIZE];
+		unsigned char* dataCharArray;
+	};
+
+	Communications Serial;
+	ofstream output;
+
+	Serial.setup(9600,"/dev/ttyACM*");
+	Serial.gather(dataCharArray,SIZE);
+
+	output.open("ballonData.dat",ios::app);
+	for(int i = 0; i <= SIZE; i++)
+	{
+		cout << array[i];
+		output << array[i];
+	}
 }
