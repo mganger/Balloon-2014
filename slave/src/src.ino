@@ -19,7 +19,7 @@
  */
 
 #define BAUD 9600
-#define PERIOD 1000/FREQ				//period in milliseconds
+#define PERIOD 1000/FREQ			//period in milliseconds
 #define FREQ 10					//frequency of readings
 #define SIZE 14					//keep updated with actual number
 
@@ -49,7 +49,7 @@ void setup(){
 
 	point.initPins();
 
-	union{						//Temporary union. The Borp should 
+	union{					//Temporary union. The Borp should 
 		int dataIntArray[SIZE];		//be overloaded to take int arrays
 		unsigned char* dataCharArray;	//as well (instead of this).
 	};

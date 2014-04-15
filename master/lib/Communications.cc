@@ -20,21 +20,30 @@
 
 
 #include "Communications.h"
-#include <string>					//library to create string objects
-#include <fstream>					//library for reading and writing files
-#include <iostream>					//necessary for cout
+#include <string>				//library to create string objects
+#include <fstream>				//library for reading and writing files
+#include <iostream>				//necessary for cout
 #include <termios.h>
-#include <fcntl.h>					//required to open and create files
-#include <unistd.h>					//required to close the file
+#include <fcntl.h>				//required to open and create files
+#include <unistd.h>				//required to close the file
 #include <stdio.h>
 #include <stdlib.h>
 
 
+char Communications::gather(){
+	char buff[2];
+	read(fileDescriptor, buff, 1);
+	return buff[1];
+}
+
+int Communications::gather(char * array, int size){
+	read(fileDescriptor, array, size);
+}
 
 int Communications::setup(unsigned int baudInt,const char* path){
 	fileDescriptor = open(path,O_NDELAY);
 	if (fileDescriptor<0){
-	   std::cerr<<"Opening failed"<<std::endl;
+	   cerr<<"Opening failed"<<endl;
 	   return 0;
 	}
 
@@ -43,7 +52,7 @@ int Communications::setup(unsigned int baudInt,const char* path){
 	{
 		case 0:
 			default:
-			std::cerr << baudInt << " is an invalid baud rate" << std::endl;
+			cerr << baudInt << " is an invalid baud rate" << endl;
 			break;
 		case 38400:
 			baudFloat = B38400;
@@ -98,11 +107,11 @@ int Communications::setup(unsigned int baudInt,const char* path){
 	tcgetattr(fileDescriptor, &options);		//get current options for port
 
 	if(cfsetispeed(&options, baudFloat)<0){		//set input baud
-		std::cerr << "Cannot set the input baud to " << baudInt << std::endl;
+		cerr << "Cannot set the input baud to " << baudInt << endl;
 		return 0;
 	}
 	if(cfsetospeed(&options, baudFloat)<0){		//set output baud
-		std::cerr << "Cannot set the output baud to " << baudInt << std::endl;
+		cerr << "Cannot set the output baud to " << baudInt << endl;
 		return 0;
 	}
 
@@ -114,8 +123,8 @@ int Communications::setup(unsigned int baudInt,const char* path){
 
 
 	if(tcsetattr(fileDescriptor, TCSANOW, &options)<0){	//set new options
-	std::cerr << "Cannot set attributes." << std::endl;
+	cerr << "Cannot set attributes." << endl;
 	return -1;
-	} else return fileDescriptor;								//return happiness
+	} else return fileDescriptor;				//return happiness
 
 }
