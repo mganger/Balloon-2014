@@ -27,7 +27,9 @@
 #include <fstream>
 #include <stdio.h>
 #include "../lib/md5.h"
+#include "../lib/md5.cpp"
 #include "../lib/Communications.h"
+#include "../lib/Communications.cc"
 #define SIZE 14
 
 using namespace std;
@@ -35,20 +37,27 @@ using namespace std;
 int main()
 {
 	union{
-		short array [SIZE];
+		short array[SIZE];
 		unsigned char* dataCharArray;
-	};
+	}union;
+
+	for(int i = 0; i <SIZE; i++)
+	{
+		union.array[i] = 0;
+	}
 
 	Communications Serial;
 	ofstream output;
 
-	Serial.setup(9600,"/dev/ttyACM*");
-	Serial.gather(dataCharArray*,SIZE);
+	Serial.setup(9600,"/dev/ttyACM0");
+	Serial.gather(dataCharArray,SIZE);
 
 	output.open("ballonData.dat",ios::app);
 	for(int i = 0; i <= SIZE; i++)
 	{
-		cout << array[i];
-		output << array[i];
+		cout << union.array[i];
+		output << union.array[i];
 	}
+	cout << endl;
+	output << endl;
 }

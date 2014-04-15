@@ -48,7 +48,7 @@ http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/025/259
 
 #include <string>
 
-
+using namespace std;
 
 class Communications {
 	public:
