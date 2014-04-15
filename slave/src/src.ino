@@ -61,6 +61,8 @@ void setup(){
 		point.returnData(dataIntArray);
 		radio.phoneHome(dataCharArray);
 
+
+		Serial.println("Line end");
 		//This just waits until the time to the last collect is equal to PERIOD
 		while((millis() - point.timeSince())<PERIOD){}
 	}
