@@ -50,14 +50,10 @@ http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/025/259
 
 
 
-
 class Communications {
 	public:
-		//Begins serial on path (/dev/tty*), returns error code as int
-		int begin(std::string path);
-
-		//writes a string to serial device, no println; just add "\n" to above
-		void print(std::string);		
+		//used to setup the serial deivce; copied from serialtest
+		int setup(unsigned int baudInt, const char* path);
 
 		//write the integer as 1 or 2 bytes		
 		void write(int number);
@@ -69,32 +65,18 @@ class Communications {
 		int available();
 
 		//This read the first character in the buffer and destroy it
-		char read();
+		char gather();
 
-		//This returns a string; something the Arduino should but doesn't have
-		std::string readString();
+		//reads the bytes into an array, returns boolean
+		int gather(char * array, int size);
 
-		//returns the byte as an int
-		short int readByte();
-
-		//reads the bytes into afn array
-		int readArray(int * array, int size);
-
-		//checks the Serial device for stuff, period between iterations is in
-		//milliseconds, delayTime is also in milliseconds (to fill buffer)
-		int wait(int period, int delayTime);
-
-		//removes everything from receiving buffer, returns # of bytes removed
-		int clean();
 	private:
-		std::string serialPath;			//String to hold the USB location
-		int fileDescriptor;				//used to manipulate file opened
+		string serialPath;			//String to hold the USB location
+		int fileDescriptor;			//used to manipulate file opened
 
-		//used to setup the serial deivce; copied from serialtest
-		int setup(unsigned int baudInt, const char* path);
 
 		//This will scan for existing files, i.e. give /dev/ACM* get /dev/ACM1
-		std::string scanPath(std::string);
+		string scanPath(string);
 } Serial;
 
 #endif
