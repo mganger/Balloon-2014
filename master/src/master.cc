@@ -43,7 +43,7 @@ int main()
 	ofstream output;
 
 	Serial.setup(9600,"/dev/ttyACM*");
-	Serial.gather(dataCharArray,SIZE);
+	Serial.gather(dataCharArray*,SIZE);
 
 	output.open("ballonData.dat",ios::app);
 	for(int i = 0; i <= SIZE; i++)
