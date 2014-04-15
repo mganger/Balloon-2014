@@ -36,7 +36,7 @@ char Communications::gather(){
 	return buff[1];
 }
 
-int Communications::gather(char * array, int size){
+int Communications::gather(unsigned char * array, int size){
 	read(fileDescriptor, array, size);
 }
 

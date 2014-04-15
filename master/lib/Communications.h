@@ -68,7 +68,7 @@ class Communications {
 		char gather();
 
 		//reads the bytes into an array, returns boolean
-		int gather(char * array, int size);
+		int gather(unsigned char * array, int size);
 
 	private:
 		string serialPath;			//String to hold the USB location
