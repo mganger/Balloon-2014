@@ -142,18 +142,23 @@ void useThatSerial(){
 	tm *ltm = localtime(&now);		//make new time structure
 
 	//create the stream for the timestamp
-	timeStream << endl << "--------------------------"<< endl;
-	timeStream << ltm->tm_hour <<":"<< ltm->tm_min <<":"<< ltm->tm_sec;
-	timeStream << ", " ;
+//	timeStream << endl << "--------------------------"<< endl;
+	timeStream << ltm->tm_hour <<"."<< ltm->tm_min <<"."<< ltm->tm_sec;
+	timeStream << "," ;
 	timeStream << 1+ltm->tm_mon <<"-"<< ltm->tm_mday <<"-"<< 1900+ltm->tm_year;
-	timeStream << endl << endl;
+
 
 	//log the time to the log files
 	ofstream writefile("logWrite.txt",std::ofstream::out | std::ofstream::app);
+	writefile << "---------------------------------------" << endl;
 	writefile << timeStream.str();
+	writefile << endl << endl;
 	writefile.close();
-	ofstream readfile("logRead.txt",std::ofstream::out | std::ofstream::app);
-	readfile << timeStream.str();
+
+	timeStream << "_log.txt";
+
+	ofstream readfile(timeStream.str().c_str(),std::ofstream::out | std::ofstream::app);
+//	readfile << timeStream.str();
 	readfile.close();
 	//timestamp----------------------------------------------------------------
 
