@@ -115,7 +115,7 @@ int Communications::setup(unsigned int baudInt,const char* path){
 
 	if(tcsetattr(fileDescriptor, TCSANOW, &options)<0){	//set new options
 	std::cerr << "Cannot set attributes." << std::endl;
-	return 0;
+	return -1;
 	} else return fileDescriptor;								//return happiness
 
 }
