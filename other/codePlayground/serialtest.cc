@@ -39,8 +39,8 @@ int fd = -1;						//global to hold the file descriptor
 
 int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 
-
-	fd = open(path,O_NDELAY | O_RDWR); 
+	//trying some extra flags I foun
+	fd = open(path,O_NDELAY | O_RDWR | O_NOCTTY | O_NONBLOCK); 
 	if (fd<0){
 	   cerr<<"Opening "<< path << " failed"<<endl;
 	   return 0;
@@ -105,8 +105,8 @@ int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 
 
 
-	struct termios options;		//create a structure to hold serial info
-	tcgetattr(fd, &options);		//get current options for port
+	struct termios options;				//create a structure to hold serial info
+	tcgetattr(fd, &options);			//get current options for port
 
 	if(cfsetispeed(&options, baudFloat)<0){		//set input baud
 		cerr << "Cannot set the input baud to " << baudInt << endl;
@@ -117,12 +117,15 @@ int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 		return 0;
 	}
 
-//	options.c_cflags |= (CLOCAL | CREAD);	//set the flags
-//	options.c_cflags &= ~PARENB			//*These options say no parity bit
-//	options.c_cflags &= ~CSTOPB			//*Not sure how to use them
-//	options.c_cflags &= ~CSIZE;			//*
-//	options.c_cflags |= CS8;				//*
+//	options.c_cflags |= (CLOCAL | CREAD);		//set the flags
+//	options.c_cflags &= ~PARENB;			//*These options say no parity bit
+//	options.c_cflags &= ~CSTOPB;			//*Not sure how to use them
+//	options.c_cflags &= ~CSIZE;			//*They weren't working,
+//	options.c_cflags |= CS8;			//*either
 
+
+	cfmakeraw(&options);
+	tcflush(fd, TCIOFLUSH);
 
 	if(tcsetattr(fd, TCSANOW, &options)<0){	//set new options
 	cerr << "Cannot set attributes." << endl;
