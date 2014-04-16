@@ -145,7 +145,7 @@ void Data::readLUX()
 	}
 }
 
-void Data::setupSD()
+void Data::saveData()
 {
 	if(SD.begin(10)
 	{
@@ -165,10 +165,6 @@ void Data::setupSD()
 			}
 		}
 	}
-}
-
-void Data::saveData()
-{
 	for(int i = 0;i < 10;i++)
 	{
 		dataFile.print(dataArray[i]);
