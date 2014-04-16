@@ -31,16 +31,25 @@ class Borp
 
 		//constuctor initializes the Serial communication.
 		//If we use Dues, this can be changed to accept the pin (i.e. Serial2)
-		Borp(int baud);
+		Borp();
 
 		//This function takes an array (from the data class) and sends it
-		void phoneHome(unsigned char * data);
+		void phoneHome( int* dataArray,int size);
+
+		//Checks the serial buffer, returns commands as ints
+		int listen();
 
 		//This is used to test the transmission
 		void testTransmission(int num);
 	private:
-		int pin;					//Stores the Serial pin (i.e. tx3)
-		int baud;					//Stores the baud rate.
+		int pin;			//Stores the Serial pin (i.e. tx3)
+		int baud;			//Stores the baud rate.
+		bool serialOpen;		//whether connected to master
+
+
+		//compares the two arrays given to it
+		//returns 0 if different, 1 if the same
+		bool compareArrays(char * array1, char* array2, int size);
 };
 
 #endif			//Ends check for included libraries

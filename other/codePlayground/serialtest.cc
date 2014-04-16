@@ -175,7 +175,7 @@ void useThatSerial(){
 	for(;;){
 		while(read(fd, outBuff,1) > 0){	//read 1 character into the buffer
 			//log what it is reading from the device
-				ofstream myfile("logRead.txt",std::ofstream::out | std::ofstream::app);
+				ofstream myfile(timeStream.str().c_str(),std::ofstream::out | std::ofstream::app);
 			//write it to a file
 				myfile << outBuff[0];
 			//print that character to stdout

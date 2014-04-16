@@ -23,11 +23,6 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
- 
-
-
-
-
 //Constructor for Borp declares what pin the serial connection to the radio is 
 //and and the baud rate to be used in transmission.
 //Baud rate should be the lowest baud rate required to transmit the amount of 
@@ -36,23 +31,68 @@
 
 #include "Borp.h"
 #include "Arduino.h"
-#include "MD5.h"
+//#include "MD5.h"
 
-Borp::Borp(int baud)		
-{
-	Serial.begin(baud);	
+Borp::Borp(){
+	Serial.begin(115200);
+	serialOpen = 1;
 }
 
-void Borp::phoneHome(unsigned char * data)			//takes an array
-{
-	//Calculate MD5 Hash, then broadcast the hash as well as the data itself.
-	unsigned char * hash = MD5::make_hash((char*)data);
-	Serial.write((char*)hash);
 
-	Serial.write(data,sizeof(data));
+//Prints the int array as ascii to the serial ports
+void Borp::phoneHome( int* dataArray,int size){
+
+	if(serialOpen){
+		for(int i = 0; i < size; i++){
+			Serial.print(dataArray[i]);
+		}
+		Serial.print('\n');
+	}
 }
 
-void Borp::testTransmission(int num)
-{
-	Serial.println(num);
+bool Borp::compareArrays(char * array1, char* array2, int size){
+	for(int i = 0; i < size; i++){
+		if(array1[i] != array2[i]){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int Borp::listen(){
+	//This will handle special flags sent by the master	
+	//It will probably have to handle parsing char arrays
+	int flag = -1;
+	//special commands from the master, can be safely changed
+	//The commands are lengthy on purpose (accident prevention).
+	const char cutDown[] = "cut down the balloon";
+	const char killRadio[] = "kill the communications";
+	const char powerSave[] = "enter powersave mode";
+
+
+	//check to see if there is something from the master; -1 == nothing
+	if(Serial.available() == 0){
+		return -1;
+	}
+
+	//Throw together a string of what is sent from the master
+	//Max size is 30 characters
+	//We fill the rest with null
+	char input[30];
+	int index = 0;
+	while(Serial.available()){
+		Serial.readBytes(&input[index],1);
+		index++;
+	}
+
+	for(;index < 30; index++){
+		input[index] = '\0';
+	}
+
+	delete[] &index;
+	//scan through and compare the chars of input and keyphrases
+
+
+
+	return -2;
 }
