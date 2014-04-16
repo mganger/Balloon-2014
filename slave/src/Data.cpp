@@ -35,7 +35,19 @@ Intersema::BaroPressure_MS5607B baro(true);
 //Constructor, reset, init
 
 Data::Data(){
-	//constructor to initialize to 4294967295
+//Setup GPS 
+	SoftwareSerial mySerial(3,2);
+	Adafruit_GPS GSP(&mySerial);
+	#define GPSECHO true
+	boolean usingInterrupt = false;
+	void useInterrupt(boolean);
+
+	GPS.begin(9600);
+	GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+	GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
+	GPS.sendCommand(PGCMD_ANTENNA);
+
+//constructor to initialize to 4294967295
 	reset();
 }
 
@@ -161,13 +173,14 @@ void Data::saveData()
 	{
 		for(int i = 0; i < 1000000; i++)
 		{
-			char filename[] = "LOGGER000000.txt";
-			filename[6] = i/100000 + '0';
-        		filename[7] = i/10000 + '0';
-        		filename[8] = i/1000 + '0';
-        		filename[9] = i/100 + '0';
-        		filename[10] = i/10 + '0';
-        		filename[11] = i%10 + '0';
+			char filename[] = "LOGGER0000000.txt";
+			filename[6] = i/1000000 + '0';
+			filename[7] = i/100000 + '0';
+        		filename[8] = i/10000 + '0';
+        		filename[9] = i/1000 + '0';
+        		filename[10] = i/100 + '0';
+        		filename[11] = i/10 + '0';
+        		filename[12] = i%10 + '0';
 			if(!SD.exists(filename))
 			{
 				dataFile = SD.open(filename, FILE_WRITE);
@@ -182,6 +195,11 @@ void Data::saveData()
 	}
 	dataFile.print("\n");
 	dataFile.flush();
+}
+
+void Data::readGPS()
+{
+
 }
 
 unsigned long int Data::timeSince()
