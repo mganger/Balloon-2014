@@ -37,12 +37,12 @@ void setup(){
 
 	for(;;){
 
-		while(Serial.available() == 0){}
+		//This is how we read from the serial buffer
+		int flag = radio.listen();
+		unsigned long int hey = flag;
+		if (flag != -1) radio.phoneHome(&hey, 1);
 
-		delay(2);
 
-		unsigned long int flag = radio.listen();
-		radio.phoneHome(&flag, 1);
 
 		
 

@@ -64,7 +64,7 @@ int Borp::listen(){
 	if(Serial.available() == 0){
 		return -1;
 	}
-
+	delay(2);			//For the buffer to fill up
 	//Throw together a string of what is sent from the master
 	//Max size is 30 characters
 	//We fill the rest with null
@@ -87,6 +87,7 @@ int Borp::listen(){
 	char cutDown[] = "cut down the balloon";
 	char killRadio[] = "kill the communications";
 	char powerSave[] = "enter powersave mode";
+	char request[] = "request ";
 
 	//scan through and compare the chars of input and keyphrases
 	//cutdown = 1
@@ -95,6 +96,11 @@ int Borp::listen(){
 	if(compareArrays(input,cutDown, sizeof(cutDown)/sizeof(cutDown[0]))) return 1;
 	if(compareArrays(input,killRadio, sizeof(killRadio)/sizeof(killRadio[0]))) return 2;
 	if(compareArrays(input,powerSave, sizeof(powerSave)/sizeof(powerSave[0]))) return 3;
+
+	//check for the request
+	if(compareArrays(input,request,8)){
+		return atoi(&input[8]);
+	}
 	return 0;
 
 	delete[] &cutDown;
