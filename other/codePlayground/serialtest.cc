@@ -20,33 +20,40 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
-#include <fcntl.h>					//required to open and create files
-#include <unistd.h>					//required to close the file and sleep
+#include <fcntl.h>			//required to open and create files
+#include <unistd.h>			//required to close the file and sleep
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/poll.h>
 #include <ctime>
 #include <sstream>
+#include <sys/types.h>
+#include <sys/stat.h>
 
-#define PERIOD 1					//Change if stuff is getting cut off
-#define SENDNEW 0					//0 to skip \n and \r, 1 to send them
-								//It will still log them, though (this
-								//is a good thing)
+#define PERIOD 1			//Change if stuff is getting cut off
+#define SENDNEW 0			//0 to skip \n and \r, 1 to send them
+					//It will still log them, though (this
+					//is a good thing)
 
 using namespace std;
-int fd = -1;						//global to hold the file descriptor
+int fd = -1;				//global to hold the file descriptor
 
 
-int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 
-	//trying some extra flags I foun
+//see $man termios for more information on this
+int setupSerial(unsigned int baudInt, const char* path){	
+
+	//Open the device, set flags, return file descriptor
 	fd = open(path,O_NDELAY | O_RDWR | O_NOCTTY | O_NONBLOCK); 
+
+	//If the device cannot be opened, fd = -1
 	if (fd<0){
 	   cerr<<"Opening "<< path << " failed"<<endl;
 	   return 0;
 	}
 
-	long baudFloat;
+	//change the ints to bauds (long numbers that are't intuitive)
+	long baudLong;
 	switch (baudInt)
 	{
 		case 0:
@@ -54,83 +61,85 @@ int setupSerial(unsigned int baudInt, const char* path){		//see $man termios
 			cerr << baudInt << " is an invalid baud rate" << endl;
 			break;
 		case 115200:
-			baudFloat = B115200;
+			baudLong = B115200;
 			break;
 		case 38400:
-			baudFloat = B38400;
+			baudLong = B38400;
 			break;
 		case 19200:
-			baudFloat  = B19200;
+			baudLong  = B19200;
 			break;
 		case 9600:
-			baudFloat  = B9600;
+			baudLong  = B9600;
 			break;
 		case 4800:
-			baudFloat  = B4800;
+			baudLong  = B4800;
 			break;
 		case 2400:
-			baudFloat  = B2400;
+			baudLong  = B2400;
 			break;
 		case 1800:
-			baudFloat  = B1800;
+			baudLong  = B1800;
 			break;
 		case 1200:
-			baudFloat  = B1200;
+			baudLong  = B1200;
 			break;
 		case 600:
-			baudFloat  = B600;
+			baudLong  = B600;
 			break;
 		case 300:
-			baudFloat  = B300;
+			baudLong  = B300;
 			break;
 		case 200:
-			baudFloat  = B200;
+			baudLong  = B200;
 			break;
 		case 150:
-			baudFloat  = B150;
+			baudLong  = B150;
 			break;
 		case 134:
-			baudFloat  = B134;
+			baudLong  = B134;
 			break;
 		case 110:
-			baudFloat  = B110;
+			baudLong  = B110;
 			break;
 		case 75:
-			baudFloat  = B75;
+			baudLong  = B75;
 			break;
 		case 50:
-			baudFloat  = B50;
+			baudLong  = B50;
 			break;
 	}
 
 
 
-	struct termios options;				//create a structure to hold serial info
-	tcgetattr(fd, &options);			//get current options for port
+	struct termios options;			//create a structure to hold serial info
+	tcgetattr(fd, &options);		//get current options for port
 
-	if(cfsetispeed(&options, baudFloat)<0){		//set input baud
+	//set input and output baud
+	if(cfsetispeed(&options, baudLong)<0){
 		cerr << "Cannot set the input baud to " << baudInt << endl;
 		return 0;
 	}
-	if(cfsetospeed(&options, baudFloat)<0){		//set output baud
+	if(cfsetospeed(&options, baudLong)<0){
 		cerr << "Cannot set the output baud to " << baudInt << endl;
 		return 0;
 	}
 
-//	options.c_cflags |= (CLOCAL | CREAD);		//set the flags
-//	options.c_cflags &= ~PARENB;			//*These options say no parity bit
-//	options.c_cflags &= ~CSTOPB;			//*Not sure how to use them
-//	options.c_cflags &= ~CSIZE;			//*They weren't working,
-//	options.c_cflags |= CS8;			//*either
+//	options.c_cflags |= (CLOCAL | CREAD);	//set the flags
+//	options.c_cflags &= ~PARENB;		//*These options say no parity bit
+//	options.c_cflags &= ~CSTOPB;		//*Not sure how to use them
+//	options.c_cflags &= ~CSIZE;		//*They weren't working,
+//	options.c_cflags |= CS8;		//*either
 
 
 	cfmakeraw(&options);
 	tcflush(fd, TCIOFLUSH);
 
-	if(tcsetattr(fd, TCSANOW, &options)<0){	//set new options
+	//set the new options for the device (i.e. baud)
+	if(tcsetattr(fd, TCSANOW, &options)<0){
 	cerr << "Cannot set attributes." << endl;
 	return 0;
-	} else return 1;					//return happiness
+	} else return 1;			//return happiness
 }
 
 void useThatSerial(){
@@ -148,28 +157,28 @@ void useThatSerial(){
 	timeStream << 1+ltm->tm_mon <<"-"<< ltm->tm_mday <<"-"<< 1900+ltm->tm_year;
 
 
-	//log the time to the log files
+	//create a string holding the current time
 	ofstream writefile("logWrite.txt",std::ofstream::out | std::ofstream::app);
 	writefile << "---------------------------------------" << endl;
 	writefile << timeStream.str();
 	writefile << endl << endl;
 	writefile.close();
 
+	//Add log suffix to the timestamped file
 	timeStream << "_log.txt";
 
 	ofstream readfile(timeStream.str().c_str(),std::ofstream::out | std::ofstream::app);
-//	readfile << timeStream.str();
 	readfile.close();
 	//timestamp----------------------------------------------------------------
 
 
-	struct pollfd fds;				//necessary so that stdin does not
-	fds.fd = 0;					//block our program
-	fds.events = POLLIN;				//
+	struct pollfd fds;			//necessary so that stdin does not
+	fds.fd = 0;				//block our program
+	fds.events = POLLIN;
 
 
-	char outBuff[2];				//create read buffer
-	char inBuff[2];					//create write buffer
+	char outBuff[2];			//create read buffer
+	char inBuff[2];				//create write buffer
 
 	//loop forever!!!!!
 	for(;;){
@@ -202,15 +211,12 @@ void useThatSerial(){
 			myfile.close();
 			usleep(PERIOD);
 		}
-		usleep(10000);				//so we don't use up all the cpu
+		usleep(1000);			//so we don't use up all the cpu
 	}
 }
 
-void time(ostringstream timeStream){			//reads time into a string
 
-}
-
-
+//takes baud and device arguments (can take multiple devices)
 int main(int argc, char* argv[]){
 
 	for(int i = 2; i <= argc; i++){
