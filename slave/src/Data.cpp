@@ -25,6 +25,12 @@
 #include <SPI.h>		//LIbrary for SPI communicatinos
 #include <SD.h>			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
+#include "Adafruit_Sensor.h"	//Library for Adafruit sensors
+#include "Adafruit_TSL2561_U.h"	//Library for Lux Sensor
+
+//Global variable necessary for Lux Calculations
+Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
+
 
 //******************************************************************************
 //Constructor, reset, init
@@ -116,6 +122,30 @@ void Data::readAlti(){
 void Data::readPres(){
 	baro.init();
 	pres = baro.getPressure();
+}
+
+void Data::setupLUX()
+{
+//	sensor_t sensor;		//Used to display sensor details
+//	tsl.getSensor(&sensor);		//Possibly not needed
+	tsl.enableAutoRange(true);
+	tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_13MS);
+	if(!tsl.begin())
+	{
+		Serial.print("Lux Sensor is broken or not connected");
+	}
+	tsl.enableAutoRange(true);
+	tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_13MS);
+}
+
+void Data::readLUX()
+{
+	sensors_event_t event;
+	tsl.getEvent(&event);
+	if(event.light)
+	{
+		LUX = event.light;
+	}
 }
 
 //******************************************************************************
