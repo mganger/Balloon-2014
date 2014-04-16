@@ -35,6 +35,8 @@ void setup(){
 	Borp radio;
 	Data data;
 
+data.readSensorData();
+
 	for(;;){
 
 		//This is how we read from the serial buffer
