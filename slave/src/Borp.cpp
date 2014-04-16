@@ -60,16 +60,6 @@ bool Borp::compareArrays(char * array1, char* array2, int size){
 }
 
 int Borp::listen(){
-	//This will handle special flags sent by the master	
-	//It will probably have to handle parsing char arrays
-	int flag = -1;
-	//special commands from the master, can be safely changed
-	//The commands are lengthy on purpose (accident prevention).
-	const char cutDown[] = "cut down the balloon";
-	const char killRadio[] = "kill the communications";
-	const char powerSave[] = "enter powersave mode";
-
-
 	//check to see if there is something from the master; -1 == nothing
 	if(Serial.available() == 0){
 		return -1;
@@ -88,11 +78,26 @@ int Borp::listen(){
 	for(;index < 30; index++){
 		input[index] = '\0';
 	}
+	delete[] &index;			//to keep memory open
 
-	delete[] &index;
+
+
+	//Special commands from the master, can be safely changed
+	//The commands are lengthy on purpose (accident prevention).
+	char cutDown[] = "cut down the balloon";
+	char killRadio[] = "kill the communications";
+	char powerSave[] = "enter powersave mode";
+
 	//scan through and compare the chars of input and keyphrases
+	//cutdown = 1
+	//killRadio = 2
+	//powerSave = 3
+	if(compareArrays(input,cutDown, sizeof(cutDown)/sizeof(cutDown[0]))) return 1;
+	if(compareArrays(input,killRadio, sizeof(killRadio)/sizeof(killRadio[0]))) return 2;
+	if(compareArrays(input,powerSave, sizeof(powerSave)/sizeof(powerSave[0]))) return 3;
+	return 0;
 
-
-
-	return -2;
+	delete[] &cutDown;
+	delete[] &killRadio;
+	delete[] &powerSave;
 }
