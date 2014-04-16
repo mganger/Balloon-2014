@@ -147,18 +147,23 @@ void Data::readLUX()
 
 void DataL::setupSD()
 {
-	while(!SD.begin(10));
-	char filename[] = "LOGGER000000.txt";
-	 filename[6] = i/100000 + '0';
-         filename[7] = i/10000 + '0';
-         filename[8] = i/1000 + '0';
-         filename[9] = i/100 + '0';
-         filename[10] = i/10 + '0';
-         filename[11] = i%10 + '0';
-	if(!SD.exists(filename))
+	if(SD.begin(10)
 	{
-		dataFile = SD.open(filename, FILE_WRITE);
-		break;
+		for(int i = 0; i < 1000000; i++)
+		{
+			char filename[] = "LOGGER000000.txt";
+			filename[6] = i/100000 + '0';
+        		filename[7] = i/10000 + '0';
+        		filename[8] = i/1000 + '0';
+        		filename[9] = i/100 + '0';
+        		filename[10] = i/10 + '0';
+        		filename[11] = i%10 + '0';
+			if(!SD.exists(filename))
+			{
+				dataFile = SD.open(filename, FILE_WRITE);
+				break;
+			}
+		}
 	}
 }
 
@@ -169,7 +174,7 @@ void Data::saveData()
 		dataFile.print(dataArray[i]);
 		dataFile.print(",");
 	}
-	dataFile.println();
+	dataFile.print("\n");
 	dataFile.flush();
 }
 
