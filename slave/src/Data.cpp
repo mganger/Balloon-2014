@@ -21,9 +21,9 @@
 
 #include "Data.h"
 #include "Arduino.h"
-#include <Wire.h>		//Library for I2C communications
-#include <SPI.h>		//LIbrary for SPI communicatinos
-#include <SD.h>			//Library for SD  communications
+#include "Wire.h"		//Library for I2C communications
+#include "SPI.h"		//LIbrary for SPI communicatinos
+#include "SD.h"			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
 #include "Adafruit_TSL2561_U.h"	//Library for Lux Sensor
