@@ -21,16 +21,16 @@
 
 #include "Data.h"
 #include "Arduino.h"
-#include "Wire.h"		//Library for I2C communications
-#include "SPI.h"		//LIbrary for SPI communicatinos
-#include "SD.h"			//Library for SD  communications
+#include <Wire.h>		//Library for I2C communications
+#include <SPI.h>		//LIbrary for SPI communicatinos
+#include <SD.h>			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
 #include "Adafruit_TSL2561_U.h"	//Library for Lux Sensor
 
 //Global variable necessary for Lux Calculations
 Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
-
+Intersema::BaroPressure_MS5607B baro(true);
 
 //******************************************************************************
 //Constructor, reset, init
@@ -61,17 +61,15 @@ void Data::reset(){
 void Data::returnData(int * dataArray){
 
 	dataArray[0] = index;
-	dataArray[1] = time;
+	dataArray[1] = timeCollect;
 	dataArray[2] = temp;
 	dataArray[3] = alti;
 	dataArray[4] = pres;
 	dataArray[5] = humi;
 	dataArray[6] = CO2;
-	dataArray[7] = CO;
-	dataArray[8] = N2O;
-	dataArray[9] = UV;
-	dataArray[10] = O3;
-	dataArray[11] = IR;
+	dataArray[7] = UV;
+	dataArray[8] = O3;
+	dataArray[9] = IR;
 }
 
 	//This function does not actually use the variable int index. What does this function do differently than returnData(int * dataArray) ?
