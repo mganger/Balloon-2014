@@ -26,6 +26,7 @@
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
 #include "Adafruit_TSL2561_U.h"	//Library for Lux Sensor
+#include "Adafruit_GPS.h"	//Library for GPS
 
 //Global variable necessary for Lux Calculations
 Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
