@@ -145,7 +145,7 @@ void Data::readLUX()
 	}
 }
 
-void DataL::setupSD()
+void Data::setupSD()
 {
 	if(SD.begin(10)
 	{
