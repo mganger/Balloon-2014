@@ -42,7 +42,6 @@ class Borp
 		//This is used to test the transmission
 		void testTransmission(int num);
 
-		bool compareArrays(char * array1, char* array2, int size);
 	private:
 		int pin;			//Stores the Serial pin (i.e. tx3)
 		int baud;			//Stores the baud rate.
@@ -51,7 +50,7 @@ class Borp
 
 		//compares the two arrays given to it
 		//returns 0 if different, 1 if the same
-
+		bool compareArrays(char * array1, char* array2, int size);
 };
 
 #endif			//Ends check for included libraries
