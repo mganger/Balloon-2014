@@ -34,13 +34,10 @@ class Borp
 		Borp();
 
 		//This function takes an array (from the data class) and sends it
-		void phoneHome( int* dataArray,int size);
+		void phoneHome(unsigned long int* dataArray,int size);
 
 		//Checks the serial buffer, returns commands as ints
 		int listen();
-
-		//This is used to test the transmission
-		void testTransmission(int num);
 
 	private:
 		int pin;			//Stores the Serial pin (i.e. tx3)

@@ -40,7 +40,7 @@ Borp::Borp(){
 
 
 //Prints the int array as ascii to the serial ports
-void Borp::phoneHome( int* dataArray,int size){
+void Borp::phoneHome(unsigned long int* dataArray,int size){
 
 	if(serialOpen){
 		for(int i = 0; i < size; i++){
