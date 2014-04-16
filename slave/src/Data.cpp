@@ -37,16 +37,17 @@ Intersema::BaroPressure_MS5607B baro(true);
 
 Data::Data(){
 //Setup GPS 
-	SoftwareSerial mySerial(3,2);
-	Adafruit_GPS GSP(&mySerial);
-	#define GPSECHO true
-	boolean usingInterrupt = false;
-	void useInterrupt(boolean);
-
-	GPS.begin(9600);
-	GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-	GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
-	GPS.sendCommand(PGCMD_ANTENNA);
+//	SoftwareSerial mySerial(3,2);
+//	Adafruit_GPS GSP(&mySerial);
+//	#define GPSECHO true
+//	boolean usingInterrupt = false;
+//	void useInterrupt(boolean);
+//
+//	Adafruit_GPS GPS(&mySerial);
+//	GPS.begin(9600);
+//	GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+//	GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
+//	GPS.sendCommand(PGCMD_ANTENNA);
 
 //constructor to initialize to 4294967295
 	reset();
@@ -97,7 +98,7 @@ void Data::readSensorData()
 {
 	timeCollect = millis();
 	readLUX();
-	readALti();
+	readAlti();
 	readPres();
 	readUV();
 	readIR();
@@ -110,6 +111,11 @@ void Data::readSensorData()
 void Data::readCO2()
 {
 	CO2 = analogRead(0);
+}
+
+void Data::readIR()
+{
+	IR = 345;
 }
 
 void Data::readTemp()

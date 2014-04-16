@@ -18,7 +18,6 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define BAUD 9600
 #define PERIOD 1000/FREQ			//period in milliseconds
 #define FREQ 10					//frequency of readings
 #define SIZE 14					//keep updated with actual number
@@ -31,26 +30,27 @@
 
 
 void setup(){
-	//Constuct data and radio (at 115200 baud
+	//Constuct data and radio (at 115200 baud)
 	Borp radio;
 	Data data;
-
-data.readSensorData();
-data.saveData();
 
 	for(;;){
 
 		//This is how we read from the serial buffer
-		int flag = radio.listen();
-		unsigned long int hey = flag;
-		if (flag != -1) radio.phoneHome(&hey, 1);
+	//	int flag = radio.listen();
+
+		data.readSensorData();
+//		data.saveData();
+
+		unsigned long int array[11];
+		data.returnData(array);
+		radio.phoneHome(array,11);
 
 
-
-		
+		delay(1000);		
 
 		//This just waits until the time to the last collect is equal to PERIOD
-		while((millis() - point.timeSince())<PERIOD){}
+//		while((millis() - data.timeSince())<PERIOD){}
 	}
 }
 
