@@ -38,6 +38,12 @@ void setup(){
 		int data[12]= {1,2,3,4,5,6,7,8,9,10,11,12};
 		radio.phoneHome(data, sizeof(data)/sizeof(data[0]));
 
+		char a1[] = "hey";
+		char a2[] = "hey";
+		char a3[] = "hey1";
+
+		Serial.println(radio.compareArrays(a1,a2,3));
+		Serial.println(radio.compareArrays(a1,a3,4));
 
 		Serial.println("Line end");
 		//This just waits until the time to the last collect is equal to PERIOD
@@ -45,7 +51,7 @@ void setup(){
 	}
 
 //If we want to try this for kicks and giggles:
-//	loop();
+	loop();
 }
 
 //Leave loop empty; let's try using the setup as a main function (or better,
