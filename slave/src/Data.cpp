@@ -17,30 +17,35 @@
  * You should have received a copy of the GNU General Public License
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
+#define INIT 4294967295
 
 #include "Data.h"
 #include "Arduino.h"
+#include <Wire.h>		//Library for I2C communications
+#include <SPI.h>		//LIbrary for SPI communicatinos
+#include <SD.h>			//Library for SD  communications
+#include "IntersemaBaro.h"	//Library for altimeter data
 
 //******************************************************************************
 //Constructor, reset, init
 
 Data::Data(){
-	//constructor to initialize to -1
+	//constructor to initialize to 4294967295
 	reset();
 }
 
 void Data::reset(){
 	//Set the readings to sentinal value
-	temp = -1;
-	alti = -1;
-	pres = -1;
-	humi = -1;
-	CO2 = -1;
-	CO = -1;
-	N2O = -1;
-	UV = -1;
-	O3 = -1;
-	IR = -1;
+	temp = INIT;
+	alti = INIT;
+	pres = INIT;
+	humi = INIT;
+	CO2 = INIT;
+	CO = INIT;
+	N2O = INIT;
+	UV = INIT;
+	O3 = INIT;
+	IR = INIT;
 
 	index++;						//increment the index by 1 on
 }
