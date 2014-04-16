@@ -81,9 +81,18 @@ void Data::returnData(int * dataArray, int index){
 //******************************************************************************
 //Functions for reading the data
 
-void Data::readSensorData(){
+void Data::readSensorData()
+{
 	timeCollect = millis();
+	readLUX();
+	readALti();
+	readPres();
+	readUV();
+	readIR();
+	readHumi();
+	readCO2();
 	readTemp();
+	readO3();
 }
 
 void Data::readCO2()
@@ -175,9 +184,7 @@ void Data::saveData()
 	dataFile.flush();
 }
 
-//******************************************************************************
-//Getters
-
-unsigned long int Data::timeSince(){
+unsigned long int Data::timeSince()
+{
 	return timeCollect;
 }
