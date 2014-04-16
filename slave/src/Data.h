@@ -41,8 +41,8 @@ class Data {
 
 		unsigned long int timeCollect;	//milliseconds
 
-		unsigned long int pres, alti, IR, UV;			//Private variables to hold sensor
-									//values for different measurements
+		unsigned long int pres, alti, LUX, UV, IR;		//Private variables to hold sensor
+		unsigned long int temp, humi, CO2, O3;			//values for different measurements
 
 		unsigned long int index;		//Holds current collection index
 
@@ -52,7 +52,7 @@ class Data {
 		void readUV();				//function to only call the needed
 		void readIR();				//read****() for their project
 		void readCO2();
-		void read Temp();
+		void readTemp();
 		void readO3();
 		void readUV();
 		

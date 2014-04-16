@@ -41,11 +41,10 @@ void Data::reset(){
 	pres = INIT;
 	humi = INIT;
 	CO2 = INIT;
-	CO = INIT;
-	N2O = INIT;
 	UV = INIT;
 	O3 = INIT;
 	IR = INIT;
+	LUX = INIT;
 
 	index++;						//increment the index by 1 on
 }
@@ -84,9 +83,29 @@ void Data::readSensorData(){
 	readTemp();
 }
 
+void Data::readCO2()
+{
+	CO2 = analogRead(0);
+}
+
 void Data::readTemp()
 {
-	temp = analogRead(sensorPin[]);
+	temp = analogRead(1);
+}
+
+void Data::readHumi()
+{
+	humi = analogRead(2);
+}
+
+void Data::readUV()
+{
+	UV = analogRead(2);
+}
+
+void Data::readO3()
+{
+	O3 = analogRead(3);
 }
 
 void Data::readAlti(){
@@ -97,11 +116,6 @@ void Data::readAlti(){
 void Data::readPres(){
 	baro.init();
 	pres = baro.getPressure();
-}
-
-void Data::readCO2()
-{
-	CO2 = analogRead(sensorPin[]);
 }
 
 //******************************************************************************
