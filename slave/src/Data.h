@@ -35,7 +35,7 @@ class Data {
 		void returnData(int * dataArray, int index);	//newest or specified index
 
 		void saveData();				//writes to the SD card
-		void readSensorData();			//reads from the sensors
+		void readSensorData();				//reads from the sensors
 
 	private:
 
@@ -49,16 +49,16 @@ class Data {
 		//Global variable necessary for Lux Calculations 
 		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
 
-		void readLUX();				//these functions should be private
-		void readAlti();			//and called by readSensorData()
-		void readPres();			//Each group should customize that
-		void readUV();				//function to only call the needed
-		void readIR();				//read****() for their project
+		void setupLUX();
+		void readLUX();	
+		void readAlti();
+		void readPres();
+		void readUV();	
+		void readIR();	
 		void readCO2();
 		void readTemp();
 		void readO3();
 		void readUV();
-		
 
 		void reset();					//resets all readings to null
 };
