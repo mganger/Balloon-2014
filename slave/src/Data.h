@@ -27,49 +27,24 @@ class Data {
 	public:
 		Data();				//Constructor
 
-		union{				//union to allow the data array to be accessed as a char
-			int dataArray[10];
-			unsigned char packet;
-		} dataUnion;
+		unsigned long int dataArray[10];
 
 		unsigned long int timeSince();	//returns time since last collect
 
-		unsigned char * returnData(int* dataArray);	//returns a pointer to an array of
+		void returnData(int* dataArray);		//returns a pointer to an array of
 		void returnData(int * dataArray, int index);	//newest or specified index
 
 		void saveData();				//writes to the SD card
 		void readSensorData();			//reads from the sensors
 
-
-		void setAltiPin(int pin);		//Public methods to set 
-		void setHumiPin(int pin);		//private variables
-		void setPresPin(int pin);		//They only accept valid pins 0-64
-		void setTempPin(int pin);
-		void setCO2Pin(int pin);
-		void setN2OPin(int pin);
-		void setCOPin(int pin);
-		void setIRPin(int pin);
-		void setUVPin(int pin);
-		void setO3Pin(int pin);
-		
-		void initPins();				//sets pinMode to input for pins
-
 	private:
 
-		union{
-			unsigned long int timeCollect;	//milliseconds
-			int timeArray[2];				//to make concatenation easy
-		};
+		unsigned long int timeCollect;	//milliseconds
 
 		int temp, pres, alti, humi;		//Private variables to hold sensor
 		int CO2, CO, N2O, UV, O3, IR;		//values for different measurements
 
-		int sensorPin[30];				//Array to hold the sensor pins
-									//Shrink once # of pins is certain
-		union {
-			unsigned long int index;		//Holds current collection index
-			int indexArray[2];		//<----So we can throw it around easily
-		};
+		unsigned long int index;		//Holds current collection index
 
 		void readTemp();			//these functions should be private
 		void readAlti();			//and called by readSensorData()

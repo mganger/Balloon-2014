@@ -50,40 +50,23 @@ void Data::reset(){
 	index++;						//increment the index by 1 on
 }
 
-void Data::initPins(){
-	//loop through the pins in the array
-	for(int i = 0; i < sizeof(sensorPin); i++){
-		//only set pinMode if they are positive (i.e. sentinel value is < 1) 
-		if(sensorPin[i] > 0){
-			pinMode(sensorPin[i],INPUT);
-		}
-	}
-}
-
 //******************************************************************************
 //Functions to return data as array
 
-unsigned char * Data::returnData(int * dataArray){
+void Data::returnData(int * dataArray){
 
-	//updates the dataUnion
-
-	dataUnion.dataArray[0] = indexArray[0];
-	dataUnion.dataArray[1] = indexArray[1];
-	dataUnion.dataArray[2] = timeArray[0];
-	dataUnion.dataArray[3] = timeArray[1];
-	dataUnion.dataArray[4] = temp;
-	dataUnion.dataArray[5] = alti;
-	dataUnion.dataArray[6] = pres;
-	dataUnion.dataArray[7] = humi;
-	dataUnion.dataArray[8] = CO2;
-	dataUnion.dataArray[9] = CO;
-	dataUnion.dataArray[10] = N2O;
-	dataUnion.dataArray[11] = UV;
-	dataUnion.dataArray[12] = O3;
-	dataUnion.dataArray[13] = IR;
-
-	return &dataUnion.packet;
-
+	dataArray[0] = index;
+	dataArray[1] = time;
+	dataArray[2] = temp;
+	dataArray[3] = alti;
+	dataArray[4] = pres;
+	dataArray[5] = humi;
+	dataArray[6] = CO2;
+	dataArray[7] = CO;
+	dataArray[8] = N2O;
+	dataArray[9] = UV;
+	dataArray[10] = O3;
+	dataArray[11] = IR;
 }
 
 	//This function does not actually use the variable int index. What does this function do differently than returnData(int * dataArray) ?
