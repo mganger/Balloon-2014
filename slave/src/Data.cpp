@@ -50,6 +50,7 @@ Data::Data(){
 //	GPS.sendCommand(PGCMD_ANTENNA);
 
 //constructor to initialize to 4294967295
+	index = 0;
 	reset();
 }
 
@@ -65,7 +66,7 @@ void Data::reset(){
 	IR = INIT;
 	LUX = INIT;
 
-	index++;						//increment the index by 1 on
+	index++;		//increment the index by 1 on reset
 }
 
 //******************************************************************************
