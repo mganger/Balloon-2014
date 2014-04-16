@@ -41,7 +41,7 @@ void setup(){
 
 		delay(2);
 
-		int flag = radio.listen();
+		unsigned long int flag = radio.listen();
 		radio.phoneHome(&flag, 1);
 
 		
