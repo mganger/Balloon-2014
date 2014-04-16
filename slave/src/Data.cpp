@@ -84,54 +84,25 @@ void Data::readSensorData(){
 	readTemp();
 }
 
-void Data::readTemp(){
-	temp = analogRead(sensorPin[0]);
+void Data::readTemp()
+{
+	temp = analogRead(sensorPin[]);
 }
 
 void Data::readAlti(){
-	alti = analogRead(sensorPin[1]);
-	//read from the sensor and write to **** variable
-}
-
-void Data::readHumi(){
-	humi = analogRead(sensorPin[7]);
-	//read from the sensor and write to **** variable
+	baro.init();
+	alti = baro.getHeightCentiMeters();
 }
 
 void Data::readPres(){
-	pres = analogRead(sensorPin[2]);
-	//read from the sensor and write to **** variable
+	baro.init();
+	pres = baro.getPressure();
 }
 
-void Data::readCO2(){
-	CO2 = analogRead(sensorPin[3]);
-	//read from the sensor and write to **** variable
+void Data::readCO2()
+{
+	CO2 = analogRead(sensorPin[]);
 }
-
-void Data::readN2O(){
-	N2O = analogRead(sensorPin[5]);
-	//read from the sensor and write to **** variable
-}
-
-void Data::readCO(){
-	CO = analogRead(sensorPin[4]);
-	//read from the sensor and write to **** variable
-}
-
-void Data::readIR(){
-	IR = analogRead(sensorPin[6]);
-	//read from the sensor and write to **** variable
-}
-
-void Data::readUV(){
-	UV = analogRead(sensorPin[8]);
-	//read from the sensor and write to **** variable
-}
-
-void Data::readO3(){
-	//read from the sensor and write to **** variable
-}
-
 
 //******************************************************************************
 //Getters
