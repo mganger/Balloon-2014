@@ -70,7 +70,7 @@ void Data::reset(){
 //******************************************************************************
 //Functions to return data as array
 
-void Data::returnData(int * dataArray){
+void Data::returnData(unsigned long int * dataArray){
 
 	dataArray[0] = index;
 	dataArray[1] = timeCollect;
@@ -82,13 +82,12 @@ void Data::returnData(int * dataArray){
 	dataArray[7] = UV;
 	dataArray[8] = O3;
 	dataArray[9] = IR;
+	dataArray[10] = LUX;
 }
 
-	//This function does not actually use the variable int index. What does this function do differently than returnData(int * dataArray) ?
-void Data::returnData(int * dataArray, int index){
-		returnData(dataArray);				//return newest reading
-		//retrieves data point with a certain index
-		//it probably is on the SD card, could be on the EEPROM
+void Data::returnData(unsigned long int * dataArray,unsigned long int index){
+		returnData(dataArray);
+		//retrieves data point with a certain index from the SD
 }
 
 //******************************************************************************

@@ -36,6 +36,7 @@ void setup(){
 	Data data;
 
 data.readSensorData();
+data.saveData();
 
 	for(;;){
 
@@ -49,7 +50,7 @@ data.readSensorData();
 		
 
 		//This just waits until the time to the last collect is equal to PERIOD
-//		while((millis() - point.timeSince())<PERIOD){}
+		while((millis() - point.timeSince())<PERIOD){}
 	}
 }
 
