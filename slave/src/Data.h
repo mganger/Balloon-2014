@@ -58,7 +58,6 @@ class Data {
 		void readCO2();
 		void readTemp();
 		void readO3();
-		void readUV();
 
 		void reset();					//resets all readings to null
 };
