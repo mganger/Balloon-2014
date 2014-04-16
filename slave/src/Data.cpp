@@ -21,7 +21,6 @@
 
 #include "Data.h"
 #include "Arduino.h"
-#include <Wire.h>		//Library for I2C communications
 #include <SPI.h>		//LIbrary for SPI communicatinos
 #include <SD.h>			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
