@@ -37,7 +37,7 @@ class Borp
 		void phoneHome(unsigned long int* dataArray,int size);
 
 		//Checks the serial buffer, returns commands as ints
-		int listen();
+		long int listen();
 
 	private:
 		int pin;			//Stores the Serial pin (i.e. tx3)

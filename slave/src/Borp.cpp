@@ -59,7 +59,7 @@ bool Borp::compareArrays(char * array1, char* array2, int size){
 	return 1;
 }
 
-int Borp::listen(){
+long int Borp::listen(){
 	//check to see if there is something from the master; -1 == nothing
 	if(Serial.available() == 0){
 		return -1;
@@ -93,9 +93,9 @@ int Borp::listen(){
 	//cutdown = 1
 	//killRadio = 2
 	//powerSave = 3
-	if(compareArrays(input,cutDown, sizeof(cutDown)/sizeof(cutDown[0]))) return 1;
-	if(compareArrays(input,killRadio, sizeof(killRadio)/sizeof(killRadio[0]))) return 2;
-	if(compareArrays(input,powerSave, sizeof(powerSave)/sizeof(powerSave[0]))) return 3;
+	if(compareArrays(input,cutDown, sizeof(cutDown)/sizeof(cutDown[0]))) return -2;
+	if(compareArrays(input,killRadio, sizeof(killRadio)/sizeof(killRadio[0]))) return -3;
+	if(compareArrays(input,powerSave, sizeof(powerSave)/sizeof(powerSave[0]))) return -4;
 
 	//check for the request
 	if(compareArrays(input,request,8)){
