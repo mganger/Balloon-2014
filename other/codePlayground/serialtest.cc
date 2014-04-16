@@ -163,12 +163,12 @@ void useThatSerial(){
 	//timestamp----------------------------------------------------------------
 
 
-	struct pollfd fds;					//necessary so that stdin does not
-	fds.fd = 0;						//block our program
+	struct pollfd fds;				//necessary so that stdin does not
+	fds.fd = 0;					//block our program
 	fds.events = POLLIN;				//
 
 
-	char outBuff[2];					//create read buffer
+	char outBuff[2];				//create read buffer
 	char inBuff[2];					//create write buffer
 
 	//loop forever!!!!!
@@ -185,7 +185,7 @@ void useThatSerial(){
 			usleep(PERIOD);
 		}
 	
-		while(poll(&fds, 1, 0) > 0){	//read character from stdin
+		while(poll(&fds, 1, 0) > 0){		//read character from stdin
 			//read the char into buffer
 			read(0, inBuff, 1);
 
