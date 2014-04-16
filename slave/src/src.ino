@@ -31,40 +31,17 @@
 
 
 void setup(){
-	//Constuct the objects to collect the data and send it.
-	Borp radio(9600);
-	Data point;
-
-	//Set the pins for the sensors. If not defined, pinMode will not be set
-	point.setAltiPin(1);
-	point.setHumiPin(2);
-	point.setPresPin(3);
-	point.setTempPin(4);
-	point.setCO2Pin(5);
-	point.setN2OPin(6);
-	point.setCOPin(7);
-	point.setIRPin(8);
-	point.setUVPin(9);
-	point.setO3Pin(10);
-
-	point.initPins();
-
-	union{					//Temporary union. The Borp should 
-		int dataIntArray[SIZE];		//be overloaded to take int arrays
-		unsigned char* dataCharArray;	//as well (instead of this).
-	};
-
+	//Constuct data and radio (at 115200 baud
+	Borp radio;
 
 	for(;;){
-
-		point.readSensorData();
-		point.returnData(dataIntArray);
-		radio.phoneHome(dataCharArray);
+		int data[12]= {1,2,3,4,5,6,7,8,9,10,11,12};
+		radio.phoneHome(data, sizeof(data)/sizeof(data[0]));
 
 
 		Serial.println("Line end");
 		//This just waits until the time to the last collect is equal to PERIOD
-		while((millis() - point.timeSince())<PERIOD){}
+//		while((millis() - point.timeSince())<PERIOD){}
 	}
 
 //If we want to try this for kicks and giggles:
