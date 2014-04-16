@@ -47,7 +47,7 @@ class Data {
 		unsigned long int index;		//Holds current collection index
 
 		//Global variable necessary for Lux Calculations 
-		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
+//		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
 
 		void setupLUX();
 		void readLUX();	
@@ -58,7 +58,6 @@ class Data {
 		void readCO2();
 		void readTemp();
 		void readO3();
-		void readUV();
 
 		void reset();					//resets all readings to null
 };
