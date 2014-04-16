@@ -33,6 +33,7 @@
 void setup(){
 	//Constuct data and radio (at 115200 baud
 	Borp radio;
+	Data data;
 
 	for(;;){
 
