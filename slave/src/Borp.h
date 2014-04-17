@@ -30,7 +30,6 @@ class Borp
 	public:
 
 		//constuctor initializes the Serial communication.
-		//If we use Dues, this can be changed to accept the pin (i.e. Serial2)
 		Borp();
 
 		//This function takes an array (from the data class) and sends it
