@@ -63,6 +63,8 @@ void setup(){
 				unsigned long int array[11];
 				data.returnData(array, request);
 			}
+			//Garbage cleanup
+			delete[] &request, array;
 		}
 	}
 }
