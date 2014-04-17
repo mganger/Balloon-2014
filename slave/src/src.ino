@@ -37,26 +37,37 @@ void setup(){
 	for(;;){
 
 		//This is how we read from the serial buffer
-	//	int flag = radio.listen();
+//		long int flag = radio.listen();
 
+		//Collects sensor data, indexes the point
 		data.readSensorData();
+		//Writes point to the SD card. Counts up to 9,999,999 files
 //		data.saveData();
 
+		//create an array to be read into
 		unsigned long int array[11];
+		//read the sensor data into the array
 		data.returnData(array);
+		//send the array over the Serial port (as ASCII)
 		radio.phoneHome(array,11);
+		//delete the array to save memory
+		delete[] array;
 
+		//resend data when we have time in between readings
+		while((millis() - data.timeSince())<PERIOD){
+			long int request = radio.listen();
 
-		delay(1000);		
-
-		//This just waits until the time to the last collect is equal to PERIOD
-//		while((millis() - data.timeSince())<PERIOD){}
+			//If the request is for a real point, we try to fill it
+			//If the request is above 2^31 - 1, it will overflow
+			if (request > 0){
+				unsigned long int array[11];
+				data.returnData(array, request);
+			}
+		}
 	}
 }
 
-//Leave loop empty; let's try using the setup as a main function (or better,
-//call loop from the setup program). However, if putting everything in setup 
-//doesn't work, we can put everything within loop and never let it finish
+//We leave the loop empty. This makes object creation much easier
 void loop(){
 	Serial.println("ERROR: Completed setup and entered loop");
 	delay(1000);
