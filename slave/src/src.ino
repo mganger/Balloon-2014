@@ -72,10 +72,3 @@ void loop(){
 	Serial.println("ERROR: Completed setup and entered loop");
 	delay(1000);
 }
-
-
-
-
-
-
-
