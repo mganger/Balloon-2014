@@ -10,7 +10,7 @@
 #ifndef INTERSEMA_BARO_H
 #define INTERSEMA_BARO_H
 
-#include <Wire.h>
+#include "Wire.h"
 #include <util/delay.h>
 #include "Arduino.h"
 
