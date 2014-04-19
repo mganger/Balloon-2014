@@ -21,10 +21,13 @@
 //This code runs an (almost) ideal lowpass filter on input data.
 //As it uses a stream, it can easily be adapted to any project
 //	Usage:
-//		./lowpass <amount> <filtersize> <pathToSingleLineText>
+//		./lowpass <frequency> <filtersize> <pathToSingleLineText>
 //
-//Amount needs to be in the range (0, .5). Filter size directly relates to the
-//length of time (but also to quality, so don't be too skimpy on cpu time).
+//Period is the cutoff (in given by the sample width of the frequency) and needs
+// to be in the range (2,inf). Filter size directly relates to the length
+//of computation time (but also to quality, so don't be too stingy with cpu 
+//time). A good rule of thumb is to have the filter size be at least 5x the 
+//cutoff period. 
  
 
 
@@ -73,7 +76,7 @@ int main(int argc, char ** argv){
 		return 34;
 	}
 
-	double amount = atof(argv[1]);
+	double amount = 1/atof(argv[1]);
 	if(amount <= 0){
 		cerr << "Amount is too small (0 < amount < .5)" << endl;
 		return 35;
@@ -99,6 +102,11 @@ int main(int argc, char ** argv){
 	int length = 0;
 	long double* input = atofArray(fileStr, &length);
 
+	if(length < 2*filterSize){
+		cerr << "Filter size is too large for the input data length" << endl;
+		return 37;
+	}
+
 	cout << length << " data points" << endl;
 
 //	//put random noise into the array
@@ -118,30 +126,40 @@ int main(int argc, char ** argv){
 	double cutoff = amount;			//Keep between 0 and .5
 	double * sincFilter = new double[filterSize];
 
-	//calculate lowpass filter
-	//calculates 1/2, sets first half equal to second half
-	sincFilter[filterSize / 2] = 2*pi * cutoff;
-	for (int i = 1; i < filterSize/2; i++){
-		double buffer = sin(2*pi*cutoff * i) / i;
-		sincFilter[filterSize/2 +i] = buffer;
-		sincFilter[filterSize/2 -i] = buffer;		
+	//Calculates lowpass filter
+	//Only does it in one direction (so we only get 1/2 of the filter)
+	sincFilter[0] = 2 * pi * cutoff;
+	for (int i = 1; i < filterSize; i++){
+		sincFilter[i] = sin(2 * pi * cutoff * i) / i;
 	}
 
+	//Applies a Blackmann window to the filter
 	for (int i = 0; i < filterSize; i++){
-		sincFilter[i] *= 0.54 - 0.46 * cos(2 * pi * i/filterSize);
+		sincFilter[i] *= 0.54 - 0.46 * cos(pi + 2 * pi * i / (filterSize * 2));
 	}
 
-	//Normalize the lowpass filter for unity gain (at DC, apparently)
+//	Outputs the sinc filter to a file for easy viewing
+//	ofstream sincfile;
+//	sincfile.open("sinc.csv");
+//	for(int i = 0; i < filterSize; i++){
+//		sincfile << sincFilter[i] << endl;
+//	}
+//	sincfile.close();
+//	return 0;
+
+	//Normalize the lowpass filter for unity gain
+	//First integrate the parts, then divide every sameple by the sum
 	double sum;
-	for (int i = 0; i <filterSize + 1; i++){
-		sum += sincFilter[i];
+	sum = sincFilter[0];
+	for (int i = 1; i <filterSize + 1; i++){
+		sum += 2 * sincFilter[i];
 	}
 
 	for(int i = 0; i < filterSize +1; i++){
 		sincFilter[i] /= sum;
 	}
 
-	cout << "Normalized filter to " << 1/sum << endl;
+	cout << "Normalized filter to " << log(1/sum)*10 << " dB" << endl;
 
 	//Convolve the input signal in three parts, on the end pretending like
 	//the edges are zero ( or that they don't exist)
@@ -149,12 +167,11 @@ int main(int argc, char ** argv){
 	//front edge
 	cout << "Convolving front edge" << endl;
 	for(int i = 0; i < filterSize; i++){
-		double buffer = 0;
-		buffer = input[i] *sincFilter[filterSize/2];
-		for(int j = 1; j < filterSize/2; j++){
-			buffer += input[i + j] * sincFilter[j+filterSize/2];
+		double buffer = input[i] *sincFilter[0];
+		for(int j = 1; j < filterSize; j++){
+			buffer += input[i + j] * sincFilter[j];
 			if(i-j >= 0) {
-				buffer += input[i-j] * sincFilter[j + filterSize/2];
+				buffer += input[i-j] * sincFilter[j];
 			}
 		}
 		output[i] = buffer;
@@ -162,13 +179,12 @@ int main(int argc, char ** argv){
 
 	//back edge
 	cout << "Convolving back edge" << endl;
-	for(int i = length-1; i > length - filterSize; i--){
-		double buffer = 0;
-		buffer = input[i] * sincFilter[filterSize/2];
-		for(int j = 1; j < filterSize/2; j++){
-			buffer += input[i - j] * sincFilter[j+filterSize/2];
+	for(int i = length - filterSize-1; i < length ; i++){
+		double buffer = input[i] * sincFilter[0];
+		for(int j = 1; j < filterSize; j++){
+			buffer += input[i - j] * sincFilter[j];
 			if(i+j <= length) {
-				buffer += input[i+j] * sincFilter[j + filterSize/2];
+				buffer += input[i+j] * sincFilter[j];
 			}
 		}
 		output[i] = buffer;
@@ -176,12 +192,13 @@ int main(int argc, char ** argv){
 
 	//main convolution
 	cout << "Performing main convolution" << endl;
-	for(int i = filterSize; i < length; i++){
-		double buffer = 0;
-		for(int j = 0; j < filterSize; j++){
+	for(int i = filterSize; i < length-filterSize; i++){
+		double buffer = input[i]* sincFilter[0];
+		for(int j = 1; j < filterSize; j++){
 			buffer += input[i-j] * sincFilter[j];
+			buffer += input[i+j] * sincFilter[j];
 		}
-		output[i-filterSize/2] = buffer;
+		output[i] = buffer;
 	}
 
 	cout << "Writing to file with 16 significant figures" << endl;
