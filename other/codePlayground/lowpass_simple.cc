@@ -14,7 +14,7 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-#include <iomanip>					//for setprecision() for outfile
+#include <iomanip>				//for setprecision() for outfile
 
 using namespace std;
 
@@ -55,7 +55,7 @@ long double* atofArray(stringstream& streamer, int* lineCount){
 		}
 	}
 	//Make a new array of that size
-	cout << "Converting to ints" << endl;
+	cout << "Converting to floats" << endl;
 	long double* doubleConvert = new long double[lineCount[0]];
 	//convert the string line by line into that
 	for(int i = 0; i < lineCount[0]; i++){
