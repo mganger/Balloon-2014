@@ -63,6 +63,9 @@ int Communications::setup(unsigned int baudInt,const char* path){
 			default:
 			cerr << baudInt << " is an invalid baud rate" << endl;
 			break;
+		case 115200:
+			baudFloat = B115200;
+			break;
 		case 38400:
 			baudFloat = B38400;
 			break;
