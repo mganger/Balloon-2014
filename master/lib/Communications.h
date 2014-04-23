@@ -67,8 +67,9 @@ class Communications {
 		//This read the first character in the buffer and destroy it
 		char gather();
 
-		//reads the bytes into an array, returns boolean
-		int gather(unsigned char * array, int size);
+		//reads stuff from the serial port int string, returns bytes written
+		//this is useful, because if nothing can be written, it returns 0
+		int gather(string);
 
 	private:
 		string serialPath;			//String to hold the USB location

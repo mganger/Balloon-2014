@@ -36,8 +36,17 @@ char Communications::gather(){
 	return buff[1];
 }
 
-int Communications::gather(unsigned char * array, int size){
-	read(fileDescriptor, array, size);
+int Communications::gather(string serialString){
+	serialString = "";			//Clear string
+
+	int counter = 0;
+	for(char tmpBuffer;tmpBuffer != '\n';counter++){
+		if(read(fileDescriptor, &tmpBuffer, 1) <= 0){
+			break;
+		}
+		serialString += tmpBuffer;
+	}
+	return counter;
 }
 
 int Communications::setup(unsigned int baudInt,const char* path){

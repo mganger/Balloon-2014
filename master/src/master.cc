@@ -26,38 +26,79 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
-#include "../lib/md5.h"
-#include "../lib/md5.cpp"
+#include <stdlib.h>
 #include "../lib/Communications.h"
 #include "../lib/Communications.cc"
-#define SIZE 14
 
 using namespace std;
 
-int main()
-{
-	union{
-		short array[SIZE];
-		unsigned char* dataCharArray;
-	}union;
-
-	for(int i = 0; i <SIZE; i++)
-	{
-		union.array[i] = 0;
+//takes a string, parses index, writes to unique file, returns 1 with success,
+//0 with error. Note that the files it generates don't have filler zeros (not
+//necessary
+int writePoint(string data){
+	//generate the filename string
+	string fileName;
+	fileName = "datapoint_";
+	const char* tmp = data.c_str();
+	//extract index (the first number) to go in name
+	//robustly handles errors
+	for(unsigned int i = 0; i < data.length(); i++){
+		switch (tmp[i]){
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				fileName += tmp[i];
+			case ',':
+				break;
+			default:
+				cout << "Invalid character " << tmp[i] << " in index" << endl;
+				return 0;
+		}
 	}
+
+	//if it already exists, we don't want to write over it
+	//we might be able to recursively runs some stuff
+	if (ifstream(fileName.c_str())){
+	     cout << "File " << fileName.c_str() << " already exists" << endl;
+	     return 0;
+	}
+
+	ofstream outfile;
+	outfile.open(fileName.c_str());
+	outfile << data;
+	outfile.close();
+	return 1;
+}
+
+
+int main(int argc, char** argv)
+{
+	if(argc != 2){
+		cerr << "Wrong number of arguments" << endl;
+		return 0;
+	}
+
 
 	Communications Serial;
-	ofstream output;
+	ofstream outputFile;
 
-	Serial.setup(9600,"/dev/ttyACM0");
-	Serial.gather(dataCharArray,SIZE);
-
-	output.open("ballonData.dat",ios::app);
-	for(int i = 0; i <= SIZE; i++)
-	{
-		cout << union.array[i];
-		output << union.array[i];
+	Serial.setup(115200,argv[1]);
+	string serialString;
+	if(Serial.gather(serialString)){
+		//error handling if Serial.gather returns a 0
 	}
-	cout << endl;
-	output << endl;
+
+	writePoint(serialString);
+	outputFile.open("ballonData.dat",ios::app);
+
+
+
+
 }
