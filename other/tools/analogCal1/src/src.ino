@@ -55,7 +55,7 @@ void setup(){
 	unsigned long int timeLast = 0;
 
 	for(;;){
-		if(millis() - timeLast > PERIOD){
+		if(millis() - timeLast >= PERIOD){
 			timeLast = millis();
 			Serial.print(timeLast);
 			Serial.print(",");
