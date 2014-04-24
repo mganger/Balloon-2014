@@ -67,7 +67,6 @@ Data::Data(){
 void Data::reset(){
 	//Set the readings to sentinal value
 	temp = INIT;
-	alti = INIT;
 	pres = INIT;
 	humi = INIT;
 	CO2 = INIT;
@@ -89,16 +88,15 @@ void Data::returnData(unsigned long int * dataArray){
 	dataArray[0] = index++;
 	dataArray[1] = timeCollect;
 	dataArray[2] = temp;
-	dataArray[3] = alti;
-	dataArray[4] = pres;
-	dataArray[5] = humi;
-	dataArray[6] = CO2;
-	dataArray[7] = UV;
-	dataArray[8] = O3;
-	dataArray[9] = IRup;
-	dataArray[10] = IRdown;
-	dataArray[11] = visUp;
-	dataArray[12] = visDown;
+	dataArray[3] = pres;
+	dataArray[4] = humi;
+	dataArray[5] = CO2;
+	dataArray[6] = UV;
+	dataArray[7] = O3;
+	dataArray[8] = IRup;
+	dataArray[9] = IRdown;
+	dataArray[10] = visUp;
+	dataArray[11] = visDown;
 }
 
 void Data::returnData(unsigned long int * dataArray,unsigned long int index){
@@ -113,7 +111,6 @@ void Data::readSensorData()
 {
 	timeCollect = millis();
 	readLUX();
-	readAlti();
 	readPres();
 	readUV();
 	readIR();
@@ -150,11 +147,6 @@ void Data::readUV()
 void Data::readO3()
 {
 	O3 = analogRead(3);
-}
-
-void Data::readAlti(){
-	baro.init();
-	alti = baro.getHeightCentiMeters();
 }
 
 void Data::readPres(){
