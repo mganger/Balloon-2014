@@ -45,11 +45,11 @@ void setup(){
 //		data.saveData();
 
 		//create an array to be read into
-		unsigned long int array[11];
+		unsigned long int array[50];
 		//read the sensor data into the array
 		data.returnData(array);
 		//send the array over the Serial port (as ASCII)
-		radio.phoneHome(array,11);
+		radio.phoneHome(array,13);
 		//delete the array to save memory
 		delete[] array;
 
