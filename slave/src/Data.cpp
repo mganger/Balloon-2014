@@ -21,13 +21,13 @@
 
 #include "Data.h"
 #include "Arduino.h"
-#include <SPI.h>		//LIbrary for SPI communicatinos
-#include <SD.h>			//Library for SD  communications
+#include "SPI.h"		//Library for SPI communicatinos
+#include "SD.h"			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
 #include "Adafruit_TSL2561_U.h"	//Library for Lux Sensor
 #include "Adafruit_GPS.h"	//Library for GPS
-#include <SoftwareSerial.h>	//Library for Software Serial communications
+#include "SoftwareSerial.h"	//Library for Software Serial communications
 
 //Global variable necessary for Lux Calculations
 Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
@@ -83,7 +83,7 @@ void Data::reset(){
 
 void Data::returnData(unsigned long int * dataArray){
 
-	dataArray[0] = index;
+	dataArray[0] = index++;
 	dataArray[1] = timeCollect;
 	dataArray[2] = temp;
 	dataArray[3] = alti;
