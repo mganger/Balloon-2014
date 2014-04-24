@@ -25,9 +25,6 @@
 #include "Borp.h"
 #include "Data.h"
 
-
-
-
 void setup(){
 	//Constuct data and radio (at 115200 baud)
 	Borp radio;
@@ -59,7 +56,7 @@ void setup(){
 			//If the request is for a real point, we try to fill it
 			//If the request is above 2^31 - 1, it will overflow
 			if (request > 0){
-				unsigned long int array[11];
+				unsigned long int array[13];
 				data.returnData(array, request);
 			}
 			//Garbage cleanup
