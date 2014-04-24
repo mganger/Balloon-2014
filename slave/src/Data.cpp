@@ -31,7 +31,7 @@
 #include "TSL2561.h"
 
 //Global variable necessary for Lux Calculations
-//Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
+Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
 Intersema::BaroPressure_MS5607B baro(true);
 
 //******************************************************************************
@@ -85,6 +85,7 @@ void Data::reset(){
 
 void Data::returnData(unsigned long int * dataArray){
 
+//If you change the number of readings here you must update POINTSIZE in Data.h
 	dataArray[0] = index++;
 	dataArray[1] = timeCollect;
 	dataArray[2] = temp;

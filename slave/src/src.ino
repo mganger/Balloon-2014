@@ -38,14 +38,14 @@ void setup(){
 		//Collects sensor data, indexes the point
 		data.readSensorData();
 		//Writes point to the SD card. Counts up to 9,999,999 files
-//		data.saveData();
+		data.saveData();
 
 		//create an array to be read into
 		unsigned long int array[50];
 		//read the sensor data into the array
 		data.returnData(array);
 		//send the array over the Serial port (as ASCII)
-		radio.phoneHome(array,13);
+		radio.phoneHome(array,POINTSIZE);
 		//delete the array to save memory
 		delete[] array;
 
@@ -56,7 +56,7 @@ void setup(){
 			//If the request is for a real point, we try to fill it
 			//If the request is above 2^31 - 1, it will overflow
 			if (request > 0){
-				unsigned long int array[13];
+				unsigned long int array[POINTSIZE];
 				data.returnData(array, request);
 			}
 			//Garbage cleanup
