@@ -38,7 +38,8 @@ void setup(){
 		//Collects sensor data, indexes the point
 		data.readSensorData();
 		//Writes point to the SD card. Counts up to 9,999,999 files
-		data.saveData();
+		//Currently commented out because it hangs if there is no sd card
+//		data.saveData();
 
 		//create an array to be read into
 		unsigned long int array[50];
