@@ -35,7 +35,7 @@ using namespace std;
 
 //takes a string, parses index, writes to unique file, returns 1 with success,
 //0 with error. Note that the files it generates don't have filler zeros (not
-//necessary
+//necessary)
 int writePoint(string data){
 	//generate the filename string
 	string indexString;
@@ -93,8 +93,10 @@ int writePoint(string data){
 }
 
 //This function looks at all the data and returns the latest point that needs
+//TODO: have this function write the unreceived points to a file and read that
+//when returning need points. That way, it could probably handle billions of files
 int findPoint(unsigned long int lastpoint){
-	for(unsigned long int i = lastpoint; i; i--){
+	for(unsigned long int i = lastpoint-1; i; i--){
 		string filename;
 		filename = "datapoint_";
 		stringstream filenumber;
@@ -104,12 +106,14 @@ int findPoint(unsigned long int lastpoint){
 		}
 		filename += filenumber.str();
 
-		ifstream file(filenumber.str().c_str());
-		if(!file){
+		ifstream file(filename.c_str());
+		if(file.is_open() == 0){
 			cout << filename << " does not exist" << endl;
 			return i;
 		}
+		file.close();
 	}
+
 	return 0;
 }
 
@@ -132,12 +136,12 @@ int main(int argc, char** argv)
 	unsigned long int lastpoint;
 	for(;;){
 		string line;
-		getline(deviceFile, line, '\n');
+		getline(deviceFile, line);
 		lastpoint = writePoint(line);
 		if(lastpoint == 0){
 			cout << "Couldn't write file" << endl;
 		}else{
-		cout << findPoint(lastpoint) << endl;
+		findPoint(lastpoint);
 		}
 	}
 	deviceFile.close();
