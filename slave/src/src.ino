@@ -22,12 +22,8 @@
 #define FREQ 10					//frequency of readings
 #define SIZE 14					//keep updated with actual number
 
-#include "MD5.h"
 #include "Borp.h"
 #include "Data.h"
-
-
-
 
 void setup(){
 	//Constuct data and radio (at 115200 baud)
