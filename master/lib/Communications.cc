@@ -30,23 +30,22 @@
 #include <stdlib.h>
 
 
-char Communications::gather(){
+char Communications::gatherChar(){
 	char buff[2];
 	read(fileDescriptor, buff, 1);
 	return buff[1];
 }
 
-int Communications::gather(string serialString){
-	serialString = "";			//Clear string
+string Communications::gather(){
+	static string serialString;
 
-	int counter = 0;
-	for(char tmpBuffer;tmpBuffer != '\n';counter++){
+	for(char tmpBuffer;tmpBuffer != '\n';){
 		if(read(fileDescriptor, &tmpBuffer, 1) <= 0){
-			break;
+			return "\0";
 		}
 		serialString += tmpBuffer;
 	}
-	return counter;
+	return serialString;
 }
 
 int Communications::setup(unsigned int baudInt,const char* path){
@@ -115,7 +114,7 @@ int Communications::setup(unsigned int baudInt,const char* path){
 
 
 
-	struct termios options;		//create a structure to hold serial info
+	struct termios options;				//create a structure to hold serial info
 	tcgetattr(fileDescriptor, &options);		//get current options for port
 
 	if(cfsetispeed(&options, baudFloat)<0){		//set input baud
@@ -127,16 +126,25 @@ int Communications::setup(unsigned int baudInt,const char* path){
 		return 0;
 	}
 
-//	options.c_cflags |= (CLOCAL | CREAD);	//set the flags
+//	options.c_cflags |= (CLOCAL | CREAD);		//set the flags
 //	options.c_cflags &= ~PARENB			//*These options say no parity bit
 //	options.c_cflags &= ~CSTOPB			//*Not sure how to use them
 //	options.c_cflags &= ~CSIZE;			//*
-//	options.c_cflags |= CS8;				//*
+//	options.c_cflags |= CS8;			//*
 
 
 	if(tcsetattr(fileDescriptor, TCSANOW, &options)<0){	//set new options
 	cerr << "Cannot set attributes." << endl;
 	return -1;
-	} else return fileDescriptor;				//return happiness
+	} else{
+	if(tcflush(fileDescriptor,TCIOFLUSH) == -1){
+		cerr << "didn't flush" <<endl;
+		return -1;
+	}
+	return fileDescriptor;				//return happiness
+	}
+}
 
+void Communications::end(){
+	close(fileDescriptor);
 }

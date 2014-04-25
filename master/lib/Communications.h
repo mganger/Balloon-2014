@@ -55,6 +55,9 @@ class Communications {
 		//used to setup the serial deivce; copied from serialtest
 		int setup(unsigned int baudInt, const char* path);
 
+		//closes the device
+		void end();
+
 		//write the integer as 1 or 2 bytes		
 		void write(int number);
 
@@ -65,11 +68,11 @@ class Communications {
 		int available();
 
 		//This read the first character in the buffer and destroy it
-		char gather();
+		char gatherChar();
 
 		//reads stuff from the serial port int string, returns bytes written
 		//this is useful, because if nothing can be written, it returns 0
-		int gather(string);
+		string gather();
 
 	private:
 		string serialPath;			//String to hold the USB location
