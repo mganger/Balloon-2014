@@ -24,6 +24,7 @@
 
 
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,14 +37,19 @@ using namespace std;
 //0 with error. Note that the files it generates don't have filler zeros (not
 //necessary
 int writePoint(string data){
+	cout << data << endl;
 	//generate the filename string
+	string indexString;
 	string fileName;
 	fileName = "datapoint_";
-	const char* tmp = data.c_str();
+//	const char* tmp = data.c_str();
 	//extract index (the first number) to go in name
-	//robustly handles errors
-	for(unsigned int i = 0; i < data.length(); i++){
-		switch (tmp[i]){
+	bool caseEnd = 1;
+	for(unsigned int i = 0; (i < data.length() ) & (caseEnd); i++){
+		switch (data.at(i)){
+			case ',':
+				caseEnd = 0;
+				break;
 			case '0':
 			case '1':
 			case '2':
@@ -54,22 +60,30 @@ int writePoint(string data){
 			case '7':
 			case '8':
 			case '9':
-				fileName += tmp[i];
-			case ',':
+				indexString += data.at(i);
 				break;
 			default:
-				cout << "Invalid character " << tmp[i] << " in index" << endl;
+				cout << "Invalid character " << data.at(i) << " in index" << endl;
 				return 0;
 		}
 	}
+	delete[] &caseEnd;
+
+	//Check to see how many numbers are in it, put int0 file name with zeros
+	for(unsigned int i = 0; i < (15 - indexString.length()); i++){
+		fileName += '0';
+	}
+	fileName += indexString.c_str();
+
 
 	//if it already exists, we don't want to write over it
 	//we might be able to recursively runs some stuff
 	if (ifstream(fileName.c_str())){
-	     cout << "File " << fileName.c_str() << " already exists" << endl;
-	     return 0;
+		cout << "File " << fileName.c_str() << " already exists" << endl;
+		return 0;
 	}
 
+	cout << fileName.c_str() << endl;
 	ofstream outfile;
 	outfile.open(fileName.c_str());
 	outfile << data;
@@ -81,24 +95,26 @@ int writePoint(string data){
 int main(int argc, char** argv)
 {
 	if(argc != 2){
-		cerr << "Wrong number of arguments" << endl;
+		cerr << "Wrong number of arguments: " << argc - 1 << endl;
 		return 0;
 	}
 
+	
+	fstream deviceFile;
+	deviceFile.open(argv[1]);
 
-	Communications Serial;
-	ofstream outputFile;
-
-	Serial.setup(115200,argv[1]);
-	string serialString;
-	if(Serial.gather(serialString)){
-		//error handling if Serial.gather returns a 0
+	//Check to see if the file exists
+	if(!deviceFile.is_open()){
+		cerr << "Invalid device: " << argv[1] << endl;
 	}
 
-	writePoint(serialString);
-	outputFile.open("ballonData.dat",ios::app);
+	for(;;){
+		string line;
+		getline(deviceFile, line, '\n');
+		if(!writePoint(line)){
+			cout << "Couldn't write file" << endl;
+		}
+	}
 
-
-
-
+	deviceFile.close();
 }
