@@ -37,12 +37,10 @@ using namespace std;
 //0 with error. Note that the files it generates don't have filler zeros (not
 //necessary
 int writePoint(string data){
-	cout << data << endl;
 	//generate the filename string
 	string indexString;
 	string fileName;
 	fileName = "datapoint_";
-//	const char* tmp = data.c_str();
 	//extract index (the first number) to go in name
 	bool caseEnd = 1;
 	for(unsigned int i = 0; (i < data.length() ) & (caseEnd); i++){
@@ -67,7 +65,6 @@ int writePoint(string data){
 				return 0;
 		}
 	}
-	delete[] &caseEnd;
 
 	//Check to see how many numbers are in it, put int0 file name with zeros
 	for(unsigned int i = 0; i < (15 - indexString.length()); i++){
@@ -83,14 +80,38 @@ int writePoint(string data){
 		return 0;
 	}
 
-	cout << fileName.c_str() << endl;
 	ofstream outfile;
 	outfile.open(fileName.c_str());
 	outfile << data;
 	outfile.close();
-	return 1;
+
+	ofstream filenumber;
+	filenumber.open("lastfile", ofstream::trunc);
+	filenumber << indexString.c_str();
+
+	return atoi(indexString.c_str());
 }
 
+//This function looks at all the data and returns the latest point that needs
+int findPoint(unsigned long int lastpoint){
+	for(unsigned long int i = lastpoint; i; i--){
+		string filename;
+		filename = "datapoint_";
+		stringstream filenumber;
+		filenumber << i;
+		for(unsigned int j = 0; j < (15 - filenumber.str().length()); j++){
+			filename += '0';
+		}
+		filename += filenumber.str();
+
+		ifstream file(filenumber.str().c_str());
+		if(!file){
+			cout << filename << " does not exist" << endl;
+			return i;
+		}
+	}
+	return 0;
+}
 
 int main(int argc, char** argv)
 {
@@ -108,13 +129,16 @@ int main(int argc, char** argv)
 		cerr << "Invalid device: " << argv[1] << endl;
 	}
 
+	unsigned long int lastpoint;
 	for(;;){
 		string line;
 		getline(deviceFile, line, '\n');
-		if(!writePoint(line)){
+		lastpoint = writePoint(line);
+		if(lastpoint == 0){
 			cout << "Couldn't write file" << endl;
+		}else{
+		cout << findPoint(lastpoint) << endl;
 		}
 	}
-
 	deviceFile.close();
 }
