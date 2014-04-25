@@ -21,16 +21,17 @@
 
 #include "Data.h"
 #include "Arduino.h"
-#include <SPI.h>		//LIbrary for SPI communicatinos
-#include <SD.h>			//Library for SD  communications
+#include "SPI.h"		//Library for SPI communicatinos
+#include "SD.h"			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
-#include "Adafruit_TSL2561_U.h"	//Library for Lux Sensor
 #include "Adafruit_GPS.h"	//Library for GPS
-#include <SoftwareSerial.h>	//Library for Software Serial communications
+#include "SoftwareSerial.h"	//Library for Software Serial communications
+#include "Wire.h"
+#include "TSL2561.h"
 
 //Global variable necessary for Lux Calculations
-Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
+//Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
 Intersema::BaroPressure_MS5607B baro(true);
 
 //******************************************************************************
@@ -66,14 +67,15 @@ Data::Data(){
 void Data::reset(){
 	//Set the readings to sentinal value
 	temp = INIT;
-	alti = INIT;
 	pres = INIT;
 	humi = INIT;
 	CO2 = INIT;
 	UV = INIT;
 	O3 = INIT;
-	IR = INIT;
-	LUX = INIT;
+	IRup = INIT;
+	IRdown = INIT;
+	visUp = INIT;
+	visDown = INIT;
 
 	index++;		//increment the index by 1 on reset
 }
@@ -83,17 +85,19 @@ void Data::reset(){
 
 void Data::returnData(unsigned long int * dataArray){
 
-	dataArray[0] = index;
+//If you change the number of readings here you must update POINTSIZE in Data.h
+	dataArray[0] = index++;
 	dataArray[1] = timeCollect;
 	dataArray[2] = temp;
-	dataArray[3] = alti;
-	dataArray[4] = pres;
-	dataArray[5] = humi;
-	dataArray[6] = CO2;
-	dataArray[7] = UV;
-	dataArray[8] = O3;
-	dataArray[9] = IR;
-	dataArray[10] = LUX;
+	dataArray[3] = pres;
+	dataArray[4] = humi;
+	dataArray[5] = CO2;
+	dataArray[6] = UV;
+	dataArray[7] = O3;
+	dataArray[8] = IRup;
+	dataArray[9] = IRdown;
+	dataArray[10] = visUp;
+	dataArray[11] = visDown;
 }
 
 void Data::returnData(unsigned long int * dataArray,unsigned long int index){
@@ -108,7 +112,6 @@ void Data::readSensorData()
 {
 	timeCollect = millis();
 	readLUX();
-	readAlti();
 	readPres();
 	readUV();
 	readIR();
@@ -125,7 +128,6 @@ void Data::readCO2()
 
 void Data::readIR()
 {
-	IR = 345;
 }
 
 void Data::readTemp()
@@ -148,37 +150,59 @@ void Data::readO3()
 	O3 = analogRead(3);
 }
 
-void Data::readAlti(){
-	baro.init();
-	alti = baro.getHeightCentiMeters();
-}
-
 void Data::readPres(){
 	baro.init();
 	pres = baro.getPressure();
 }
 
-void Data::setupLUX()
-{
-//	sensor_t sensor;		//Used to display sensor details
-//	tsl.getSensor(&sensor);		//Possibly not needed
-	tsl.enableAutoRange(true);
-	tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_13MS);
-	if(!tsl.begin())
-	{
-		Serial.print("Lux Sensor is broken or not connected");
-	}
-	tsl.enableAutoRange(true);
-	tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_13MS);
-}
-
 void Data::readLUX()
 {
-	sensors_event_t event;
-	tsl.getEvent(&event);
-	if(event.light)
+	TSL2561 tsl(TSL2561_ADDR_HIGH);
+	TSL2561 tsl2(TSL2561_ADDR_FLOAT);
+	//Set address to bottom lux sensor
+	if(tsl.begin())
 	{
-		LUX = event.light;
+	//Set settings for lux sensor
+//		Serial.println("Lux sensor connected");
+		tsl.setGain(TSL2561_GAIN_0X);	//Bright situations
+//		tsl.setGain(TSL2561_GAIN_16X);	//Dim situations
+		tsl.setTiming(TSL2561_INTEGRATIONTIME_13MS);
+
+	//Take readings from light sensor
+		uint16_t vis = tsl.getLuminosity(TSL2561_VISIBLE);
+//		uint16_t full = tsl.getLuminosity(TSL2561_FULLSPECTRUM);
+		uint16_t ir = tsl.getLuminosity(TSL2561_INFRARED);
+
+	//Save data from top sensor
+
+		visDown = vis;
+		IRdown = ir;
+	}
+	else
+	{
+	Serial.println("5");
+		Serial.println("LUX sensor 1 is broked");
+	}
+
+	if(tsl2.begin())
+	{
+	//Set settings for lux sensor
+//		Serial.println("Lux sensor connected");
+		tsl2.setGain(TSL2561_GAIN_0X);	//Bright situations
+//		tsl2.setGain(TSL2561_GAIN_16X);	//Dim situations
+		tsl2.setTiming(TSL2561_INTEGRATIONTIME_13MS);
+
+	//Take readings from light sensor
+		uint16_t vis = tsl2.getLuminosity(TSL2561_VISIBLE);
+//		uint16_t full = tsl2.getLuminosity(TSL2561_FULLSPECTRUM);
+		uint16_t ir = tsl2.getLuminosity(TSL2561_INFRARED);
+		IRup = ir;
+		visUp = vis;
+	//Change address to top lux sensor
+	}
+	else
+	{
+		Serial.println("LUX sensor 2 is broked");
 	}
 }
 

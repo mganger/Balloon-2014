@@ -22,7 +22,7 @@ All text above must be included in any redistribution
 
 #ifdef __AVR__
   #if ARDUINO >= 100
-    #include <SoftwareSerial.h>
+    #include "SoftwareSerial.h"
   #else
     #include <NewSoftSerial.h>
   #endif

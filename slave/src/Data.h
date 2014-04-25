@@ -20,7 +20,7 @@
 
 #ifndef __DATA_H_INCLUDED__		//If this library is not defined..
 #define __DATA_H_INCLUDED__		//Define this variable and read the code
-
+#define POINTSIZE 12
 
 class Data { 
 
@@ -41,17 +41,15 @@ class Data {
 
 		unsigned long int timeCollect;	//milliseconds
 
-		unsigned long int pres, alti, LUX, UV, IR;		//Private variables to hold sensor
-		unsigned long int temp, humi, CO2, O3;			//values for different measurements
+		unsigned long int pres, UV, IRup, IRdown;			//Private variables to hold sensor
+		unsigned long int temp, humi, CO2, O3, visUp, visDown;		//values for different measurements
 
 		unsigned long int index;		//Holds current collection index
 
 		//Global variable necessary for Lux Calculations 
 //		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
 
-		void setupLUX();
 		void readLUX();	
-		void readAlti();
 		void readPres();
 		void readUV();	
 		void readIR();	
