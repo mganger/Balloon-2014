@@ -59,6 +59,17 @@ void setup(){
 				unsigned long int array[POINTSIZE];
 				data.returnData(array, request);
 			}
+			else if(request == -1)		//Nothing to report
+				break;
+			else if(request == -2)		//Cutdown!!!!!
+				digitalWrite(8,HIGH);
+			else if(request == -3)		//Kill Radio
+				digitalWrite();
+			else if(request == -4)		//Temporarily Kill Radio
+				sleepRadio();
+			else if(request == -5)		//Return Radio to normal function sleeping
+				reviveRadio();
+
 			//Garbage cleanup
 			delete[] &request, array;
 		}
