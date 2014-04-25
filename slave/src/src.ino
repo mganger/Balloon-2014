@@ -61,14 +61,14 @@ void setup(){
 			else if(request == -2)		//Cutdown!!!!!
 				digitalWrite(8,HIGH);
 			else if(request == -3)		//Kill Radio
-				digitalWrite(7,LOW);	//Send radio to Diagnostic mode
+//				digitalWrite();
+				;
 			else if(request == -4)		//Temporarily Kill Radio
-				sleepRadio();
-			else if(request == -5)		//Return Radio to normal function after sleeping
-				reviveRadio();
-
-			//Garbage cleanup
-			delete[] &request, array;
+//				sleepRadio();
+				;
+			else if(request == -5)		//Return Radio to normal functioning
+//				reviveRadio();
+				;
 		}
 	}
 }
