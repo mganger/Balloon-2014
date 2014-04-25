@@ -42,6 +42,7 @@ void setup(){
 		//read the sensor data into the array
 		data.returnData(array);
 		//send the array over the Serial port (as ASCII)
+		//This needs to be handled on a request basis in the future
 		radio.phoneHome(array,POINTSIZE);
 		//delete the array to save memory
 
@@ -60,11 +61,14 @@ void setup(){
 			else if(request == -2)		//Cutdown!!!!!
 				digitalWrite(8,HIGH);
 			else if(request == -3)		//Kill Radio
-				digitalWrite();
+//				digitalWrite();
+				;
 			else if(request == -4)		//Temporarily Kill Radio
-				sleepRadio();
-			else if(request == -5)		//Return Radio to normal function sleeping
-				reviveRadio();
+//				sleepRadio();
+				;
+			else if(request == -5)		//Return Radio to normal functioning
+//				reviveRadio();
+				;
 		}
 	}
 }
