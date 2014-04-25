@@ -198,7 +198,6 @@ void Data::readLUX()
 		uint16_t ir = tsl2.getLuminosity(TSL2561_INFRARED);
 		IRup = ir;
 		visUp = vis;
-	//Change address to top lux sensor
 	}
 	else
 	{
