@@ -97,7 +97,7 @@ long int Borp::listen(){
 	if(compareArrays(input,cutDown, sizeof(cutDown)/sizeof(cutDown[0]))) return -2;
 	if(compareArrays(input,killRadio, sizeof(killRadio)/sizeof(killRadio[0]))) return -3;
 	if(compareArrays(input,powerSave, sizeof(powerSave)/sizeof(powerSave[0]))) return -4;
-	if(compareArrays(input,
+	if(compareArrays(input,reviveRadio,sizeof(reviveRadio)/sizeof(reviveRadio[0]))) return -5;
 
 	//check for the request
 	if(compareArrays(input,request,8)){
