@@ -31,23 +31,20 @@ void setup(){
 	Data data;
 
 	for(;;){
-
-		//This is how we read from the serial buffer
-//		long int flag = radio.listen();
-
 		//Collects sensor data, indexes the point
 		data.readSensorData();
 		//Writes point to the SD card. Counts up to 9,999,999 files
-		data.saveData();
+		//Currently commented out because it hangs if there is no sd card
+//		data.saveData();
 
 		//create an array to be read into
 		unsigned long int array[50];
 		//read the sensor data into the array
 		data.returnData(array);
 		//send the array over the Serial port (as ASCII)
+		//This needs to be handled on a request basis in the future
 		radio.phoneHome(array,POINTSIZE);
 		//delete the array to save memory
-		delete[] array;
 
 		//resend data when we have time in between readings
 		while((millis() - data.timeSince())<PERIOD){
@@ -64,10 +61,10 @@ void setup(){
 			else if(request == -2)		//Cutdown!!!!!
 				digitalWrite(8,HIGH);
 			else if(request == -3)		//Kill Radio
-				digitalWrite();
+				digitalWrite(7,LOW);	//Send radio to Diagnostic mode
 			else if(request == -4)		//Temporarily Kill Radio
 				sleepRadio();
-			else if(request == -5)		//Return Radio to normal function sleeping
+			else if(request == -5)		//Return Radio to normal function after sleeping
 				reviveRadio();
 
 			//Garbage cleanup

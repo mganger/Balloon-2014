@@ -35,14 +35,12 @@ using namespace std;
 
 //takes a string, parses index, writes to unique file, returns 1 with success,
 //0 with error. Note that the files it generates don't have filler zeros (not
-//necessary
+//necessary)
 int writePoint(string data){
-	cout << data << endl;
 	//generate the filename string
 	string indexString;
 	string fileName;
 	fileName = "datapoint_";
-//	const char* tmp = data.c_str();
 	//extract index (the first number) to go in name
 	bool caseEnd = 1;
 	for(unsigned int i = 0; (i < data.length() ) & (caseEnd); i++){
@@ -67,9 +65,8 @@ int writePoint(string data){
 				return 0;
 		}
 	}
-	delete[] &caseEnd;
 
-	//Check to see how many numbers are in it, put int0 file name with zeros
+	//Check to see how many numbers are in it, put into file name with zeros
 	for(unsigned int i = 0; i < (15 - indexString.length()); i++){
 		fileName += '0';
 	}
@@ -83,14 +80,49 @@ int writePoint(string data){
 		return 0;
 	}
 
-	cout << fileName.c_str() << endl;
 	ofstream outfile;
 	outfile.open(fileName.c_str());
 	outfile << data;
 	outfile.close();
-	return 1;
+
+
+//writes the largest point taken in the directory to "lastfile"
+	fstream filenumber;
+	filenumber.open("lastfile", ios::in);
+	string fileNumberToBeUsedForGetline;
+	getline(filenumber,fileNumberToBeUsedForGetline);
+	filenumber.close();
+	if(atoi(fileNumberToBeUsedForGetline.c_str()) < atoi(indexString.c_str())){
+		filenumber.open("lastfile", ios::trunc | ios::out);
+		filenumber << indexString.c_str();
+		filenumber.close();
+	}
+	return atoi(indexString.c_str());
 }
 
+//This function looks at all the data and returns the latest point that needs
+//TODO: have this function write the unreceived points to a file and read that
+//when returning need points. That way, it could probably handle billions of files
+int findPoint(int lastpoint){
+	for(int i = lastpoint-1; i; i--){
+		string filename;
+		filename = "datapoint_";
+		stringstream filenumber;
+		filenumber << i;
+		for(unsigned int j = 0; j < (15 - filenumber.str().length()); j++){
+			filename += '0';
+		}
+		filename += filenumber.str();
+
+		ifstream file(filename.c_str());
+		if(file.is_open() == 0){
+			return i;
+		}
+		file.close();
+	}
+
+	return 0;
+}
 
 int main(int argc, char** argv)
 {
@@ -99,22 +131,36 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-	
 	fstream deviceFile;
-	deviceFile.open(argv[1]);
+	deviceFile.open(argv[1], ios::in);
 
 	//Check to see if the file exists
 	if(!deviceFile.is_open()){
 		cerr << "Invalid device: " << argv[1] << endl;
 	}
 
+	int lastPoint;
 	for(;;){
 		string line;
-		getline(deviceFile, line, '\n');
-		if(!writePoint(line)){
+		getline(deviceFile, line);
+		lastPoint = writePoint(line);
+
+		int requestPoint;
+		if(lastPoint == 0){
 			cout << "Couldn't write file" << endl;
+			continue;
+		}
+		requestPoint = findPoint(lastPoint);
+
+		//If a point needs to be resent, it has to open and close the
+		//file connection. Otherwise, things break
+		if(requestPoint){
+			deviceFile.close();
+			deviceFile.open(argv[1], ios::out);
+			deviceFile << "request " << requestPoint << endl;
+			deviceFile.close();
+			deviceFile.open(argv[1], ios::in);
 		}
 	}
-
 	deviceFile.close();
 }
