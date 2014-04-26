@@ -17,9 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  *
- * Current Dependencies:
- *	openssl headers (openssl-devel on fedora)
- *		NOT ANYMORE. MD5 capability in the hash-library
+ * USAGE: ./master <DEVICE PATH> ...
+ * Explicitly uses 115200 baud
  */
 
 
