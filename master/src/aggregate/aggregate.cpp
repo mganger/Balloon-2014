@@ -16,7 +16,7 @@ int main()
 	index.open("lastfile");
 	string number;
 	getline(index,number);
-	cout << number << endl;
+	cout << number << " points available" << endl;
 	int num = atoi (number.c_str());
 	index.close();
 
@@ -34,12 +34,11 @@ int main()
 		}
 
 		filename += h_string.str();
-		cout << filename << endl;
 		//Reads in from the file 
 		ifstream point(filename.c_str());
 		string data;
 		getline(point,data);
-		longData << data << endl;
+		longData << data << '\n';
 		point.close();
 	}
 		longData.close();
