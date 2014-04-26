@@ -29,6 +29,7 @@ void setup(){
 	//Constuct data and radio (at 115200 baud)
 	Borp radio;
 	Data data;
+	bool revive = 1;	//Decides whether the radio should be allowed to revive.
 
 	for(;;){
 		//Collects sensor data, indexes the point
@@ -56,19 +57,19 @@ void setup(){
 				unsigned long int array[POINTSIZE];
 				data.returnData(array, request);
 			}
-			else if(request == -1)		//Nothing to report
+			else if(request == -1)			//Nothing to report
 				break;
-			else if(request == -2)		//Cutdown!!!!!
+			else if(request == -2)			//Cutdown!!!!!
 				digitalWrite(8,HIGH);
-			else if(request == -3)		//Kill Radio
-//				digitalWrite();
-				;
-			else if(request == -4)		//Temporarily Kill Radio
-//				sleepRadio();
-				;
-			else if(request == -5)		//Return Radio to normal functioning
-//				reviveRadio();
-				;
+			else if(request == -3)			//Permanently Kills Radio
+			{
+				digitalWrite(7,LOW);
+				revive == 0;		//Does not allow the radio to turn back on.
+			}
+			else if(request == -4)			//Temporarily Kill Radio
+				digitalWrite(7,LOW);
+			else if(request == -5 && revive)	//Return Radio to normal functioning if allowed
+				digitalWrite(7,HIGH);
 		}
 	}
 }
