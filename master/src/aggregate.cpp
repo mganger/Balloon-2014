@@ -20,7 +20,7 @@ int main()
 	int num = atoi (number.c_str());
 	index.close();
 
-	for(unsigned int h = 0; h <= num;h++)
+	for(int h = 0; h <= num;h++)
 	{
 		//Creates a file name based on the index string
 		string filename = "datapoint_";
@@ -28,7 +28,7 @@ int main()
 		h_string << h;
 		int length = h_string.str().length();
 
-		for(unsigned int i = 0;i < (15 - length);i++)
+		for(int i = 0;i < (15 - length);i++)
 		{
 			filename +='0';
 		}
@@ -38,7 +38,9 @@ int main()
 		ifstream point(filename.c_str());
 		string data;
 		getline(point,data);
-		longData << data << '\n';
+		if(data != ""){
+			longData << data << '\n';
+		}
 		point.close();
 	}
 		longData.close();
