@@ -1,6 +1,6 @@
 #!/bin/bash
 
-../agg
+../aggregate
 
 mkdir ../graphs
 gnuplot -persist -e "set term svg;set output '../graphs/altitude.svg';set title 'altitude';set datafile separator ',';plot '../data.csv' using 2:3 with lines"
