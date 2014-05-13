@@ -163,7 +163,7 @@ void Data::readLUX()
 	if(tsl.begin())
 	{
 	//Set settings for lux sensor
-		Serial.println("Lux sensor connected");
+//		Serial.println("Lux sensor connected");
 		tsl.setGain(TSL2561_GAIN_0X);	//Bright situations
 //		tsl.setGain(TSL2561_GAIN_16X);	//Dim situations
 		tsl.setTiming(TSL2561_INTEGRATIONTIME_13MS);
