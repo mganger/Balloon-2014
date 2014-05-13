@@ -157,13 +157,13 @@ void Data::readPres(){
 
 void Data::readLUX()
 {
-	TSL2561 tsl(TSL2561_ADDR_HIGH);
+	TSL2561 tsl(TSL2561_ADDR_LOW);
 	TSL2561 tsl2(TSL2561_ADDR_FLOAT);
 	//Set address to bottom lux sensor
 	if(tsl.begin())
 	{
 	//Set settings for lux sensor
-//		Serial.println("Lux sensor connected");
+		Serial.println("Lux sensor connected");
 		tsl.setGain(TSL2561_GAIN_0X);	//Bright situations
 //		tsl.setGain(TSL2561_GAIN_16X);	//Dim situations
 		tsl.setTiming(TSL2561_INTEGRATIONTIME_13MS);
