@@ -209,7 +209,7 @@ void Data::saveData()
 {
 	File dataFile;
 	pinMode(10,OUTPUT);
-	if(!SD.begin()){
+	if(!SD.begin(10)){
 		Serial.println("Yup, it's broked");
 	}
 	for(int i = 0; i < 1000000; i++)
