@@ -209,7 +209,6 @@ void Data::saveData()
 {
 	File dataFile;
 	pinMode(10,OUTPUT);
-	Serial.println("Pinselect");
 	if(SD.begin(10))
 	{
 		for(int i = 0; i < 1000000; i++)
@@ -221,19 +220,15 @@ void Data::saveData()
         		filename[9] = i/1000 + '0';
         		filename[10] = i/100 + '0';
         		filename[11] = i/10 + '0';
-        		filename[12] = i%10 + '0';
-			Serial.println("Filename");
 			if(!SD.exists(filename))
 			{
 				dataFile = SD.open(filename, FILE_WRITE);
-				Serial.println("File Opened");
 				break;
 			}
 		}
 	}
 	for(int i = 0;i < 10;i++)
 	{
-		Serial.println("File Write");
 		dataFile.print(dataArray[i]);
 		dataFile.print(",");
 	}
