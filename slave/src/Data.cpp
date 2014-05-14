@@ -237,9 +237,9 @@ void Data::saveData()
 		dataFile.print(dataArray[i]);
 		dataFile.print(",");
 	}
-	Serial.println("Close File");
 	dataFile.print("\n");
 	dataFile.flush();
+	dataFile.close();
 }
 
 void Data::readGPS()
