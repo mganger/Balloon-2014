@@ -60,6 +60,8 @@ Data::Data(){
 //delay(1000);
 //
 //constructor to initialize to 4294967295
+	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
+	File dataFile;		//dataFile for SD card
 	index = 0;
 	reset();
 }
@@ -207,8 +209,6 @@ void Data::readLUX()
 
 void Data::saveData()
 {
-	File dataFile;
-	pinMode(10,OUTPUT);
 	if(!SD.begin(10)){
 		Serial.println("Yup, it's broked");
 	}
