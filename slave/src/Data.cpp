@@ -210,10 +210,11 @@ void Data::saveData()
 	File dataFile;
 	pinMode(10,OUTPUT);
 	if(!SD.begin()){
-		return;
+		Serial.println("Yup, it's broked");
 	}
 	for(int i = 0; i < 1000000; i++)
 	{
+		Serial.println("Good so far. Naming");
 		char filename[] = "LOGGER0000000.txt";
 		filename[6] = i/1000000 + '0';
 		filename[7] = i/100000 + '0';
@@ -224,14 +225,17 @@ void Data::saveData()
 		if(!SD.exists(filename))
 		{
 			dataFile = SD.open(filename, FILE_WRITE);
+			Serial.println("Opening File");
 			break;
 		}
 	}
+	Serial.println("Printing to File");
 	for(int i = 0;i < 10;i++)
 	{
 		dataFile.print(dataArray[i]);
 		dataFile.print(",");
 	}
+	Serial.println("Done printing to File");
 	dataFile.print("\n");
 	dataFile.flush();
 	dataFile.close();
