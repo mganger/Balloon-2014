@@ -209,22 +209,22 @@ void Data::saveData()
 {
 	File dataFile;
 	pinMode(10,OUTPUT);
-	if(SD.begin(10))
+	if(!SD.begin()){
+		return;
+	}
+	for(int i = 0; i < 1000000; i++)
 	{
-		for(int i = 0; i < 1000000; i++)
+		char filename[] = "LOGGER0000000.txt";
+		filename[6] = i/1000000 + '0';
+		filename[7] = i/100000 + '0';
+        	filename[8] = i/10000 + '0';
+        	filename[9] = i/1000 + '0';
+        	filename[10] = i/100 + '0';
+        	filename[11] = i/10 + '0';
+		if(!SD.exists(filename))
 		{
-			char filename[] = "LOGGER0000000.txt";
-			filename[6] = i/1000000 + '0';
-			filename[7] = i/100000 + '0';
-        		filename[8] = i/10000 + '0';
-        		filename[9] = i/1000 + '0';
-        		filename[10] = i/100 + '0';
-        		filename[11] = i/10 + '0';
-			if(!SD.exists(filename))
-			{
-				dataFile = SD.open(filename, FILE_WRITE);
-				break;
-			}
+			dataFile = SD.open(filename, FILE_WRITE);
+			break;
 		}
 	}
 	for(int i = 0;i < 10;i++)
