@@ -212,23 +212,23 @@ void Data::saveData()
 	if(!SD.begin(10)){
 		Serial.println("Yup, it's broked");
 	}
-//	for(int i = 0; i < 1000000; i++)
-//	{
-//		Serial.println("Good so far. Naming");
-//		char filename[] = "LOGGER0000000.txt";
-//		filename[6] = i/1000000 + '0';
-//		filename[7] = i/100000 + '0';
-//        	filename[8] = i/10000 + '0';
-//        	filename[9] = i/1000 + '0';
-//        	filename[10] = i/100 + '0';
-//        	filename[11] = i/10 + '0';
-//		if(!SD.exists(filename))
-//		{
-//			dataFile = SD.open(filename, FILE_WRITE);
-//			Serial.println("Opening File");
-//			break;
-//		}
-//	}
+	for(int i = 0; i < 1000000; i++)
+	{
+		Serial.println("Good so far. Naming");
+		char filename[] = "LOGGER0000000.txt";
+		filename[6] = i/1000000 + '0';
+		filename[7] = i/100000 + '0';
+        	filename[8] = i/10000 + '0';
+        	filename[9] = i/1000 + '0';
+        	filename[10] = i/100 + '0';
+        	filename[11] = i/10 + '0';
+		if(!SD.exists(filename))
+		{
+			dataFile = SD.open(filename, FILE_WRITE);
+			Serial.println("Opening File");
+			break;
+		}
+	}
 	Serial.println("Printing to File");
 	for(int i = 0;i < 10;i++)
 	{
