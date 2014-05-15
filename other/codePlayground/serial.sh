@@ -11,7 +11,7 @@ if [ -z "$1" ]
 fi
 
 #Test whether a directory is specified
-if [ -z "$1" ]
+if [ -z "$2" ]
 	then
 		echo "No directory supplied. Use '.' to put it in the current directory"
 		exit
