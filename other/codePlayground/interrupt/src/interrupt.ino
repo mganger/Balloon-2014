@@ -24,7 +24,6 @@ void setup(){
 	Serial.begin(115200);
 	Timer1.initialize(1000000); //Call interrupt every 1000ms
 	Timer1.attachInterrupt(switchPin);
-	Timer1.start();
 
 
 
