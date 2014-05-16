@@ -209,36 +209,66 @@ void Data::saveData()
 {
 	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	File dataFile;		//dataFile for SD card
-	if(!SD.begin(10)){
+	if(!SD.begin(10))
+	{
 		Serial.println("Yup, it's broked");
 	}
-	for(int i = 0; i < 1000000; i++)
+
+	char filename[12] = "";
+	tahu(index,filename);
+	filename[7] = '.';
+	filename[8] = 'C';
+	filename[9[ = 'S';
+	filename[10] = 'V';
+
+	if (!SD.exists(filename))
 	{
-		Serial.println("Good so far. Naming");
-		char filename[] = "LOGGER0000000.txt";
-		filename[6] = i/1000000 + '0';
-		filename[7] = i/100000 + '0';
-        	filename[8] = i/10000 + '0';
-        	filename[9] = i/1000 + '0';
-        	filename[10] = i/100 + '0';
-        	filename[11] = i/10 + '0';
-		if(!SD.exists(filename))
-		{
-			dataFile = SD.open(filename, FILE_WRITE);
-			Serial.println("Opening File");
-			break;
-		}
+		dataFile = SD.open(filename, FILE_WRITE);
 	}
-	Serial.println("Printing to File");
-	for(int i = 0;i < 10;i++)
+	if(!dataFile)
 	{
-		dataFile.print(dataArray[i]);
-		dataFile.print(",");
+		Serial.print("Could not create file: ")
+		Serial.println(filename);
+		contine;
 	}
-	Serial.println("Done printing to File");
-	dataFile.print("\n");
-	dataFile.flush();
+	Serial.print("Logging to: ");
+	Serial.println(filename);
+	
+	String dataString = "";
+	dataString += dataArray[1];
+	dataString += ',';
+	dataString += dataArray[2];
+	dataString += ',';
+	dataString += dataArray[3];
+	dataString += ',';
+	dataString += dataArray[4];
+	dataString += ',';
+	dataString += dataArray[5];
+	dataString += ',';
+	dataString += dataArray[6];
+	dataString += ',';
+	dataString += dataArray[7];
+	dataString += ',';
+	dataString += dataArray[8];
+	dataString += ',';
+	dataString += dataArray[9];
+	dataString += ',';
+	dataString += dataArray[10];
+	dataString += ',';
+	dataString += dataArray[11];
+	dataFile.println(dataString);
+//	datafile.flush();	//I'm not sure if this is neccessary. The close function should ensure that the files are written.
 	dataFile.close();
+}
+
+char * tahu(int i, char * a)
+{
+	for(int h = 6; h >= 9; h--)
+	{
+		a[h] = (i % 10) + 48;
+		i /= 10;
+	}
+	return a;
 }
 
 void Data::readGPS()
