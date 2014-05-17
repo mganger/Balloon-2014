@@ -2,21 +2,18 @@
 
 while :
 do
-../aggregate
+./aggregate
 
-#mkdir ../graphs
-gnuplot -persist -e "set term svg;set output '../graphs/altitude.svg';set title 'altitude';set datafile separator ',';plot '../data.csv' using 2:3 with lines"
-gnuplot -persist -e "set term svg;set output '../graphs/pressure.svg';set title 'pressure';set datafile separator ',';plot '../data.csv' using 2:4 with lines"
-gnuplot -persist -e "set term svg;set output '../graphs/humidity.svg';set title 'humidity';set datafile separator ',';plot '../data.csv' using 2:5 with lines"
-gnuplot -persist -e "set term svg;set output '../graphs/CO2.svg';set title 'CO2';set datafile separator ',';plot '../data.csv' using 2:6 with lines"
-gnuplot -persist -e "set term svg;set output '../graphs/UV.svg';set title 'Ultra Violet';set datafile separator ',';plot '../data.csv' using 2:7 with lines"
-gnuplot -persist -e "set term svg;set output '../graphs/O3.svg';set title 'Ozone';set datafile separator ',';plot '../data.csv' using 2:8 with lines"
-gnuplot -persist -e "set term svg;set output '../graphs/IR.svg';set title 'InfraRed';set datafile separator ',';plot '../data.csv' using 2:9 title 'IR up' with lines, '../data.csv' using 2:10 title 'IR down' with lines, '../data.csv' using 2:11 title 'Visible Up' with lines,'../data.csv' using 2:12 title 'Visible Down' with lines"
+#mkdir ./graphs
+gnuplot -persist -e "load 'gnuscript'"
 
 echo "Waiting for new data"
 sleep 5
 echo "Back to Work"
 done 
+
+#Extraneous information for reference.
+#dataArray is current with Data class as of 05/17/2014
 
 #Data being stored in the array
 #dataArray[0] = index++;
