@@ -218,7 +218,7 @@ void Data::saveData()
 	tahu(index,filename);
 	filename[7] = '.';
 	filename[8] = 'C';
-	filename[9[ = 'S';
+	filename[9] = 'S';
 	filename[10] = 'V';
 
 	if (!SD.exists(filename))
@@ -227,9 +227,8 @@ void Data::saveData()
 	}
 	if(!dataFile)
 	{
-		Serial.print("Could not create file: ")
+		Serial.print("Could not create file: ");
 		Serial.println(filename);
-		contine;
 	}
 	Serial.print("Logging to: ");
 	Serial.println(filename);
@@ -261,7 +260,7 @@ void Data::saveData()
 	dataFile.close();
 }
 
-char * tahu(int i, char * a)
+char * Data::tahu(int i, char * a)
 {
 	for(int h = 6; h >= 9; h--)
 	{

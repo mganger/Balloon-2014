@@ -59,6 +59,8 @@ class Data {
 		void readO3();
 		void readGPS();
 
+		char* tahu(int,char*);
+
 		void reset();					//resets all readings to null
 };
 
