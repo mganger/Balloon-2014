@@ -31,11 +31,13 @@
 
 #include "Borp.h"
 #include "Arduino.h"
-//#include "MD5.h"
 
 Borp::Borp(){
 	Serial.begin(115200);
 	serialOpen = 1;
+	Serial.println();
+	Serial.println("Balloon Over Radio Protocol v1.42.7");
+	Serial.println("Connection initialized");
 }
 
 
