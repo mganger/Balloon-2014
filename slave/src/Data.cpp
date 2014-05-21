@@ -240,7 +240,8 @@ bool Data::saveData()
 	File dataFile;		//dataFile for SD card
 	if(!SD.begin(10))
 	{
-		Serial.println("Yup, it's broked");
+		Serial.println("SD Card cannot open");
+		return 1;
 	}
 
 	if(index % PACKETSIZE == 0)

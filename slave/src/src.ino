@@ -34,9 +34,11 @@ void setup(){
 	for(;;){
 		//Collects sensor data, indexes the point
 		data.readSensorData();
-		//Writes point to the SD card. Counts up to 9,999,999 files
-		//Currently commented out because it hangs if there is no sd card
-//		data.saveData();
+		Serial.println("Read the sensor data"); //TODO
+		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
+		if(!data.saveData()){
+			Serial.println("Data saved"); //TODO
+		}
 
 		//create an array to be read into
 		unsigned long int array[50];
@@ -64,7 +66,7 @@ void setup(){
 			else if(request == -3)			//Permanently Kills Radio
 			{
 				digitalWrite(7,LOW);
-				revive == 0;		//Does not allow the radio to turn back on.
+				revive == 0;			//Does not allow the radio to turn back on.
 			}
 			else if(request == -4)			//Temporarily Kill Radio
 				digitalWrite(7,LOW);
