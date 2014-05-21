@@ -39,28 +39,6 @@ Intersema::BaroPressure_MS5607B baro(true);
 //Constructor, reset, init
 
 Data::Data(){
-//	Setup GPS 
-//#if ARDUINO >= 100
-//	SoftwareSerial mySerial(3,2);
-//#else 
-//	NewSoftSerial mySerial(3,2);
-//#endif
-//Adafruit_GPS GSP(&mySerial);
-//#define GPSECHO true
-//
-//	boolean usingInterrupt = false;
-//	void useInterrupt(boolean);
-//
-//	Adafruit_GPS GPS(&mySerial);
-//	GPS.begin(9600);
-//	GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-//	GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
-//	GPS.sendCommand(PGCMD_ANTENNA);
-//
-//useInterrupt(true);
-//delay(1000);
-//
-//constructor to initialize to 4294967295
 	index = 0;
 	reset();
 }
