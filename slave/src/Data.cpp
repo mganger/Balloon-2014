@@ -18,6 +18,7 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 #define INIT 4294967295
+#define PACKETSIZE 10
 
 #include "Data.h"
 #include "Arduino.h"
@@ -214,15 +215,15 @@ void Data::saveData()
 		Serial.println("Yup, it's broked");
 	}
 
-	char filename[12] = "";
-	tahu(index,filename);
-	filename[7] = '.';
-	filename[8] = 'C';
-	filename[9] = 'S';
-	filename[10] = 'V';
+	if(index % PACKETSIZE == 0)
+	{
+		char filename[18] = "0/0/0/0/0/0/0.CSV";
+		tahu(index,filename);
+	}
 
 	if (!SD.exists(filename))
 	{
+		dataFile.close();
 		dataFile = SD.open(filename, FILE_WRITE);
 	}
 	if(!dataFile)
@@ -232,37 +233,18 @@ void Data::saveData()
 	}
 	Serial.print("Logging to: ");
 	Serial.println(filename);
-	
-	String dataString = "";
-	dataString += dataArray[1];
-	dataString += ',';
-	dataString += dataArray[2];
-	dataString += ',';
-	dataString += dataArray[3];
-	dataString += ',';
-	dataString += dataArray[4];
-	dataString += ',';
-	dataString += dataArray[5];
-	dataString += ',';
-	dataString += dataArray[6];
-	dataString += ',';
-	dataString += dataArray[7];
-	dataString += ',';
-	dataString += dataArray[8];
-	dataString += ',';
-	dataString += dataArray[9];
-	dataString += ',';
-	dataString += dataArray[10];
-	dataString += ',';
-	dataString += dataArray[11];
-	dataFile.println(dataString);
-//	datafile.flush();	//I'm not sure if this is neccessary. The close function should ensure that the files are written.
-	dataFile.close();
+
+	for(int i = 0; i < 12;i++)
+	{
+		dataFile.print(dataArray[i]);
+		dataFile.print(",");
+	}
+	dataFile.flush();
 }
 
 char * Data::tahu(int i, char * a)
 {
-	for(int h = 6; h >= 9; h--)
+	for(int h = 12; h >= 0; h -=2)
 	{
 		a[h] = (i % 10) + 48;
 		i /= 10;
