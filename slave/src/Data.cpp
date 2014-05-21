@@ -27,8 +27,9 @@
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
 #include "SoftwareSerial.h"	//Library for Software Serial communications
-#include "Wire.h"
-#include "TSL2561.h"
+#include "Wire.h"		//Library for i2c communication
+#include "TSL2561.h"		//Library for digital luminosity/lux sensor
+#include "Adafruit_TMP006.h"	//Library for non-contact temperature sensing
 
 //Global variable necessary for Lux Calculations
 //Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
@@ -75,6 +76,8 @@ void Data::reset(){
 	IRdown = INIT;
 	visUp = INIT;
 	visDown = INIT;
+	midIRup = INIT;
+	midIRdown = INIT;
 
 	index++;		//increment the index by 1 on reset
 }
@@ -97,6 +100,8 @@ void Data::returnData(unsigned long int * dataArray){
 	dataArray[9] = IRdown;
 	dataArray[10] = visUp;
 	dataArray[11] = visDown;
+	dataArray[12] = midIRup;
+	dataArray[13] = midIRdown;
 }
 
 void Data::returnData(unsigned long int * dataArray,unsigned long int index){
@@ -154,6 +159,31 @@ void Data::readPres(){
 	pres = baro.getPressure();
 }
 
+void Data::readMidIR()
+{
+	Adafruit_TMP006 tmp(0x40);  //Create tmp sensor with address 0x40  [GND,GND]
+	Adafruit_TMP006 tmp2(0x41);  //Create tmp sensor with address 0x41 [GND,VCC]
+	
+	//you can also use tmp.begin(TMP006_CFG_1SAMPLE) or 2SAMPLE/4SAMPLE/8SAMPLE to have
+	//lower precision, higher rate sampling. default is TMP006_CFG_16SAMPLE which takes
+	//4 seconds per reading (16 samples)
+	if(!tmp.begin(TMP006_CFG_1SAMPLE)) 
+	{
+		Serial.println("No top IR thermometer found");
+	}
+	if(!tmp2.begin(TMP006_CFG_1SAMPLE)) 
+	{
+		Serial.println("No bottom IR thermometer found");
+	}
+	
+	//Loop
+	float objt = tmp.readObjTempC();		//Returns Kelvins 
+	midIRup = objt;
+	float objt2 = tmp2.readObjTempC(); 		//Returns Kelvins
+	midIRdown = objt;
+//	float diet = tmp.readDieTempC(); 		//Returns Kelvins
+//	float diet2 = tmp2.readDieTempC(); 		//Returns Kelvins
+}
 void Data::readLUX()
 {
 	TSL2561 tsl(TSL2561_ADDR_LOW);
