@@ -26,7 +26,6 @@
 #include "SD.h"			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
-#include "Adafruit_GPS.h"	//Library for GPS
 #include "SoftwareSerial.h"	//Library for Software Serial communications
 #include "Wire.h"
 #include "TSL2561.h"
@@ -40,12 +39,13 @@ Intersema::BaroPressure_MS5607B baro(true);
 
 Data::Data(){
 	File initFile;
+	SoftwareSerial gps(2,3); //Rx, Tx
 	if(!SD.begin(10)){
 		Serial.println("The SD Card has failed or is not present");
 	}
 	else{
 		initFile = SD.open("Startup Sequence.LOG",FILE_WRITE);
-		intiFile.println();
+		initFile.println();
 		initFile.println();
 		initFile.println("---------------");
 		initFile.print("Time since boot: ");
@@ -204,7 +204,7 @@ void Data::readLUX()
 	}
 }
 
-void Data::saveData()
+bool Data::saveData()
 {
 	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	File dataFile;		//dataFile for SD card
@@ -217,20 +217,22 @@ void Data::saveData()
 	{
 		char filename[18] = "0/0/0/0/0/0/0.CSV";
 		tahu(index,filename);
+		if (!SD.exists(filename))
+		{
+			dataFile.close();
+			dataFile = SD.open(filename, FILE_WRITE);
+			if(!dataFile)
+			{
+				Serial.print("Could not create file: ");
+				Serial.println(filename);
+				return 1;
+			}else
+			{
+				Serial.print("Logging to: ");
+				Serial.println(filename);
+			}
+		}
 	}
-
-	if (!SD.exists(filename))
-	{
-		dataFile.close();
-		dataFile = SD.open(filename, FILE_WRITE);
-	}
-	if(!dataFile)
-	{
-		Serial.print("Could not create file: ");
-		Serial.println(filename);
-	}
-	Serial.print("Logging to: ");
-	Serial.println(filename);
 
 	for(int i = 0; i < 12;i++)
 	{
@@ -238,6 +240,7 @@ void Data::saveData()
 		dataFile.print(",");
 	}
 	dataFile.flush();
+	return 0;
 }
 
 char * Data::tahu(int i, char * a)
