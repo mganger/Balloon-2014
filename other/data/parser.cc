@@ -40,16 +40,27 @@ int main(int argc, char** argv){
 	//Read the csv line into variables
 	ifstream input("battery.log");
 	ofstream output("output.csv", ios::trunc);
+	ofstream wattageFile("wattage.csv", ios::trunc);
 	string time;
 	string clock;
-	string reading;
+	string readingStr;
 	//add up all the wattage values
-	unsigned long int wattTotal = 0;
+	long double watts = 0;
+	long double wattHrTotal = 0;
 
 	for(int i = 0; i < lineNumber; i++){
 		getline(input, time, ',');
 		getline(input, clock, ',');
-		getline(input, reading, '\n');
-		output << atof(time.c_str())/3600000 << ',' << atof(reading.c_str()) / 182.33 << endl; 
+		getline(input, readingStr, '\n');
+		int reading = atoi(readingStr.c_str());
+//		output << atof(time.c_str())/3600000 << ',' << atof(reading.c_str()) / 182.33 << endl;
+		if(reading > 547){
+			long double voltage = reading / 182.33;
+			watts = voltage * voltage / 75;
+			wattHrTotal += watts *.1 /3600;
+//			wattageFile << time.c_str() << ',' << watts << ',' << wattHrTotal / 3600000 << endl;
+		}
 	}
+	cout << wattHrTotal << endl;
+	return 0;
 }
