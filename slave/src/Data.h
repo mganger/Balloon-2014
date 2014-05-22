@@ -33,25 +33,21 @@ class Data {
 
 		void printData();
 
-		bool saveData();				//writes to the SD card
-		void readSensorData();				//reads from the sensors
+		bool saveData();		//writes to the SD card
+		void readSensorData();		//reads from the sensors
 
 	private:
 
 		unsigned long int timeCollect;	//milliseconds
-
-		unsigned long int pres, UV, IRup, IRdown, midIRup, midIRdown;			//Private variables to hold sensor
-		unsigned long int temp, humi, CO2, O3, visUp, visDown;		//values for different measurements
-
-		unsigned long int index;		//Holds current collection index
+		unsigned long int index;	//Holds current collection index
 
 		//Global variable necessary for Lux Calculations 
 //		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
 
-		void readLUX();	
+		void readLUX();
 		void readPres();
-		void readUV();	
-		void readIR();	
+		void readUV();
+		void readIR();
 		void readHumi();
 		void readCO2();
 		void readTemp();

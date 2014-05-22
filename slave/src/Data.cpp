@@ -21,7 +21,7 @@
 #define PACKETSIZE 1000
 #define SIZE 14
 
-//Pin definitions
+//Array definitions
 #define INDEX 		0
 #define TIMECOLLECT 	1
 #define TEMP 		2
@@ -39,7 +39,7 @@
 
 #include "Data.h"
 #include "Arduino.h"
-#include "SPI.h"		//Library for SPI communicatinos
+#include "SPI.h"		//Library for SPI communications
 #include "SD.h"			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
@@ -67,11 +67,12 @@ Data::Data(){
 		initFile.println();
 		initFile.println("---------------");
 		initFile.print("Time since boot: ");
-		initFile.println(millis());
+		initFile.println(micros());
 		initFile.print("GPS Status: ");
 		//Check to see what i2c sensors are ready
+		initFile.flush();
 		initFile.close();
-	}
+
 	unsigned long int dataArray[SIZE];
 	index = 0;
 	reset();
@@ -79,18 +80,9 @@ Data::Data(){
 
 void Data::reset(){
 	//Set the readings to sentinal value
-	temp = INIT;
-	pres = INIT;
-	humi = INIT;
-	CO2 = INIT;
-	UV = INIT;
-	O3 = INIT;
-	IRup = INIT;
-	IRdown = INIT;
-	visUp = INIT;
-	visDown = INIT;
-	midIRup = INIT;
-	midIRdown = INIT;
+	for(int i = 0; i < SIZE; i++){
+		dataArray[i] = 0;
+	}
 
 	index++;		//increment the index by 1 on reset
 }
