@@ -19,6 +19,7 @@
  */
 #define INIT 4294967295
 #define PACKETSIZE 1000
+#define SIZE 14
 
 #include "Data.h"
 #include "Arduino.h"
@@ -54,6 +55,7 @@ Data::Data(){
 		initFile.print("GPS Status: ");
 		//Check to see what i2c sensors are ready
 	}
+	unsigned long int dataArray[SIZE]);
 	index = 0;
 	reset();
 }
@@ -79,7 +81,7 @@ void Data::reset(){
 //******************************************************************************
 //Functions to return data as array
 
-void Data::returnData(unsigned long int * dataArray){
+void Data::printData(){
 
 //If you change the number of readings here you must update POINTSIZE in Data.h
 	dataArray[0] = index++;
@@ -96,11 +98,11 @@ void Data::returnData(unsigned long int * dataArray){
 	dataArray[11] = visDown;
 	dataArray[12] = midIRup;
 	dataArray[13] = midIRdown;
-}
-
-void Data::returnData(unsigned long int * dataArray,unsigned long int index){
-		returnData(dataArray);
-		//retrieves data point with a certain index from the SD
+	for(int i = 0; i < sizeof(dataArray)/sizeof(dataArray[0]); i++)
+	{
+		Serial.print(dataArray[i]);
+		Serial.print(",");
+	}
 }
 
 //******************************************************************************

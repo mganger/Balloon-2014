@@ -31,8 +31,7 @@ class Data {
 
 		unsigned long int timeSince();	//returns time since last collect
 
-		void returnData(unsigned long int* dataArray);			//returns a pointer to an array of
-		void returnData(unsigned long int * dataArray, unsigned long int index);	//newest or specified index
+		void printData();
 
 		bool saveData();				//writes to the SD card
 		void readSensorData();				//reads from the sensors
