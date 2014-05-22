@@ -54,7 +54,7 @@ Data::Data(){
 		initFile.print("GPS Status: ");
 		//Check to see what i2c sensors are ready
 	}
-	unsigned long int dataArray[SIZE]);
+	unsigned long int dataArray[SIZE];
 	index = 0;
 	reset();
 }
