@@ -231,7 +231,6 @@ void Data::readLUX()
 
 bool Data::saveData()
 {
-	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	File dataFile;		//dataFile for SD card
 	if(!SD.begin(10))
 	{
