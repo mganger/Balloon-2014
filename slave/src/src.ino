@@ -22,12 +22,10 @@
 #define FREQ 10					//frequency of readings
 #define SIZE 14					//keep updated with actual number
 
-#include "Borp.h"
 #include "Data.h"
 
 void setup(){
-	//Constuct data and radio (at 115200 baud)
-	Borp radio;
+	//Constuct data object to store points
 	Data data;
 	bool revive = 1;	//Decides whether the radio should be allowed to revive.
 
@@ -44,34 +42,9 @@ void setup(){
 		unsigned long int array[50];
 		//read the sensor data into the array
 		data.returnData(array);
-		//send the array over the Serial port (as ASCII)
-		//This needs to be handled on a request basis in the future
-		radio.phoneHome(array,POINTSIZE);
-		//delete the array to save memory
 
-		//resend data when we have time in between readings
+		//Pause so data is collected on even time intervals
 		while((millis() - data.timeSince())<PERIOD){
-			long int request = radio.listen();
-
-			//If the request is for a real point, we try to fill it
-			//If the request is above 2^31 - 1, it will overflow
-			if (request > 0){
-				unsigned long int array[POINTSIZE];
-				data.returnData(array, request);
-			}
-			else if(request == -1)			//Nothing to report
-				break;
-			else if(request == -2)			//Cutdown!!!!!
-				digitalWrite(8,HIGH);
-			else if(request == -3)			//Permanently Kills Radio
-			{
-				digitalWrite(7,LOW);
-				revive == 0;			//Does not allow the radio to turn back on.
-			}
-			else if(request == -4)			//Temporarily Kill Radio
-				digitalWrite(7,LOW);
-			else if(request == -5 && revive)	//Return Radio to normal functioning if allowed
-				digitalWrite(7,HIGH);
 		}
 	}
 }
