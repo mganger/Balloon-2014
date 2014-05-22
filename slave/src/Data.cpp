@@ -57,6 +57,7 @@ Intersema::BaroPressure_MS5607B baro(true);
 
 Data::Data(){
 	File initFile;
+	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	if(!SD.begin(10)){
 		Serial.println("The SD Card has failed or is not present");
 	}
@@ -69,6 +70,7 @@ Data::Data(){
 		initFile.println(millis());
 		initFile.print("GPS Status: ");
 		//Check to see what i2c sensors are ready
+		initFile.close();
 	}
 	unsigned long int dataArray[SIZE];
 	index = 0;
