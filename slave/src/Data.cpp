@@ -123,7 +123,7 @@ void Data::readSensorData()
 	readCO2();
 	readTemp();
 	readO3();
-	readMidIR()
+	readMidIR();
 }
 
 void Data::readCO2()
