@@ -102,6 +102,7 @@ void Data::printData(){
 		Serial.print(dataArray[i]);
 		Serial.print(",");
 	}
+	Serial.println();
 }
 
 //******************************************************************************
