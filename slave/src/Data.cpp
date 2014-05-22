@@ -21,6 +21,22 @@
 #define PACKETSIZE 1000
 #define SIZE 14
 
+//Pin definitions
+#define INDEX 0
+#define TIMECOLLECT 1
+#define TEMP 2
+#define PRES 3
+#define HUMI 4
+#define CO2 5
+#define UV 6
+#define O3 7
+#define IRUP 8
+#define IRDOWN 9
+#define VISUP 9
+#define VISDOWN 11
+#define MIDIRUP 12
+#define MIDIRDOWN 13
+
 #include "Data.h"
 #include "Arduino.h"
 #include "SPI.h"		//Library for SPI communicatinos
@@ -83,20 +99,6 @@ void Data::reset(){
 void Data::printData(){
 
 //If you change the number of readings here you must update POINTSIZE in Data.h
-	dataArray[0] = index++;
-	dataArray[1] = timeCollect;
-	dataArray[2] = temp;
-	dataArray[3] = pres;
-	dataArray[4] = humi;
-	dataArray[5] = CO2;
-	dataArray[6] = UV;
-	dataArray[7] = O3;
-	dataArray[8] = IRup;
-	dataArray[9] = IRdown;
-	dataArray[10] = visUp;
-	dataArray[11] = visDown;
-	dataArray[12] = midIRup;
-	dataArray[13] = midIRdown;
 	for(int i = 0; i < sizeof(dataArray)/sizeof(dataArray[0]); i++)
 	{
 		Serial.print(dataArray[i]);
@@ -124,7 +126,7 @@ void Data::readSensorData()
 
 void Data::readCO2()
 {
-	CO2 = analogRead(0);
+	dataArray[CO2] = analogRead(0);
 }
 
 void Data::readIR()
@@ -133,27 +135,27 @@ void Data::readIR()
 
 void Data::readTemp()
 {
-	temp = analogRead(1);
+	dataArray[TEMP] = analogRead(1);
 }
 
 void Data::readHumi()
 {
-	humi = analogRead(2);
+	dataArray[HUMI] = analogRead(2);
 }
 
 void Data::readUV()
 {
-	UV = analogRead(2);
+	dataArray[UV] = analogRead(2);
 }
 
 void Data::readO3()
 {
-	O3 = analogRead(3);
+	dataArray[O3] = analogRead(3);
 }
 
 void Data::readPres(){
 	baro.init();
-	pres = baro.getPressure();
+	dataArray[PRES] = baro.getPressure();
 }
 
 void Data::readMidIR()
@@ -175,9 +177,11 @@ void Data::readMidIR()
 	
 	//Loop
 	float objt = tmp.readObjTempC();		//Returns Kelvins 
-	midIRup = objt;
 	float objt2 = tmp2.readObjTempC(); 		//Returns Kelvins
-	midIRdown = objt;
+
+	dataArray[MIDIRUP] = objt;
+	dataArray[MIDIRDOWN] = objt;
+
 //	float diet = tmp.readDieTempC(); 		//Returns Kelvins
 //	float diet2 = tmp2.readDieTempC(); 		//Returns Kelvins
 }
@@ -201,8 +205,8 @@ void Data::readLUX()
 
 	//Save data from top sensor
 
-		visDown = vis;
-		IRdown = ir;
+		dataArray[VISDOWN] = vis;
+		dataArray[IRDOWN] = ir;
 	}
 	else
 	{
@@ -222,8 +226,8 @@ void Data::readLUX()
 		uint16_t vis = tsl2.getLuminosity(TSL2561_VISIBLE);
 //		uint16_t full = tsl2.getLuminosity(TSL2561_FULLSPECTRUM);
 		uint16_t ir = tsl2.getLuminosity(TSL2561_INFRARED);
-		IRup = ir;
-		visUp = vis;
+		dataArray[IRUP] = ir;
+		dataArray[VISUP] = vis;
 	}
 	else
 	{
