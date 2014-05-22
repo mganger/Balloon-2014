@@ -72,7 +72,7 @@ Data::Data(){
 		//Check to see what i2c sensors are ready
 		initFile.flush();
 		initFile.close();
-
+	}
 	unsigned long int dataArray[SIZE];
 	index = 0;
 	reset();
