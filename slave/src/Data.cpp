@@ -22,20 +22,20 @@
 #define SIZE 14
 
 //Pin definitions
-#define INDEX 0
-#define TIMECOLLECT 1
-#define TEMP 2
-#define PRES 3
-#define HUMI 4
-#define CO2 5
-#define UV 6
-#define O3 7
-#define IRUP 8
-#define IRDOWN 9
-#define VISUP 9
-#define VISDOWN 11
-#define MIDIRUP 12
-#define MIDIRDOWN 13
+#define INDEX 		0
+#define TIMECOLLECT 	1
+#define TEMP 		2
+#define PRES 		3
+#define HUMI 		4
+#define CO2 		5
+#define UV 		6
+#define O3 		7
+#define IRUP 		8
+#define IRDOWN 		9
+#define VISUP 		10
+#define VISDOWN 	11
+#define MIDIRUP 	12
+#define MIDIRDOWN 	13
 
 #include "Data.h"
 #include "Arduino.h"
