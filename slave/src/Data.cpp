@@ -18,7 +18,7 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 #define INIT 4294967295
-#define PACKETSIZE 10
+#define PACKETSIZE 1000
 
 #include "Data.h"
 #include "Arduino.h"
