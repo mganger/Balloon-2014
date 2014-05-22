@@ -41,7 +41,6 @@ Intersema::BaroPressure_MS5607B baro(true);
 
 Data::Data(){
 	File initFile;
-	Serial.begin(9600);
 	if(!SD.begin(10)){
 		Serial.println("The SD Card has failed or is not present");
 	}

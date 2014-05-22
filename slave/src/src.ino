@@ -25,6 +25,19 @@
 #include "Data.h"
 
 void setup(){
+	//Open diagnostics communication
+	Serial.begin(9600);
+	Serial.println();
+	Serial.println();
+	Serial.println("Houghton College Science Honors Balloon");
+	Serial.println("v0.3.0");
+	Serial.println();
+	Serial.println("1 Willard Avenue,");
+	Serial.println("Hougton, NY 14744");
+	Serial.println("585-567-9235");
+	Serial.println();
+
+
 	//Constuct data object to store points
 	Data data;
 
@@ -37,14 +50,10 @@ void setup(){
 			Serial.println("Data saved"); //TODO
 		}
 
-		//create an array to be read into
-		unsigned long int array[50];
-		//read the sensor data into the array
-		data.returnData(array);
+		data.printData();
 
 		//Pause so data is collected on even time intervals
-		while((millis() - data.timeSince())<PERIOD){
-		}
+		while((millis() - data.timeSince())<PERIOD);
 	}
 }
 
