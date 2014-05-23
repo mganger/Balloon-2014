@@ -20,14 +20,14 @@
 
 #ifndef __DATA_H_INCLUDED__		//If this library is not defined..
 #define __DATA_H_INCLUDED__		//Define this variable and read the code
-#define POINTSIZE 14
+#define SIZE 14
 
 class Data { 
 
 	public:
 		Data();				//Constructor
 
-		unsigned long int dataArray[10];
+		unsigned long int dataArray[SIZE];
 
 		unsigned long int timeSince();	//returns time since last collect
 
