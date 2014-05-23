@@ -33,7 +33,7 @@ int checksum(char * chk)
 	char a(chk[1]);
 	for(int i = 2;chk[i]!='*';i++)
 	{
-		a = a ^ data[i];
+		a = a ^ chk[i];
 	}
 
 	return (int)a;
