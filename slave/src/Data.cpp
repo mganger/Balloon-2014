@@ -201,7 +201,6 @@ void Data::readLUX()
 	}
 	else
 	{
-	Serial.println("5");
 		Serial.println("LUX sensor 1 is broked");
 	}
 
