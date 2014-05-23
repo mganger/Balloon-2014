@@ -113,7 +113,6 @@ void Data::readSensorData()
 	readLUX();
 	readPres();
 	readUV();
-	readIR();
 	readHumi();
 	readCO2();
 	readTemp();
@@ -124,10 +123,6 @@ void Data::readSensorData()
 void Data::readCO2()
 {
 	dataArray[CO2] = analogRead(0);
-}
-
-void Data::readIR()
-{
 }
 
 void Data::readTemp()

@@ -47,7 +47,6 @@ class Data {
 		void readLUX();
 		void readPres();
 		void readUV();
-		void readIR();
 		void readHumi();
 		void readCO2();
 		void readTemp();
