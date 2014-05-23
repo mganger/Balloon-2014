@@ -17,9 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
-#define INIT 4294967295
+#define INIT -1
 #define PACKETSIZE 1000
-#define SIZE 14
 
 //Array definitions
 #define INDEX 		0
@@ -73,8 +72,9 @@ Data::Data(){
 		initFile.flush();
 		initFile.close();
 	}
-	unsigned long int dataArray[SIZE];
-	memset(dataArray,INIT,SIZE);
+	memset(dataArray,INIT,SIZE*4);
+	Serial.println("Initialized Array");
+	printData();
 	dataArray[INDEX]++;
 	//initialize the pressure sensor
 	baro.init();
@@ -82,17 +82,15 @@ Data::Data(){
 
 void Data::reset(){
 	//Set the readings to sentinal value
-		memset(&dataArray[2],INIT,SIZE-2);
-
-	dataArray[INDEX]++;		//increment the index by 1 on reset
+	memset(&dataArray[TIMECOLLECT+1],INIT,(SIZE-2)*4);
+	dataArray[INDEX]++;
 }
 
 //******************************************************************************
 //Functions to return data as array
 
 void Data::printData(){
- 
-//If you change the number of readings here you must update POINTSIZE in Data.h
+//If you change the number of readings here you must update SIZE in Data.h
 	for(int i = 0; i < SIZE; i++)
 	{
 		Serial.print(dataArray[i]);

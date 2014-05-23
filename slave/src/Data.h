@@ -31,8 +31,7 @@ class Data {
 
 		unsigned long int timeSince();	//returns time since last collect
 
-		void printData();
-
+		void printData();		//Diagnostics
 		bool saveData();		//writes to the SD card
 		void readSensorData();		//reads from the sensors
 
