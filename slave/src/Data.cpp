@@ -96,7 +96,7 @@ void Data::reset(){
 void Data::printData(){
  
 //If you change the number of readings here you must update POINTSIZE in Data.h
-	for(int i = 0; i < SIZE); i++)
+	for(int i = 0; i < SIZE; i++)
 	{
 		Serial.print(dataArray[i]);
 		Serial.print(",");
