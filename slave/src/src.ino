@@ -37,6 +37,16 @@ void setup(){
 	Serial.println("585-567-9235");
 	Serial.println();
 
+int checksum(char * chk)
+{
+	char a(chk[1]);
+	for(int i = 2;chk[i]!='*';i++)
+	{
+		a = a ^ data[i];
+	}
+
+	return (int)a;
+}
 
 	//Constuct data object to store points
 	Data data;
