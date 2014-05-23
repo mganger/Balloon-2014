@@ -38,8 +38,6 @@ class Data {
 
 	private:
 
-		unsigned long int timeCollect;	//milliseconds
-		unsigned long int index;	//Holds current collection index
 
 		//Global variable necessary for Lux Calculations 
 //		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 

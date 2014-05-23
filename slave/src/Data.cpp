@@ -74,7 +74,7 @@ Data::Data(){
 		initFile.close();
 	}
 	unsigned long int dataArray[SIZE];
-	index = 0;
+	dataArray[INDEX] = 0;
 	reset();
 
 	//initialize the pressure sensor
@@ -83,11 +83,11 @@ Data::Data(){
 
 void Data::reset(){
 	//Set the readings to sentinal value
-	for(int i = 0; i < SIZE; i++){
+	for(int i = 2; i < SIZE; i++){
 		dataArray[i] = 0;
 	}
 
-	index++;		//increment the index by 1 on reset
+	dataArray[INDEX]++;		//increment the index by 1 on reset
 }
 
 //******************************************************************************
@@ -109,7 +109,7 @@ void Data::printData(){
 
 void Data::readSensorData()
 {
-	timeCollect = millis();
+	dataArray[TIMECOLLECT] = millis();
 	readLUX();
 	readPres();
 	readUV();
@@ -234,10 +234,10 @@ bool Data::saveData()
 		return 1;
 	}
 
-	if(index % PACKETSIZE == 0)
+	if(dataArray[INDEX] % PACKETSIZE == 0)
 	{
 		char filename[18] = "0/0/0/0/0/0/0.CSV";
-		tahu(index,filename);
+		tahu(dataArray[INDEX],filename);
 		if (!SD.exists(filename))
 		{
 			dataFile.close();
@@ -261,6 +261,7 @@ bool Data::saveData()
 		dataFile.print(",");
 	}
 	dataFile.flush();
+	reset();
 	return 0;
 }
 
@@ -281,5 +282,5 @@ void Data::readGPS()
 
 unsigned long int Data::timeSince()
 {
-	return timeCollect;
+	return dataArray[TIMECOLLECT];
 }
