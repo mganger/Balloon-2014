@@ -46,6 +46,30 @@ double resultant(double lat, double lon){
 	return sqrt(x*x + y*y);
 }
 
+unsigned int htoi(char s[])
+{
+	unsigned int val = 0;
+	int x = 0;
+
+	if(s[x] == '0' && (s[x+1]=='x' || s[x+1]=='X')) x+=2;
+
+	while(x < 2)
+	{
+		if(val > 255) return 0;
+		else if(s[x] >= '0' && s[x] <='9')
+		{
+		   val = val * 16 + s[x] - '0';
+		}
+		else if(s[x]>='A' && s[x] <='F')
+		{
+		   val = val * 16 + s[x] - 'A' + 10;
+		}
+		else return 0;
+		x++;
+	}
+	return val;
+}
+
 void setup(){
 	//Open diagnostics communication
 	Serial.begin(9600);
