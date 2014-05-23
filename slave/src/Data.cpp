@@ -74,18 +74,15 @@ Data::Data(){
 		initFile.close();
 	}
 	unsigned long int dataArray[SIZE];
-	dataArray[INDEX] = 0;
-	reset();
-
+	memset(dataArray,INIT,SIZE);
+	dataArray[INDEX]++;
 	//initialize the pressure sensor
 	baro.init();
 }
 
 void Data::reset(){
 	//Set the readings to sentinal value
-	for(int i = 2; i < SIZE; i++){
-		dataArray[i] = 0;
-	}
+		memset(&dataArray[2],INIT,SIZE-2);
 
 	dataArray[INDEX]++;		//increment the index by 1 on reset
 }
