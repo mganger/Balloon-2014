@@ -59,10 +59,10 @@ Data::Data(){
 	File initFile;
 	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	if(!SD.begin(10)){
-		Serial.println("The SD Card has failed or is not present");
+		Serial.println("The SD reader has failed or is not present");
 	}
 	else{
-		initFile = SD.open("Startup Sequence.LOG",FILE_WRITE);
+		initFile = SD.open("Startup_Sequence.log",FILE_WRITE);
 		initFile.println();
 		initFile.println();
 		initFile.println("---------------");
@@ -76,6 +76,9 @@ Data::Data(){
 	unsigned long int dataArray[SIZE];
 	index = 0;
 	reset();
+
+	//initialize the pressure sensor
+	baro.init();
 }
 
 void Data::reset(){
@@ -91,7 +94,7 @@ void Data::reset(){
 //Functions to return data as array
 
 void Data::printData(){
-
+ 
 //If you change the number of readings here you must update POINTSIZE in Data.h
 	for(int i = 0; i < sizeof(dataArray)/sizeof(dataArray[0]); i++)
 	{
@@ -148,7 +151,6 @@ void Data::readO3()
 }
 
 void Data::readPres(){
-	baro.init();
 	dataArray[PRES] = baro.getPressure();
 }
 

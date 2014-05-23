@@ -18,11 +18,23 @@
  * along with Borp. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define PERIOD 1000/FREQ			//period in milliseconds
-#define FREQ 10					//frequency of readings
-#define SIZE 14					//keep updated with actual number
+#define PERIOD 		1000/FREQ	//period in milliseconds
+#define			FREQ 10		//frequency of readings
+#define SIZE 		14		//keep updated with actual number
+#define CENTER_LAT	41.996243	//latitude of center point
+#define CENTER_LONG	77.987309	//longitude of the center point
+#define MAXDISTANCE	80000		//distance (in meters) to stay within
+
 
 #include "Data.h"
+
+
+double resultant(double lat, double lon){
+
+	double x = (lon - CENTER_LONG) * 111974.434;
+	double y = (lat - CENTER_LAT) * 82226.69901;
+	return sqrt(x*x + y*y);
+}
 
 void setup(){
 	//Open diagnostics communication
