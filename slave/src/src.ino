@@ -19,7 +19,7 @@
  */
 
 #define PERIOD 		1000/FREQ	//period in milliseconds
-#define			FREQ 10		//frequency of readings
+#define	FREQ 		10		//frequency of readings
 #define SIZE 		14		//keep updated with actual number
 #define CENTER_LAT	41.996243	//latitude of center point
 #define CENTER_LONG	77.987309	//longitude of the center point
