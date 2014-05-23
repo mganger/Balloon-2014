@@ -46,14 +46,11 @@ double resultant(double lat, double lon){
 	return sqrt(x*x + y*y);
 }
 
-unsigned int htoi(char s[])
+unsigned int htoi(char * s)
 {
 	unsigned int val = 0;
-	int x = 0;
 
-	if(s[x] == '0' && (s[x+1]=='x' || s[x+1]=='X')) x+=2;
-
-	while(x < 2)
+	for(int x = 0; x < 2; x++)
 	{
 		if(val > 255) return 0;
 		else if(s[x] >= '0' && s[x] <='9')
@@ -65,7 +62,6 @@ unsigned int htoi(char s[])
 		   val = val * 16 + s[x] - 'A' + 10;
 		}
 		else return 0;
-		x++;
 	}
 	return val;
 }
