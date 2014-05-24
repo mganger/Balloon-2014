@@ -23,19 +23,26 @@
 
 #include <SoftwareSerial.h>
 #define _SS_MAX_RX_BUFF 256
-SoftwareSerial radio(2,3);	//Rx,Tx
 
-#define TIMEOUT 1000000		//timeout of transmission in microseconds/
+#define TIMEOUT 1000000		//timeout of transmission in microseconds
+#define TIME_THRESH 10		//timeout threshold
 #define RETRIES 10		//number of pings per test
-#define WELCOME "This is the welcome message to diagnostics"
+#define TIMESHIFT 1.00488461885	//ratio Actual/Arduino (see code below)
+#define SMOOTHING 2		//amount to smooth data
+#define WELCOME "\r\nHoughton College Radio Diagnostics\r\nVersion 1.0\r\n"
+
+//globals
+SoftwareSerial radio(2,3);	//Rx,Tx
+int timeoutCount = 0;		//flagged by ping
 
 //returns microseconds if connected, -1 for connection timeout, and 0 for fail
 long int ping(byte charNumber){
 
 	//construct a string with the right number of characters
 	char array[charNumber+1];
-	char comparray[charNumber];
+	char comparray[charNumber+1];
 	array[charNumber] = '\0';
+	Serial.print(array);
 	for(int i = 0; i < charNumber; i++){
 		array[i] = random(33,126);
 	}
@@ -58,24 +65,46 @@ long int ping(byte charNumber){
 }
 
 long int ping(){
-	char randnum = 67;	// random(33,126);
+
+	//flush the buffer
+	while(radio.available()){
+		radio.read();
+	}
+	char randnum = random(33,126);
+	char recieved;
+	unsigned long int endtime;
 	unsigned long int time = micros();
-	Serial.print(randnum);
 	radio.print(randnum);
-	delay(10);
-	while(radio.available() == 0){
-		if((micros() - time <= TIMEOUT)){
-			return -1;
+	while(micros() - time < TIMEOUT){
+		recieved = radio.read();
+		if (recieved > -1){
+			endtime = micros();
+			break;
 		}
 	}
-	unsigned long int endtime = micros();
-	char recieved = radio.read();
-	Serial.print(recieved);
-
-	if(recieved != randnum){
-		return 0;
+	if(micros() - time >= TIMEOUT){
+		timeoutCount++;
+		return -1;
 	}
-	return micros() - endtime;
+	if(recieved != randnum) return 0;
+	return endtime - time;
+
+}
+
+void detectBaudRate(){
+	Serial.print("Detecting Baud Rate: ");
+	unsigned long int baud[] = {1200,2400,4800,9600,19200,38400,57600,76800,115200};
+	for(unsigned long int i = 0;; i++){
+		//Serial.print(baud[i%9]);
+		radio.begin(baud[i%9]);
+		delay(100);
+		if(ping() >= 0){
+			int baudRate = baud[i];
+			Serial.println(baudRate);
+			break;
+		}
+		radio.end();
+	}
 }
 
 void setup(){
@@ -84,56 +113,63 @@ void setup(){
 	Serial.println();
 	randomSeed(analogRead(0));
 
-	//Use this to test the pinging capabilities if you already know the baud
-	Serial.println("Ping Test");
-	radio.begin(115200);
-	radio.listen();
-	//Character Test
-	while(1){
-	for(int i = 0; i < 1000; i++){
-		Serial.print(ping()); Serial.print('\t');
-		delay(1);
-	}
-	}
+//	//Use this code block to manually calibrate the microsecond timer
+//	while(1){
+//		Serial.println(micros());
+//		delay(1000);
+//	}
+
 
 	//First we find the baud rate that the radio is operating on
-	Serial.print("Detecting Baud Rate:");
-	unsigned long int baud[] = {1200,2400,4800,9600,19200,38400,57600,76800,115200};
-	for(unsigned long int i = 0;; i++){
-//		Serial.print("Trying ");Serial.println(baud[i%9]);
-		radio.begin(baud[i%9]);
-//		Serial.println("Began serial communications");
-		delay(100);
-//		Serial.println("Pinging");
-		if(ping(5) >= 0){
-			static int baudRate = baud[i];
-			Serial.println(baudRate);
-			break;
-		}
-//		Serial.println("End pinging");
-		radio.end();
-//		Serial.print("Loop: ");
-//		Serial.println(i);
-	}
+	detectBaudRate();
 
+	//Ping test
+//	Serial.println("Ping Test");
+//	//Character Test
+//	while(1){
+//	for(int i = 0; i < 1000; i++){
+//		Serial.print(ping()); Serial.print('\t');
+//	}
+//	}
+
+	//Run diagnostics
+	double packetRate = 0;
+	unsigned long int timeLast = millis();
 	while(1){
 		//test io connection speed
-		Serial.print("Packet Throughput:\t");
-		double packetSpeed;
+		unsigned long int packetPeriod = 0;
+		int count = 0;
 		for(int i = 0; i < RETRIES; i++){
-			packetSpeed += ping() / 1000 / 2;
+			unsigned long int time = ping();
+			if(time > 0){
+				packetPeriod += time;
+				count++;
+			}
 		}
-		Serial.println(packetSpeed);
+		double avgPeriod = (double)packetPeriod/count;
+		packetRate += (((double)1000000/(avgPeriod * TIMESHIFT)) - packetRate)/SMOOTHING;
+
+		if(millis() - timeLast >= 1000){
+			Serial.print("Packet Throughput:\t");
+			Serial.print(packetRate);
+			Serial.println(" Hz");
+			timeLast = millis();
+		}
 	
 		//test character io speed
-		Serial.print("Character Throughput:\t");
-		double characterSpeed;
-		for(int i = 0; i < RETRIES; i++){
-			characterSpeed += ping(255)/255/2/1000;
+//		Serial.print("Character Throughput:\t");
+//		double characterSpeed;
+//		for(int i = 0; i < RETRIES; i++){
+//			characterSpeed += ping(255)/255/2/1000;
+//		}
+//		Serial.println(characterSpeed);
+//	
+//		delay(1000);
+
+		if(timeoutCount >= TIME_THRESH){
+			timeoutCount = 0;
+			detectBaudRate();
 		}
-		Serial.println(characterSpeed);
-	
-		delay(1000);
 	}
 }
 
