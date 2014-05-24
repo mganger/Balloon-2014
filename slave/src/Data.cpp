@@ -147,7 +147,7 @@ void Data::readPres(){
 void Data::readMidIR()
 {
 	Adafruit_TMP006 tmp(0x40);  //Create tmp sensor with address 0x40  [GND,GND]
-	Adafruit_TMP006 tmp2(0x44);  //Create tmp sensor with address 0x41 [GND,VCC]
+	Adafruit_TMP006 tmp2(0x41);  //Create tmp sensor with address 0x41 [GND,VCC]
 	
 	//you can also use tmp.begin(TMP006_CFG_1SAMPLE) or 2SAMPLE/4SAMPLE/8SAMPLE to have
 	//lower precision, higher rate sampling. default is TMP006_CFG_16SAMPLE which takes
@@ -166,7 +166,7 @@ void Data::readMidIR()
 	float objt2 = tmp2.readObjTempC(); 		//Returns Kelvins
 
 	dataArray[MIDIRUP] = objt;
-	dataArray[MIDIRDOWN] = objt;
+	dataArray[MIDIRDOWN] = objt2;
 
 //	float diet = tmp.readDieTempC(); 		//Returns Kelvins
 //	float diet2 = tmp2.readDieTempC(); 		//Returns Kelvins
