@@ -40,8 +40,8 @@ long int baudRate = 0;
 
 void printDiag(){
 	computer.println();
-	computer.println("|Time\t\tTrials\t64b\tPacket\tChar\tLoss\tDisconnects");
-	computer.println("|\t\t#\tms\tHz\tHz\t%\t#");
+	computer.println("|Time\t\tTrials\t64b\tPacket\t\tChar\t\tLoss\tDisconnects");
+	computer.println("|\t\t#\tms\tHz\t\tHz\t\t%\t#");
 }
 
 //returns microseconds if connected, -1 for connection timeout, and 0 for fail
@@ -94,7 +94,7 @@ long int ping(byte charNumber){
 	//compare the arrays
 	for(int i = 0; i < charNumber; i++){
 		if(array[i] != comparray[i]){
-			packetLoss++;
+			packetFail++;
 			return 0;
 		}
 	}
@@ -146,7 +146,7 @@ long int ping(){
 	//check for failure
 	if(received != randnum){
 //		computer.println("Characters do not match");
-		packetLoss++;
+		packetFail++;
 		return 0;
 	}
 
@@ -226,6 +226,8 @@ void setup(){
 	unsigned long int timeLast = millis();
 	long int trials = 0;
 	int disconnects = 0;
+	packetSuccess = 0;
+	packetFail = 0;
 	while(1){
 
 
@@ -233,7 +235,7 @@ void setup(){
 		unsigned long int packetPeriod = 0;
 		int count = 0;
 		for(int i = 0; i < RETRIES; i++){
-			long int time = ping()/2;
+			long int time = ping();
 			if(time > 0){
 				packetPeriod += time;
 				count++;
@@ -288,9 +290,9 @@ void setup(){
 
 			computer.print(trials);computer.print('\t');
 			computer.print(avgCharPeriod*64/1000);computer.print('\t');
-			computer.print(packetRate);computer.print('\t');
-			computer.print(charRate);computer.print('\t');
-			computer.print('\t');
+			computer.print(packetRate);computer.print("  \t");
+			computer.print(charRate);computer.print("  \t");
+			computer.print((double)100*packetFail/(packetFail+packetSuccess));computer.print('\t');
 			computer.print(disconnects);computer.print('\t');
 
 
