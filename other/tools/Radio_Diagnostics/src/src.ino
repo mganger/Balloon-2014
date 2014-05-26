@@ -32,7 +32,7 @@
 #define TIMESHIFT 1.00488461885	//ratio Actual/Arduino (see code below)
 #define SMOOTHING 2		//amount to smooth data
 #define REFRESH	500		//minimum milliseconds between screen refreshes
-#define WELCOME "\r\n\r\n\r\nHoughton College Radio Diagnostics v1.0.2\r\nLicensed under GPLv2\r\nCopyright (C) 2014 - Michael Ganger\r\n\r\n"
+#define WELCOME "\r\n\r\n\r\nHoughton College Radio Diagnostics v1.0.4\r\nLicensed under GPLv2\r\nCopyright (C) 2014 - Michael Ganger\r\n\r\n"
 
 //globals
 SoftwareSerial computer(2,3);	//Rx,Tx
@@ -57,6 +57,7 @@ void printDiag(){
 	fill(computer.print("Ping"));
 	fill(computer.print("Packet"));
 	fill(computer.print("Disconnects"));
+	fill(computer.print("Live Corrupt"));
 	fill(computer.print("Total Corrupt"));
 	fill(computer.print("Live Timeouts"));
 	computer.println();
@@ -68,6 +69,7 @@ void printDiag(){
 	fill(computer.print("Packet/s"));
 	fill(computer.print("Char/s"));
 	fill(computer.print("#"));
+	fill(computer.print("%"));
 	fill(computer.print("%"));
 	fill(computer.print("%"));
 	computer.println();
@@ -299,21 +301,25 @@ void setup(){
 	packetSuccess = 0;
 	packetFail = 0;
 	timeoutCount = 0;
-	int pingTimeout = 0;
 	while(1){
-		pingTimeout = 0;
-
 		//test io connection speed
 		unsigned long int packetPeriod = 0;
+		int corruptCount = 0;
+		int pingTimeout = 0;
+		int successCount = 0;
 		int count = 0;
 		for(int i = 0; i < RETRIES; i++){
 			long int time = ping();
 			if(time > 0){
 				packetPeriod += time;
 				count++;
+				successCount++;
 			}
 			if(time == -1){
 				pingTimeout++;
+			}
+			if(time == 0){
+				corruptCount++;
 			}
 		}
 		if(count != 0){
@@ -329,6 +335,10 @@ void setup(){
 			if(time > 0){
 				charHalfPeriod += time;
 				count++;
+				successCount++;
+			}
+			if(time == 0){
+				corruptCount++;
 			}
 		}
 		if(count != 0){
@@ -344,6 +354,10 @@ void setup(){
 			if(time > 0){
 				charPeriod += time;
 				count++;
+				successCount++;
+			}
+			if(time == 0){
+				corruptCount++;
 			}
 		}
 		if(count != 0){
@@ -366,8 +380,9 @@ void setup(){
 			fill(computer.print(packetRate));
 			fill(computer.print(charRate));
 			fill(computer.print(disconnects));
+			fill(computer.print((double)100*corruptCount/(RETRIES*3)));
 			fill(computer.print((double)100*packetFail/(packetFail+packetSuccess)));
-			fill(computer.print((double)pingTimeout/RETRIES*100));
+			fill(computer.print((double)100*pingTimeout/RETRIES));
 
 
 			if(diagCounter >= 50){
