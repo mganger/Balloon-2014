@@ -83,7 +83,6 @@ void Data::reset(){
 	//Set the readings to sentinal value
 	memset(&dataArray[TIMECOLLECT+1],INIT,(SIZE-2)*4);
 	dataArray[INDEX]++;
-	Serial.println("Index Incremented");
 }
 
 //******************************************************************************
