@@ -75,15 +75,15 @@ Data::Data(){
 	memset(dataArray,INIT,SIZE*4);
 	Serial.println("Initialized Array");
 	printData();
-	dataArray[INDEX]++;
+	dataArray[INDEX] = dataArray[INDEX] +1;
 	//initialize the pressure sensor
-	baro.init();
 }
 
 void Data::reset(){
 	//Set the readings to sentinal value
 	memset(&dataArray[TIMECOLLECT+1],INIT,(SIZE-2)*4);
 	dataArray[INDEX]++;
+	Serial.println("Index Incremented");
 }
 
 //******************************************************************************
@@ -141,7 +141,8 @@ void Data::readO3()
 }
 
 void Data::readPres(){
-	dataArray[PRES] = baro.getPressure();
+	baro.init();
+	dataArray[PRES] = baro.getHeightCentiMeters();
 }
 
 void Data::readMidIR()
@@ -226,6 +227,7 @@ bool Data::saveData()
 	if(!SD.begin(10))
 	{
 		Serial.println("SD Card cannot open");
+		reset();
 		return 1;
 	}
 
@@ -241,6 +243,7 @@ bool Data::saveData()
 			{
 				Serial.print("Could not create file: ");
 				Serial.println(filename);
+				reset();
 				return 1;
 			}else
 			{
