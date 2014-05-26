@@ -49,7 +49,7 @@
 
 //Global variable necessary for Lux Calculations
 //Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
-//Intersema::BaroPressure_MS5607B baro(true);
+Intersema::BaroPressure_MS5607B baro(true);
 
 //******************************************************************************
 //Constructor, reset, init
@@ -112,7 +112,7 @@ void Data::readSensorData()
 	reset();
 	dataArray[TIMECOLLECT] = millis();
 	readLUX();
-//	readPres();
+	readPres();
 	readUV();
 	readHumi();
 	readCO2();
@@ -147,8 +147,8 @@ void Data::readO3()
 }
 
 void Data::readPres(){
-//	baro.init();
-//	dataArray[PRES] = baro.getHeightCentiMeters();
+	baro.init();
+	dataArray[PRES] = baro.getHeightCentiMeters();
 }
 
 void Data::readMidIR()
