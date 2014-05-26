@@ -109,6 +109,7 @@ void Data::printData(){
 
 void Data::readSensorData()
 {
+	reset();
 	dataArray[TIMECOLLECT] = millis();
 	readLUX();
 //	readPres();
@@ -276,7 +277,6 @@ bool Data::saveData()
 	}
 	dataFile.println();
 	dataFile.flush();
-	reset();
 	dataFile.close();
 	return 0;
 }
