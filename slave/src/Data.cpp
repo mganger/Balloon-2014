@@ -49,7 +49,7 @@
 
 //Global variable necessary for Lux Calculations
 //Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
-Intersema::BaroPressure_MS5607B baro(true);
+//Intersema::BaroPressure_MS5607B baro(true);
 
 //******************************************************************************
 //Constructor, reset, init
@@ -61,7 +61,12 @@ Data::Data(){
 		Serial.println("The SD reader has failed or is not present");
 	}
 	else{
-		initFile = SD.open("Startup_Sequence.log",FILE_WRITE);
+		Serial.println("CREATING STARTUP LOG FILES");
+		delay(2000);
+		initFile = SD.open("start.log",FILE_WRITE);
+		if(!initFile){
+			Serial.println("Could not create startup file");
+		}else{
 		initFile.println();
 		initFile.println();
 		initFile.println("---------------");
@@ -71,6 +76,7 @@ Data::Data(){
 		//Check to see what i2c sensors are ready
 		initFile.flush();
 		initFile.close();
+		}
 	}
 	memset(dataArray,INIT,SIZE*4);
 	Serial.println("Initialized Array");
@@ -106,7 +112,7 @@ void Data::readSensorData()
 {
 	dataArray[TIMECOLLECT] = millis();
 	readLUX();
-	readPres();
+//	readPres();
 	readUV();
 	readHumi();
 	readCO2();
@@ -141,8 +147,8 @@ void Data::readO3()
 }
 
 void Data::readPres(){
-	baro.init();
-	dataArray[PRES] = baro.getHeightCentiMeters();
+//	baro.init();
+//	dataArray[PRES] = baro.getHeightCentiMeters();
 }
 
 void Data::readMidIR()
@@ -224,42 +230,55 @@ void Data::readLUX()
 bool Data::saveData()
 {
 	File dataFile;		//dataFile for SD card
-	if(!SD.begin(10))
-	{
-		Serial.println("SD Card cannot open");
-		reset();
-		return 1;
-	}
+//	if(!SD.begin(10))
+//	{
+//		Serial.println("SD Card cannot open");
+//		reset();
+//		return 1;
+//	}
 
-	if(dataArray[INDEX] % PACKETSIZE == 0)
-	{
-		char filename[18] = "0/0/0/0/0/0/0.CSV";
-		tahu(dataArray[INDEX],filename);
-		if (!SD.exists(filename))
-		{
-			dataFile.close();
-			dataFile = SD.open(filename, FILE_WRITE);
-			if(!dataFile)
-			{
-				Serial.print("Could not create file: ");
-				Serial.println(filename);
-				reset();
-				return 1;
-			}else
-			{
-				Serial.print("Logging to: ");
-				Serial.println(filename);
-			}
-		}
-	}
+//	if(dataArray[INDEX] % PACKETSIZE == 0)
+//	{
+//		char filename[18] = "0/0/0/0/0/0/0.CSV";
+//		char foldername[18] = "0/0/0/0/0/0/0.CSV";
+//		tahu(dataArray[INDEX],filename);
+//		tahu(dataArray[INDEX],foldername);
+//		foldername[11] = '\0';
+//		Serial.print(foldername);
+//		Serial.print(": ");
+//		Serial.println(filename);
+//		SD.mkdir(foldername);
+//		if(!SD.exists(filename))
+//		{
+//			dataFile.close();
+//			dataFile = SD.open(filename, FILE_WRITE);
+//			Serial.println(dataFile);
+//			delay(1000);
+//			if(!dataFile)
+//			{
+//				Serial.print("Could not create file: ");
+//				Serial.println(filename);
+//				reset();
+//				return 1;
+//			}else
+//			{
+//				Serial.print("Logging to: ");
+//				Serial.println(filename);
+//			}
+//		}
+//	}
 
+	dataFile = SD.open("Log.log",FILE_WRITE);
+	Serial.println("Datafile: Log.log has been opened for writing");
 	for(int i = 0; i < SIZE;i++)
 	{
 		dataFile.print(dataArray[i]);
 		dataFile.print(",");
 	}
+	dataFile.println();
 	dataFile.flush();
 	reset();
+	dataFile.close();
 	return 0;
 }
 
