@@ -57,12 +57,24 @@ void setup(){
 	for(;;){
 		if(millis() - timeLast >= PERIOD){
 			timeLast = millis();
+			Serial.print("\r\n");
 			Serial.print(timeLast);
 			Serial.print(",");
 			printTime(timeLast);
 			Serial.print(",");
 			Serial.print(analogRead(PIN));
-			Serial.print("\r\n");
+		}
+
+		if(Serial.available()){
+			char array[50];
+			delay(10);
+			int number;
+			for(int i = 0; Serial.available() && i < 50; i++){
+				array[i] = Serial.read();
+				number = i+1;
+			}
+			Serial.write(',');
+			Serial.write((byte*)array,number);			
 		}
 	}
 }
