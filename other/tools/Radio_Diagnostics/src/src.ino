@@ -2,7 +2,7 @@
  * src.ino
  * This file is part of Balloon 2014
  *
- * Copyright (C) 2014 - Houghton College Science Honors
+ * Copyright (C) 2014 - Michael Ganger
  *
  * Balloon 2014 is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,21 @@
  * along with Balloon 2014. If not, see <http://www.gnu.org/licenses/>.
  */
 
-//This program is designed to run diagnostics on a radio connection, much lke a
-//ping. Everything is divided by two for roundtrip
+//This program is designed to run diagnostics on a radio connection, much like a
+//ping. Right now it works with a modified 256 byte buffer; if this means 
+//nothing to you, change BUFFER below to 63 or less or else it will not work.
 
 #include <SoftwareSerial.h>
 
+#define SPACES 14		//muber of spaces to keep things pretty
 #define BUFFER 250		//keep within a safe buffer
-#define TIMEOUT 2000		//timeout of transmission in microseconds
-#define TIME_THRESH 10		//timeout threshold
+#define TIMEOUT 100		//timeout in milliseconds
+#define TIME_THRESH RETRIES	//timeout threshold
 #define RETRIES 10		//number of pings per test
 #define TIMESHIFT 1.00488461885	//ratio Actual/Arduino (see code below)
 #define SMOOTHING 2		//amount to smooth data
-#define WELCOME "\r\n\r\nHoughton College Radio Diagnostics\r\nVersion 1.0\r\n"
+#define REFRESH	500		//minimum milliseconds between screen refreshes
+#define WELCOME "\r\n\r\n\r\nHoughton College Radio Diagnostics v1.0.2\r\nLicensed under GPLv2\r\nCopyright (C) 2014 - Michael Ganger\r\n\r\n"
 
 //globals
 SoftwareSerial computer(2,3);	//Rx,Tx
@@ -38,18 +41,41 @@ int packetFail = 0;
 int packetSuccess = 0;
 long int baudRate = 0;
 
+//used to make things pretty
+void fill(int size){
+	for(int i = SPACES - size; i; i--){
+		computer.print(" ");
+	}
+}
+
+
 void printDiag(){
+	computer.println("\r\n");
+	fill(computer.print("|Time"));
+	fill(computer.print("Trials"));
+	fill(computer.print("64 byte time"));
+	fill(computer.print("Ping"));
+	fill(computer.print("Packet"));
+	fill(computer.print("Disconnects"));
+	fill(computer.print("Total Corrupt"));
+	fill(computer.print("Live Timeouts"));
 	computer.println();
-	computer.println("|Time\t\tTrials\t64b\tPacket\t\tChar\t\tLoss\tDisconnects");
-	computer.println("|\t\t#\tms\tHz\t\tHz\t\t%\t#");
+
+
+	fill(computer.print("|ms"));
+	fill(computer.print("#"));
+	fill(computer.print("ms"));
+	fill(computer.print("Packet/s"));
+	fill(computer.print("Char/s"));
+	fill(computer.print("#"));
+	fill(computer.print("%"));
+	fill(computer.print("%"));
+	computer.println();
 }
 
 //returns microseconds if connected, -1 for connection timeout, and 0 for fail
 long int ping(byte charNumber){
 	if(charNumber == 1) return ping();
-
-	//calculate timeout
-	long int timeout = (8000000/baudRate)*charNumber *2;
 
 	//flush the buffer
 	while(Serial.available()){
@@ -57,10 +83,9 @@ long int ping(byte charNumber){
 	}
 
 	//construct a string with the right number of characters
-	char array[charNumber+1];
-	char comparray[charNumber+1];
-	array[charNumber] = '\0';
-	comparray[charNumber] = '\0';
+	byte array[charNumber];
+	char comparray[charNumber];
+	comparray[0] = 0;
 
 	//fill the array with random characters
 	for(int i = 0; i < charNumber; i++){
@@ -70,22 +95,15 @@ long int ping(byte charNumber){
 	//send the string
 	unsigned long int endtime;
 	unsigned long int time = micros();
-	Serial.print(array);
+	Serial.write(array,charNumber);
 
-	//wait for the string to come back
-	while(Serial.available() < charNumber){
-		//return -1 and increment the flag if timeout, else do nothing
-		if(micros() - time > timeout){
-//			computer.println("Long Ping timeout");
-			timeoutCount++;
-			return -1;
-		}
-	}
+	//receive the string
+	Serial.readBytes(comparray,charNumber);
 	endtime = micros();
 
-	//read the buffer into comparray
-	for(int i = 0; i < charNumber; i++){
-		comparray[i] = Serial.read();
+	//Check for timeout
+	if(comparray[0] == 0){
+		return -1;
 	}
 
 //	computer.println(array);
@@ -104,10 +122,8 @@ long int ping(byte charNumber){
 	return endtime - time;
 }
 
+//single character
 long int ping(){
-
-	//calculate timeout
-	long int timeout = (8000000/baudRate)+1000;
 
 	//flush the buffer
 	while(Serial.available()){
@@ -115,33 +131,24 @@ long int ping(){
 	}
 
 	//make a random character
-	char randnum = random(33,126);
-	char received;
+	byte randnum = random(33,126);
+//	computer.write(randnum);
+	byte received = 0;
 
 	//save the time in microseconds
 	unsigned long int endtime;
 	unsigned long int time = micros();
 
 	//send the character
-	Serial.print(randnum);
+	Serial.write(randnum);
 
 	//wait for it to come back
-	while(Serial.available() == 0){
-		//return -1 and increment the flag if timeout, else do nothing
-		if(micros() - time > timeout){
-//			computer.println("Short Ping timeout");
-			timeoutCount++;
-			return -1;
-		}
-	}
+	Serial.readBytes((char*)&received,1);
 	endtime = micros();
-
-	//check to see if it there really is a character in the buffer
-	received = Serial.read();
-	if(received == -1){
-//		computer.println("Ping failed");
-		return 0;
+	if(received == 0){
+		return -1;
 	}
+//	computer.write(received);
 
 	//check for failure
 	if(received != randnum){
@@ -175,19 +182,78 @@ void detectBaudRate(){
 				break;
 			}
 		}
-//		computer.println(time);
 		Serial.end();
+
+		//look for input from the computer
+		if(computer.available()){
+			char character = computer.read();
+			switch(character){
+				case '0': 
+					baudRate = 1200;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+				case '1': 
+					baudRate = 2400;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+				case '2': 
+					baudRate = 4800;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+				case '3': 
+					baudRate = 9600;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+				case '4':
+					baudRate = 19200;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+				case '5': 
+					baudRate = 38400;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+				case '6': 
+					baudRate = 57600;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+				case '7': 
+					baudRate = 76800;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+				case '8': 
+					baudRate = 115200;
+					Serial.begin(baudRate);
+					computer.println(baudRate);
+					return;
+			}
+		}
 	}
 	timeoutCount = 0;
 }
-
 
 void setup(){
 
 	computer.begin(19200);
 	computer.print(WELCOME);
-	computer.println("Tabs may not align perfectly. Use caution");
 	computer.println();
+	computer.print("Baud Options:\r\n");
+	fill(computer.print("0) 1200"));
+	fill(computer.print("1) 2400"));
+	computer.print("2) 4800\r\n");
+	fill(computer.print("3) 9600"));
+	fill(computer.print("4) 19200"));
+	computer.print("5) 38400\r\n");
+	fill(computer.print("6) 57600"));
+	fill(computer.print("7) 76800"));
+	computer.print("8) 115200\r\n\r\n");
 	randomSeed(analogRead(0));
 
 //	//Use this code block to manually calibrate the microsecond timer
@@ -195,9 +261,6 @@ void setup(){
 //		computer.println(micros());
 //		delay(1000);
 //	}
-
-	//Baud rate test
-//	while(1) detectBaudRate();
 
 
 	//First we find the baud rate that the Serial is operating on
@@ -213,13 +276,20 @@ void setup(){
 	//Character Test
 //	computer.println("Character Test");
 //	while(1){
-//		for(int i = 2; i < BUFFER; i++){
-//			computer.print(ping(i));computer.print('\t');
-//		}
+//		computer.print(ping(BUFFER));computer.print('\t');
 //	}
 
+
+
+
+
+
+
 	//Run diagnostics
+	Serial.setTimeout(TIMEOUT);
 	printDiag();
+	//wait for connection
+	while(ping() == -1);
 	double packetRate = 0;
 	double charRate = 0;
 	int diagCounter = 0;
@@ -228,8 +298,10 @@ void setup(){
 	int disconnects = 0;
 	packetSuccess = 0;
 	packetFail = 0;
+	timeoutCount = 0;
+	int pingTimeout = 0;
 	while(1){
-
+		pingTimeout = 0;
 
 		//test io connection speed
 		unsigned long int packetPeriod = 0;
@@ -240,10 +312,29 @@ void setup(){
 				packetPeriod += time;
 				count++;
 			}
+			if(time == -1){
+				pingTimeout++;
+			}
 		}
-		double avgPeriod = (double)packetPeriod/count;
-		packetRate += (((double)1000000/(avgPeriod * TIMESHIFT)) - packetRate)/SMOOTHING;
+		if(count != 0){
+			double avgPeriod = (double)packetPeriod/count;
+			packetRate += (((double)1000000/(avgPeriod * TIMESHIFT)) - packetRate)/SMOOTHING;
+		}
 
+		//test character io speed at 1/2 BUFFER
+		unsigned long long int charHalfPeriod = 0;
+		count = 0;
+		for(int i = 0; i < RETRIES; i++){
+			long int time = ping(BUFFER/2);
+			if(time > 0){
+				charHalfPeriod += time;
+				count++;
+			}
+		}
+		if(count != 0){
+			double avgHalfCharPeriod = (double)charHalfPeriod/(count*BUFFER/2);
+			charRate += (((double)1000000/(avgHalfCharPeriod * TIMESHIFT)) - charRate)/SMOOTHING;
+		}
 
 		//test character io speed
 		unsigned long long int charPeriod = 0;
@@ -255,17 +346,42 @@ void setup(){
 				count++;
 			}
 		}
-		double avgCharPeriod = (double)charPeriod/(count*BUFFER);
-		charRate += (((double)1000000/(avgCharPeriod * TIMESHIFT)) - charRate)/SMOOTHING;
+		if(count != 0){
+			double avgCharPeriod = (double)charPeriod/(count*BUFFER);
+			charRate += (((double)1000000/(avgCharPeriod * TIMESHIFT)) - charRate)/SMOOTHING;
+		}
 
-		trials += RETRIES*2;
 
 
+
+		trials += RETRIES*3;
+
+
+		//Print every second
+		if(millis() - timeLast >= REFRESH){
+			computer.println();
+			fill(computer.print(millis()));
+			fill(computer.print(trials));
+			fill(computer.print(64000/(charRate)));
+			fill(computer.print(packetRate));
+			fill(computer.print(charRate));
+			fill(computer.print(disconnects));
+			fill(computer.print((double)100*packetFail/(packetFail+packetSuccess)));
+			fill(computer.print((double)pingTimeout/RETRIES*100));
+
+
+			if(diagCounter >= 50){
+				printDiag();
+				diagCounter = 0;
+			}
+			diagCounter++;
+			timeLast = millis();
+		}
 
 
 
 		//Check for disconnect by timeout flag
-		if(timeoutCount >= TIME_THRESH){
+		if(pingTimeout >= TIME_THRESH){
 			computer.print("Disconnected");
 			disconnects++;
 			//wait for a connection again
@@ -276,33 +392,6 @@ void setup(){
 			timeoutCount = 0;
 		}
 
-
-
-
-
-		//Print every second
-		if(millis() - timeLast >= 1000){
-			computer.println();
-			computer.print(millis()/3600000);computer.print(':');
-			computer.print(millis()/60000);computer.print(':');
-			computer.print(millis()/1000);computer.print('.');
-			computer.print(millis()%1000);computer.print('\t');
-
-			computer.print(trials);computer.print('\t');
-			computer.print(avgCharPeriod*64/1000);computer.print('\t');
-			computer.print(packetRate);computer.print("  \t");
-			computer.print(charRate);computer.print("  \t");
-			computer.print((double)100*packetFail/(packetFail+packetSuccess));computer.print('\t');
-			computer.print(disconnects);computer.print('\t');
-
-
-			if(diagCounter >= 50){
-				printDiag();
-				diagCounter = 0;
-			}
-			diagCounter++;
-			timeLast = millis();
-		}
 	}
 }
 
