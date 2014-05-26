@@ -77,7 +77,6 @@ Data::Data(){
 	printData();
 	dataArray[INDEX]++;
 	//initialize the pressure sensor
-	baro.init();
 }
 
 void Data::reset(){
@@ -141,7 +140,8 @@ void Data::readO3()
 }
 
 void Data::readPres(){
-	dataArray[PRES] = baro.getPressure();
+	baro.init();
+	dataArray[PRES] = baro.getHeightCentiMeters();
 }
 
 void Data::readMidIR()
