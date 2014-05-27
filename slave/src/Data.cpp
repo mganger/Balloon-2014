@@ -261,7 +261,9 @@ bool Data::saveData()
 //	}
 
 	dataFile = SD.open("Log.log",FILE_WRITE);
-	Serial.println("Datafile: Log.log has been opened for writing");
+	if(dataFile){
+		Serial.println("Datafile: Log.log has been opened for writing");
+	}
 	for(int i = 0; i < SIZE;i++)
 	{
 		dataFile.print(dataArray[i]);
