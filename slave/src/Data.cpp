@@ -43,12 +43,7 @@
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
 #include "SoftwareSerial.h"	//Library for Software Serial communications
-#include "Wire.h"		//Library for i2c communication
-#include "TSL2561.h"		//Library for digital luminosity/lux sensor
-#include "Adafruit_TMP006.h"	//Library for non-contact temperature sensing
 
-//Global variable necessary for Lux Calculations
-//Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
 Intersema::BaroPressure_MS5607B baro(true);
 
 //******************************************************************************
@@ -73,7 +68,6 @@ Data::Data(){
 		initFile.print("Time since boot: ");
 		initFile.println(micros());
 		initFile.print("GPS Status: ");
-		//Check to see what i2c sensors are ready
 		initFile.flush();
 		initFile.close();
 		}
@@ -111,14 +105,12 @@ void Data::readSensorData()
 {
 	reset();
 	dataArray[TIMECOLLECT] = millis();
-	readLUX();
 	readPres();
 	readUV();
 	readHumi();
 	readCO2();
 	readTemp();
 	readO3();
-	readMidIR();
 }
 
 void Data::readCO2()
@@ -149,82 +141,6 @@ void Data::readO3()
 void Data::readPres(){
 	baro.init();
 	dataArray[PRES] = baro.getHeightCentiMeters();
-}
-
-void Data::readMidIR()
-{
-	Adafruit_TMP006 tmp(0x40);  //Create tmp sensor with address 0x40  [GND,GND]
-	Adafruit_TMP006 tmp2(0x44);  //Create tmp sensor with address 0x44 [VCC,GND]
-	
-	//you can also use tmp.begin(TMP006_CFG_1SAMPLE) or 2SAMPLE/4SAMPLE/8SAMPLE to have
-	//lower precision, higher rate sampling. default is TMP006_CFG_16SAMPLE which takes
-	//4 seconds per reading (16 samples)
-	if(!tmp.begin(TMP006_CFG_1SAMPLE)) 
-	{
-		Serial.println("No top IR thermometer found");
-	}
-	if(!tmp2.begin(TMP006_CFG_1SAMPLE)) 
-	{
-		Serial.println("No bottom IR thermometer found");
-	}
-	
-	//Loop
-	float objt = tmp.readObjTempC();		//Returns Kelvins 
-	float objt2 = tmp2.readObjTempC(); 		//Returns Kelvins
-
-	dataArray[MIDIRUP] = objt;
-	dataArray[MIDIRDOWN] = objt2;
-
-//	float diet = tmp.readDieTempC(); 		//Returns Kelvins
-//	float diet2 = tmp2.readDieTempC(); 		//Returns Kelvins
-}
-void Data::readLUX()
-{
-	TSL2561 tsl(TSL2561_ADDR_LOW);
-	TSL2561 tsl2(TSL2561_ADDR_FLOAT);
-	//Set address to bottom lux sensor
-	if(tsl.begin())
-	{
-	//Set settings for lux sensor
-//		Serial.println("Lux sensor connected");
-		tsl.setGain(TSL2561_GAIN_0X);	//Bright situations
-//		tsl.setGain(TSL2561_GAIN_16X);	//Dim situations
-		tsl.setTiming(TSL2561_INTEGRATIONTIME_13MS);
-
-	//Take readings from light sensor
-		uint16_t vis = tsl.getLuminosity(TSL2561_VISIBLE);
-//		uint16_t full = tsl.getLuminosity(TSL2561_FULLSPECTRUM);
-		uint16_t ir = tsl.getLuminosity(TSL2561_INFRARED);
-
-	//Save data from top sensor
-
-		dataArray[VISDOWN] = vis;
-		dataArray[IRDOWN] = ir;
-	}
-	else
-	{
-		Serial.println("LUX sensor 1 is broked");
-	}
-
-	if(tsl2.begin())
-	{
-	//Set settings for lux sensor
-//		Serial.println("Lux sensor connected");
-		tsl2.setGain(TSL2561_GAIN_0X);	//Bright situations
-//		tsl2.setGain(TSL2561_GAIN_16X);	//Dim situations
-		tsl2.setTiming(TSL2561_INTEGRATIONTIME_13MS);
-
-	//Take readings from light sensor
-		uint16_t vis = tsl2.getLuminosity(TSL2561_VISIBLE);
-//		uint16_t full = tsl2.getLuminosity(TSL2561_FULLSPECTRUM);
-		uint16_t ir = tsl2.getLuminosity(TSL2561_INFRARED);
-		dataArray[IRUP] = ir;
-		dataArray[VISUP] = vis;
-	}
-	else
-	{
-		Serial.println("LUX sensor 2 is broked");
-	}
 }
 
 bool Data::saveData()

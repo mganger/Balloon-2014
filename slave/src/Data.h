@@ -37,11 +37,6 @@ class Data {
 
 	private:
 
-
-		//Global variable necessary for Lux Calculations 
-//		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
-
-		void readLUX();
 		void readPres();
 		void readUV();
 		void readHumi();
@@ -49,7 +44,6 @@ class Data {
 		void readTemp();
 		void readO3();
 		void readGPS();
-		void readMidIR();
 
 		char* tahu(int,char*);
 
