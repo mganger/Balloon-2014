@@ -24,17 +24,16 @@
 #define INDEX 		0
 #define TIMECOLLECT 	1
 #define TEMP 		2
-#define PRES 		3
-#define HUMI 		4
-#define CO2 		5
-#define UV 		6
-#define O3 		7
-#define IRUP 		8
-#define IRDOWN 		9
-#define VISUP 		10
-#define VISDOWN 	11
-#define MIDIRUP 	12
-#define MIDIRDOWN 	13
+#define HUMI 		3
+#define CO2 		4
+#define UV 		5
+#define O3 		6
+#define IRUP 		7
+#define IRDOWN 		8
+#define VISUP 		9
+#define VISDOWN 	10
+#define MIDIRUP 	11
+#define MIDIRDOWN 	12
 
 #include "Data.h"
 #include "Arduino.h"
@@ -49,7 +48,6 @@
 
 //Global variable necessary for Lux Calculations
 //Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
-Intersema::BaroPressure_MS5607B baro(true);
 
 //******************************************************************************
 //Constructor, reset, init
@@ -112,7 +110,6 @@ void Data::readSensorData()
 	reset();
 	dataArray[TIMECOLLECT] = millis();
 	readLUX();
-	readPres();
 	readUV();
 	readHumi();
 	readCO2();
@@ -144,11 +141,6 @@ void Data::readUV()
 void Data::readO3()
 {
 	dataArray[O3] = analogRead(3);
-}
-
-void Data::readPres(){
-	baro.init();
-	dataArray[PRES] = baro.getHeightCentiMeters();
 }
 
 void Data::readMidIR()

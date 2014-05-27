@@ -20,7 +20,7 @@
 
 #ifndef __DATA_H_INCLUDED__		//If this library is not defined..
 #define __DATA_H_INCLUDED__		//Define this variable and read the code
-#define SIZE 14
+#define SIZE 13
 
 class Data { 
 
@@ -42,7 +42,6 @@ class Data {
 //		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
 
 		void readLUX();
-		void readPres();
 		void readUV();
 		void readHumi();
 		void readCO2();
