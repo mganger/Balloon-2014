@@ -22,7 +22,7 @@
 //It opens the Serial port at 115200 and sends a millisecond timestamp, a pretty
 //timestamp, and a reading from the port.
 
-#define PERIOD	100
+#define PERIOD	1000
 #define PIN	A2
 
 void printTime(unsigned long int time){
@@ -57,12 +57,24 @@ void setup(){
 	for(;;){
 		if(millis() - timeLast >= PERIOD){
 			timeLast = millis();
+			Serial.print("\r\n");
 			Serial.print(timeLast);
 			Serial.print(",");
 			printTime(timeLast);
 			Serial.print(",");
 			Serial.print(analogRead(PIN));
-			Serial.print("\r\n");
+		}
+
+		if(Serial.available()){
+			char array[50];
+			delay(10);
+			int number;
+			for(int i = 0; Serial.available() && i < 50; i++){
+				array[i] = Serial.read();
+				number = i+1;
+			}
+			Serial.write(',');
+			Serial.write((byte*)array,number);			
 		}
 	}
 }
