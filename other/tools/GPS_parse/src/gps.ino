@@ -19,10 +19,9 @@
  */
 
 //Test program to parse gps data
-#include <SoftwareSerial.h>
+#include "AltSoftSerial.h"
+AltSoftSerial gps;
 #include <stdlib.h>
-#define _SS_MAX_RX_BUFF 256
-SoftwareSerial gps(2,3); //Rx,Tx
 
 #define SIZE 100
 double latitude;
@@ -129,7 +128,7 @@ void readGPS(){
 }
 
 void setup(){
-	Serial.begin(19200);
+	Serial.begin(115200);
 	Serial.println("reset");
 	gps.begin(9600);
 	gps.listen();
