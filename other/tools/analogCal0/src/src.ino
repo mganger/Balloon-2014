@@ -22,7 +22,7 @@
 //It opens the Serial port at 115200 and sends a millisecond timestamp, a pretty
 //timestamp, and a reading from the port.
 
-#define PERIOD	100
+#define PERIOD	1000
 #define PIN	A0
 
 void printTime(unsigned long int time){
