@@ -31,53 +31,6 @@ protected:
     virtual int32_t AcquireAveragedSampleCm(const uint8_t nSamples) = 0;
     virtual uint32_t ConvertPressureTemperature(uint32_t pressure, uint32_t temperature) = 0;
     
-    int32_t PascalToCentimeter(const int32_t pressurePa)
-    {
-        // Lookup table converting pressure in Pa to altitude in cm.
-        // Each LUT entry is the altitude in cm corresponding to an implicit
-        // pressure value, calculated as [PA_INIT - 1024*index] in Pa.
-        // The table is calculated for a nominal sea-level pressure  = 101325 Pa.
-        static const int32_t PZLUT_ENTRIES = 77;
-        static const int32_t PA_INIT       = 104908;
-        static const int32_t PA_DELTA      = 1024;
-
-        static const int32_t lookupTable[PZLUT_ENTRIES] = {
-	    -29408, -21087, -12700,  -4244,   4279,
-	     12874,  21541,  30281,  39095,  47986,
-	     56953,  66000,  75126,  84335,  93628,
-	    103006, 112472, 122026, 131672, 141410,
-	    151244, 161174, 171204, 181335, 191570,
-	    201911, 212361, 222922, 233597, 244388,
-	    255300, 266334, 277494, 288782, 300204,
-	    311761, 323457, 335297, 347285, 359424,
-	    371719, 384174, 396795, 409586, 422552,
-	    435700, 449033, 462560, 476285, 490216,
-	    504360, 518724, 533316, 548144, 563216,
-	    578543, 594134, 609999, 626149, 642595,
-	    659352, 676431, 693847, 711615, 729752,
-	    748275, 767202, 786555, 806356, 826627,
-	    847395, 868688, 890537, 912974, 936037,
-	    959766, 984206};
-
-        
-
-        if(pressurePa > PA_INIT) 
-             return lookupTable[0];
-        else 
-        {
-           const int32_t inx = (PA_INIT - pressurePa) >> 10;      
-           if(inx >= PZLUT_ENTRIES - 1) 
-               return lookupTable[PZLUT_ENTRIES - 1];
-           else 
-           {
-                const int32_t pa1 = PA_INIT - (inx << 10);
-                const int32_t z1 = lookupTable[inx];
-                const int32_t z2 = lookupTable[inx+1];
-                return (z1 + (((pa1 - pressurePa) * (z2 - z1)) >> 10));
-            }
-        }
-    }
-    
     static const uint8_t NUM_SAMP_FOR_AVG = 4;
 
     unsigned int coefficients_[6];
@@ -187,9 +140,7 @@ private:
         }
 
         const int32_t pressAvg = pressAccum / nSamples;        
-        const int32_t AltCm = PascalToCentimeter(pressAvg);
-	
-        return AltCm;	
+        return pressAvg;
     }
     
     int32_t ReadAdc(const uint8_t cmd)
