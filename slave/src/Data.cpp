@@ -39,7 +39,6 @@
 #include "Arduino.h"
 #include "SPI.h"		//Library for SPI communications
 #include "SD.h"			//Library for SD  communications
-#include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
 #include "SoftwareSerial.h"	//Library for Software Serial communications
 #include "Wire.h"		//Library for i2c communication
