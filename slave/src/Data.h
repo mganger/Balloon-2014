@@ -20,7 +20,7 @@
 
 #ifndef __DATA_H_INCLUDED__		//If this library is not defined..
 #define __DATA_H_INCLUDED__		//Define this variable and read the code
-#define SIZE 14
+#define SIZE 8
 
 class Data { 
 

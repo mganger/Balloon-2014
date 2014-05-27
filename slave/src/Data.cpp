@@ -29,12 +29,6 @@
 #define CO2 		5
 #define UV 		6
 #define O3 		7
-#define IRUP 		8
-#define IRDOWN 		9
-#define VISUP 		10
-#define VISDOWN 	11
-#define MIDIRUP 	12
-#define MIDIRDOWN 	13
 
 #include "Data.h"
 #include "Arduino.h"
