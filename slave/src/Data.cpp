@@ -262,7 +262,6 @@ bool Data::saveData()
 	dataFile = SD.open("Log.log",FILE_WRITE);
 	if(dataFile){
 		Serial.println("Datafile: Log.log has been opened for writing");
-	}
 	for(int i = 0; i < SIZE;i++)
 	{
 		dataFile.print(dataArray[i]);
@@ -272,6 +271,10 @@ bool Data::saveData()
 	dataFile.flush();
 	dataFile.close();
 	return 0;
+	}else{
+		Serial.print("Datafile: Log.log cannot be created... ");
+		Serial.println("The Data has been lost");
+	}
 }
 
 char * Data::tahu(int i, char * a)
