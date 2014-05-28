@@ -24,7 +24,7 @@
 #define CUTDOWN "Cutdown pin is digital 3"
 
 #include "Data.h"
-#include "Borp.h"
+//#include "Borp.h"
 
 void setup(){
 	//Open diagnostics communication
@@ -43,7 +43,7 @@ void setup(){
 
 	//Constuct data object to store points
 	Data data;
-	Borp radio;
+//	Borp radio;
 
 	for(;;){
 		//Collects sensor data, indexes the point
@@ -56,7 +56,7 @@ void setup(){
 
 		data.saveData();
 		//New function to transmit over radio connection
-		radio.broadcast(dataArray,SIZE)
+//		radio.broadcast(data.dataArray,SIZE);
 		data.printData();
 
 		//Pause so data is collected on even time intervals
