@@ -48,7 +48,7 @@ void Borp::broadcast(unsigned long int * dataArray,int size){
 				tmp[h] = num % 10 +48;
 				num /= 10;
 			}
-			UDR0 = tmp;
+			UDR0 = (byte)tmp;
 		}
 }
 
