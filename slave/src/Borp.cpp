@@ -32,40 +32,70 @@
 #include "Borp.h"
 #include "Arduino.h"
 
-Borp::Borp(){
-	Serial.begin(115200);
-	serialOpen = 1;
-	Serial.println();
-	Serial.println("Balloon Over Radio Protocol v1.42.7");
-	Serial.println("Connection initialized");
-}
+#define BASE 10
+#define SIZE 10
 
 //Manually writes the long int array as ascii to the hardware serial
-void Borp::broadcast(unsigned long int * dataArray,int size){
-	if(serialOpen){
-		for(int i = 1; i < size; i++ ){
-				int num = dataArray[i];
-				char tmp[10] = {0,0,0,0,0,0,0,0,0,0};
-			for(int h = size;h >=0 ;h--){
-				tmp[h] = num % 10;
-				num /= 10;
-			}
+void broadcast(unsigned long int * dataArray,int length){
+	char check = 0;
+	char checksum[3] = {'*',0,0};
+	Serial.write('$');
+	for(int i = 1; i < length; i++ ){
+		int num = dataArray[i];
+		char tmp[SIZE];
+		memset(tmp,0,SIZE);
+		for(int h = SIZE-1;h >=0 ;h--){
+			tmp[h] = num % BASE + 48;
+			num /= BASE;
+			check = check ^ tmp[h];
 		}
+		Serial.write((byte*)tmp,SIZE);
+		Serial.write(',');
 	}
+	checksum[1] = check/16;
+	checksum[2] = check%16;
+	Serial.write((byte*)checksum,3);
+	Serial.write((byte*)"\r\n",2);
+}
+
+long int ping(){
+
+	//flush the buffer
+	while(Serial.available()){
+		Serial.read();
+	}
+
+	//make a random character
+	byte randnum = random(33,126);
+	byte received = 0;
+
+	//save the time in microseconds
+	unsigned long int endtime;
+	unsigned long int time = micros();
+
+	//send the character
+	Serial.write(randnum);
+
+	//wait for it to come back
+	Serial.readBytes((char*)&received,1);
+	endtime = micros();
+	if(received == 0){
+		return -1;
+	}
+
+	//check for failure
+	if(received != randnum){
+//		packetFail++;
+		return 0;
+	}
+
+	//if everything went well, return the amount of time to ping
+//	packetSuccess++;
+	return endtime - time;
 }
 
 //Prints the int array as ascii to the serial ports
-void Borp::phoneHome(unsigned long int* dataArray,int size){
-	if(serialOpen){
-		for(int i = 0; i < size; i++){
-			Serial.print(dataArray[i]);
-			Serial.print(",");
-		}
-		Serial.print('\n');
-	}
-}
-
-bool Borp::compareArrays(char * array1, char* array2, int size){
+bool compareArrays(char * array1, char* array2, int size){
 	for(int i = 0; i < size; i++){
 		if(array1[i] != array2[i]){
 			return 0;
@@ -74,7 +104,7 @@ bool Borp::compareArrays(char * array1, char* array2, int size){
 	return 1;
 }
 
-long int Borp::listen(){
+long int listen(){
 	//check to see if there is something from the master; -1 == nothing
 	if(Serial.available() == 0){
 		return -1;

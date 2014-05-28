@@ -24,32 +24,21 @@
 #define Borp_h		//This ensures that it is not inlcuded twice
 
 
-class Borp
-{
+//This function takes an array (from the data class) and sends it
+void phoneHome(unsigned long int* dataArray,int size);
+void broadcast(unsigned long int* dataArray,int size);
 
-	public:
-
-		//constuctor initializes the Serial communication.
-		Borp();
-
-		//This function takes an array (from the data class) and sends it
-		void phoneHome(unsigned long int* dataArray,int size);
-		void broadcast(unsigned long int* dataArray,int size);
-		
-
-		//Checks the serial buffer, returns commands as ints
-		long int listen();
-
-	private:
-		int pin;			//Stores the Serial pin (i.e. tx3)
-		int baud;			//Stores the baud rate.
-		bool serialOpen;		//whether connected to master
+//ping function for radio evaluation if necessary
+long int ping();
 
 
-		//compares the two arrays given to it
-		//returns 0 if different, 1 if the same
-		bool compareArrays(char * array1, char* array2, int size);
-};
+//Checks the serial buffer, returns commands as ints
+long int listen();
+
+
+//compares the two arrays given to it
+//returns 0 if different, 1 if the same
+bool compareArrays(char * array1, char* array2, int size);
 
 #endif			//Ends check for included libraries
 
