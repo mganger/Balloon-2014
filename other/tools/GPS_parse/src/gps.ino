@@ -24,10 +24,59 @@ AltSoftSerial gps;
 #include <stdlib.h>
 
 #define SIZE 100
-double latitude;
-double longitude;
-double altitude;
-double time;
+char latitude[12];
+char longitude[12];
+char altitude[12];	//needs null-terminating character
+char time[12];
+
+//time coversion, only takes numbers. Returns -1 if it fails
+long int timeConv(char* input){
+	for(int i = 0; i < 6; i++){
+		if((input[i] < 48 ) | (input[i] > 57)) return -1;
+	}
+	//s + s*10 + m*60 + m*600 + h*3600 + h*36000
+	return (input[5]-48) + (input[4]-48)*10 + (input[3]-48)*60 + (input[2]-48)*600 + (input[1]-48)*3600 + (input[0]-48)*36000;
+}
+
+
+
+
+//degree conversion
+long int degConv(char* input){
+	for(int i = 0; i < 9; i++){
+		if(input[i] == '.') continue;
+		if((input[i] < 48 ) | (input[i] > 57)) return -1;
+	}
+	//in microdegrees
+	long int degree = 1000000*(input[0]-48)*10 + (input[1]-48);
+	degree += 10000000*(input[2]-48)/60 + 1000000*(input[3]-48)/60 + 100000*(input[5]-48)/60 + 10000*(input[6]-48)/60 + 1000*(input[7]-48)/60 + 100*(input[8]-48)/60;
+	return degree;
+}
+
+
+//altitude conversion to decimeters
+long int altConv(char* input){
+	int decimal = 0;
+	long int multiplier = 10;
+	for(int i = 0; i < 9; i++){
+		if(input[i] == '.'){
+			decimal = i;
+			break;
+		}
+		if((input[i] < 48 ) | (input[i] > 57)) return -1;
+	}
+	if((input[decimal+1] < 48 ) | (input[decimal+1] > 57)) return -1;
+
+
+	long int altitude = (input[decimal+1] - 48);
+	for(int i = decimal-1; i > 0; i--){
+		altitude += (input[i]-48)*multiplier;
+		multiplier *= 10;
+	}
+
+	return altitude*100;
+}
+
 
 unsigned int htoi(char * s)
 {
@@ -49,82 +98,93 @@ unsigned int htoi(char * s)
 	return val;
 }
 
+int getline(char* input, char* output, char delim){
+	for(int i = 0; i < SIZE; i++){
+		if(input[i] != delim){
+			output[i] = input[i];
+			continue;
+		}
+		return i+1;
+	}
+}
+
+int getline(char* input, char delim){
+	for(int i = 0; i < SIZE; i++){
+		if(input[i] != delim){
+			continue;
+		}
+		return i+1;
+	}
+}
+
 void readGPS(){
 	char array[SIZE];
-	char checksum[3] = "\0\0";
+	char checksum[2];
 	//fill with null characters
 	for(int i = 0; i < SIZE; i++){
 		array[i] = '\0';
 	}
 	
-//	//get a line
-//	for(int i = 0; (gps.read() != '$') & (i < SIZE); i++);
-//	int number = gps.readBytesUntil('*',array,SIZE);
-//	gps.readBytesUntil('\r',checksum,2);
-//	Serial.println(array);
 
 	//get a line
-	char tmp;
-	char check = '\0';
-	while(gps.available()){
-		tmp = gps.read();
-		if(tmp == '$') break;
+	gps.readBytesUntil('$', array, SIZE);
+	memset(array,SIZE,'\0');
+	int number = gps.readBytesUntil('*',array,SIZE);
+	char check = array[0];
+	for(int i = 1; i < number; i++){
+		check = check ^ array[i];
 	}
-
-	int i = 0;
-	for(int i = 0; i < SIZE; i++){
-		tmp = gps.read();
-		if(tmp == '*') break;
-		check = check ^ tmp;
-		array[i] = tmp;
-	}
-	if(array[3] == 'G') return;
-	
-		
+	gps.readBytes(checksum,2);
 
 	//check to see if we want these points
 	if(check != htoi(checksum)){
 		return;
 	}
-	if((array[3] != 'G') & (array[18] == ',')){
+
+	if(array[3] != 'G'){
 		return;
 	}
-	Serial.println(array);
-
-	char degreearray[] = "\0\0";
-	char minutearray[] = "\0\0";
-	char deciminutearray[] = "\0\0\0\0";
-	char altiarray[] = "\0\0\0\0\0\0\0";
-
-	//if all's well, update the latitude and longitude
-	//latitude
-	degreearray[0] = array[18];
-	degreearray[1] = array[19];
-	minutearray[0] = array[20];
-	minutearray[1] = array[21];
-	deciminutearray[0] = array[23];
-	deciminutearray[0] = array[24];
-	deciminutearray[0] = array[25];
-	deciminutearray[0] = array[26];
-
-//	latitude = (atoi(degreearray)*60000 + atoi(minutearray)*10000 + atoi(deciminutearray))/(double)60000;
-
-
-
-	//longitude
-	degreearray[0] = array[31];
-	degreearray[1] = array[32];
-	for(int i = 0; i < 7; i++){
-		minutearray[i] = array[i+33];
+	if(array[18] == ','){
+		return;
 	}
-//	longitude = (atoi(degreearray)*60000 + atoi(minutearray)*10000 + atoi(deciminutearray))/(double)60000;
 
-
+	memset(time,12,0);
+	memset(altitude,12,0);
+	memset(longitude,12,0);
+	memset(latitude,12,0);
+	//GPGGA
+	int total = getline(array,',');
+	int count = total;
+	//time
+	count = getline(&array[total],time,',');
+	total += count;
+	//latitude
+	count = getline(&array[total],latitude,',');
+	total += count;
+	//N
+	count = getline(&array[total],',');
+	total += count;
+	//longitude
+	count = getline(&array[total],longitude,',');
+	total += count;
+	//W
+	count = getline(&array[total],',');
+	total += count;
+	//1
+	count = getline(&array[total],',');
+	total += count;
+	//8
+	count = getline(&array[total],',');
+	total += count;
+	//1.14
+	count = getline(&array[total],',');
+	total += count;
 	//altitude
-//	for(int i = 0; array[i+52] != ','; i++){
-//		altiarray[i] = array[i+52];
-//	}
-//	altitude = atof(altiarray);
+	count = getline(&array[total], altitude,',');
+	//M
+	//-34.0
+	//M
+	//<blank>
 }
 
 void setup(){
@@ -133,20 +193,15 @@ void setup(){
 	gps.begin(9600);
 	gps.listen();
 	Serial.println("gps begin");
-	while(1){
-		if(gps.available()){
-			UDR0 = gps.read();
-		}
-	}
 }
 
 void loop(){
 	if(gps.available()){
 		readGPS();
-//		Serial.print("Latitude:  ");Serial.println(latitude);
-//		Serial.print("Longitude: ");Serial.println(longitude);
-//		Serial.print("Altitude:  ");Serial.println(altitude);
-//		Serial.println();
+		Serial.println(timeConv(time));
+		Serial.println(degConv(latitude));
+		Serial.println(degConv(&longitude[1]));
+		Serial.println(altConv(altitude));
 	}
-//	Serial.print('-');
+
 }
