@@ -33,10 +33,10 @@
 #include "Arduino.h"
 
 Borp::Borp(){
-	serialOpen = 1;
-	Serial.println();
-	Serial.println("Balloon Over Radio Protocol v1.42.7");
-	Serial.println("Connection initialized");
+//	serialOpen = 1;
+//	Serial.println();
+//	Serial.println("Balloon Over Radio Protocol v1.42.7");
+//	Serial.println("Connection initialized");
 }
 
 //Manually writes the long int array as ascii to the hardware serial
@@ -50,17 +50,6 @@ void Borp::broadcast(unsigned long int * dataArray,int size){
 				num /= 10;
 			}
 		}
-	}
-}
-
-//Prints the int array as ascii to the serial ports
-void Borp::phoneHome(unsigned long int* dataArray,int size){
-	if(serialOpen){
-		for(int i = 0; i < size; i++){
-			Serial.print(dataArray[i]);
-			Serial.print(",");
-		}
-		Serial.print('\n');
 	}
 }
 
