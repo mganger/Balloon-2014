@@ -33,15 +33,15 @@
 #include "Arduino.h"
 
 Borp::Borp(){
-//	serialOpen = 1;
-//	Serial.println();
-//	Serial.println("Balloon Over Radio Protocol v1.42.7");
-//	Serial.println("Connection initialized");
+	serialOpen = 1;
+	Serial.println();
+	Serial.println("Balloon Over Radio Protocol v1.42.7");
+	Serial.println("Connection initialized");
 }
 
 //Manually writes the long int array as ascii to the hardware serial
 void Borp::broadcast(unsigned long int * dataArray,int size){
-//	if(serialOpen){
+	if(Serial.available()){
 //		for(int i = 1; i < size; i++ ){
 //				int num = dataArray[i];
 //				char tmp[10] = {0,0,0,0,0,0,0,0,0,0};
@@ -50,7 +50,7 @@ void Borp::broadcast(unsigned long int * dataArray,int size){
 //				num /= 10;
 //			}
 //		}
-//	}
+	}
 }
 
 bool Borp::compareArrays(char * array1, char* array2, int size){
