@@ -33,7 +33,6 @@
 #include "Arduino.h"
 
 Borp::Borp(){
-	Serial.begin(115200);
 	serialOpen = 1;
 	Serial.println();
 	Serial.println("Balloon Over Radio Protocol v1.42.7");
