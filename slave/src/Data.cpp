@@ -90,7 +90,6 @@ Data::Data(){
 	}
 	memset(dataArray,INIT,SIZE*4);
 	Serial.println("Initialized Array");
-	printData();
 	dataArray[INDEX] = 0;
 	//initialize the pressure sensor
 }
@@ -99,19 +98,6 @@ void Data::reset(){
 	//Set the readings to sentinal value
 	memset(&dataArray[TIMECOLLECT+1],INIT,(SIZE-2)*4);
 	dataArray[INDEX]++;
-}
-
-//******************************************************************************
-//Functions to return data as array
-
-void Data::printData(){
-//If you change the number of readings here you must update SIZE in Data.h
-	for(int i = 0; i < SIZE; i++)
-	{
-		Serial.print(dataArray[i]);
-		Serial.print(",");
-	}
-	Serial.println();
 }
 
 //******************************************************************************
