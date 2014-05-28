@@ -77,10 +77,10 @@ Data::Data(){
 //		initFile.close();
 //		}
 //	}
-//	memset(dataArray,INIT,SIZE*4);
-//	Serial.println("Initialized Array");
-//	dataArray[INDEX] = dataArray[INDEX] +1;
-//	//initialize the pressure sensor
+	memset(dataArray,INIT,SIZE*4);
+	Serial.println("Initialized Array");
+	dataArray[INDEX] = dataArray[INDEX] +1;
+	//initialize the pressure sensor
 }
 
 void Data::reset(){
