@@ -55,33 +55,32 @@ Intersema::BaroPressure_MS5607B baro(true);
 //Constructor, reset, init
 
 Data::Data(){
-	File initFile;
-	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
-	if(!SD.begin(10)){
-		Serial.println("The SD reader has failed or is not present");
-	}
-	else{
-		Serial.println("CREATING STARTUP LOG FILES");
-		delay(2000);
-		initFile = SD.open("start.log",FILE_WRITE);
-		if(!initFile){
-			Serial.println("Could not create startup file");
-		}else{
-		initFile.println();
-		initFile.println();
-		initFile.println("---------------");
-		initFile.print("Time since boot: ");
-		initFile.println(micros());
-		initFile.print("GPS Status: ");
-		//Check to see what i2c sensors are ready
-		initFile.flush();
-		initFile.close();
-		}
-	}
-	memset(dataArray,INIT,SIZE*4);
-	Serial.println("Initialized Array");
-	dataArray[INDEX] = dataArray[INDEX] +1;
-	//initialize the pressure sensor
+//	File initFile;
+//	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
+//	if(!SD.begin(10)){
+//		Serial.println("The SD reader has failed or is not present");
+//	}
+//	else{
+//		Serial.println("CREATING STARTUP LOG FILES");
+//		initFile = SD.open("start.log",FILE_WRITE);
+//		if(!initFile){
+//			Serial.println("Could not create startup file");
+//		}else{
+//		initFile.println();
+//		initFile.println();
+//		initFile.println("---------------");
+//		initFile.print("Time since boot: ");
+//		initFile.println(micros());
+//		initFile.print("GPS Status: ");
+//		//Check to see what i2c sensors are ready
+//		initFile.flush();
+//		initFile.close();
+//		}
+//	}
+//	memset(dataArray,INIT,SIZE*4);
+//	Serial.println("Initialized Array");
+//	dataArray[INDEX] = dataArray[INDEX] +1;
+//	//initialize the pressure sensor
 }
 
 void Data::reset(){
