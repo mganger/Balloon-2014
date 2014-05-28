@@ -96,7 +96,7 @@ void setup(){
 
 		data.saveData();
 		//New function to transmit over radio connection
-		radio.broadcast(dataArray[],SIZE)
+		radio.broadcast(dataArray,SIZE)
 		data.printData();
 
 		//Pause so data is collected on even time intervals
