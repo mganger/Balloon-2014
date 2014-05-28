@@ -94,7 +94,7 @@ void setup(){
 			Serial.println("Data saved"); //TODO
 		}
 		//New function to transmit over radio connection
-		radio.broadcast(data.dataArray,SIZE)
+		radio.broadcast(data.dataArray,SIZE);
 		data.printData();
 
 		//Pause so data is collected on even time intervals
