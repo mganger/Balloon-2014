@@ -85,7 +85,10 @@ void setup(){
 //	Data data;
 	Borp radio;
 unsigned long int array[5] = {12309,3982,19082,9992,298211};
-while(1){ Serial.println("broadcasting...");radio.broadcast(array,5);}
+	while(1){ 
+	Serial.println("broadcasting...");
+	radio.broadcast(array,5);
+}
 
 //	for(;;){
 //		//Collects sensor data, indexes the point

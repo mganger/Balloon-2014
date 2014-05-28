@@ -48,6 +48,7 @@ void Borp::broadcast(unsigned long int * dataArray,int size){
 				tmp[h] = num % 10;
 				num /= 10;
 			}
+			Serial.println(tmp);
 		}
 }
 
