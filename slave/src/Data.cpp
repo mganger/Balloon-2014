@@ -50,7 +50,7 @@
 #include "Wire.h"		//Library for i2c communication
 #include "TSL2561.h"		//Library for digital luminosity/lux sensor
 #include "Adafruit_TMP006.h"	//Library for non-contact temperature sensing
-#include "AltSoftSerial.h"
+#include "AltSoftSerial.h"	//Improved Software Serial communications
 
 
 //Global declaration of the alt softserial
