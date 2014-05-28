@@ -24,7 +24,7 @@
 #define CUTDOWN "Cutdown pin is digital 3"
 
 #include "Data.h"
-//#include "Borp.h"
+#include "Borp.h"
 
 void setup(){
 	//Open diagnostics communication
@@ -56,8 +56,7 @@ void setup(){
 
 		data.saveData();
 		//New function to transmit over radio connection
-//		radio.broadcast(data.dataArray,SIZE);
-		data.printData();
+		broadcast(data.dataArray,SIZE);
 
 		//Pause so data is collected on even time intervals
 		while((millis() - data.timeSince())<PERIOD);
