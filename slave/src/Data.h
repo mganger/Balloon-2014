@@ -20,7 +20,7 @@
 
 #ifndef __DATA_H_INCLUDED__		//If this library is not defined..
 #define __DATA_H_INCLUDED__		//Define this variable and read the code
-#define SIZE 14
+#define SIZE 18
 
 class Data { 
 
@@ -51,9 +51,13 @@ class Data {
 		void readGPS();
 		void readMidIR();
 
-		char* tahu(int,char*);
+		long int timeConv(char*);	//converts gps time to seconds
+		long int degConv(char*);	//converts gps coordinates to microdegrees
+		long int altConv(char*);	//converts gps altitude to mm
 
-		void reset();					//resets all readings to null
+		char* tahu(int,char*);		//itoa for file wrtiting
+
+		void reset();			//resets all readings to null
 };
 
 #endif

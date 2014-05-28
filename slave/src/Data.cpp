@@ -35,17 +35,27 @@
 #define VISDOWN 	11
 #define MIDIRUP 	12
 #define MIDIRDOWN 	13
+#define GPS_LAT		14
+#define GPS_LONG	15
+#define GPS_ALT		16
+#define GPS_TIME	17
 
 #include "Data.h"
 #include "Arduino.h"
+#include "global.h"
 #include "SPI.h"		//Library for SPI communications
 #include "SD.h"			//Library for SD  communications
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
-#include "SoftwareSerial.h"	//Library for Software Serial communications
 #include "Wire.h"		//Library for i2c communication
 #include "TSL2561.h"		//Library for digital luminosity/lux sensor
 #include "Adafruit_TMP006.h"	//Library for non-contact temperature sensing
+#include "AltSoftSerial.h"
+
+
+//Global declaration of the alt softserial
+//AltSoftSerial gps; //(8=Rx,9=Tx)
+
 
 //Global variable necessary for Lux Calculations
 //Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
@@ -62,7 +72,6 @@ Data::Data(){
 	}
 	else{
 		Serial.println("CREATING STARTUP LOG FILES");
-		delay(2000);
 		initFile = SD.open("start.log",FILE_WRITE);
 		if(!initFile){
 			Serial.println("Could not create startup file");
@@ -73,6 +82,7 @@ Data::Data(){
 		initFile.print("Time since boot: ");
 		initFile.println(micros());
 		initFile.print("GPS Status: ");
+//		gps.begin(9600);
 		//Check to see what i2c sensors are ready
 		initFile.flush();
 		initFile.close();
@@ -81,7 +91,7 @@ Data::Data(){
 	memset(dataArray,INIT,SIZE*4);
 	Serial.println("Initialized Array");
 	printData();
-	dataArray[INDEX] = dataArray[INDEX] +1;
+	dataArray[INDEX] = 0;
 	//initialize the pressure sensor
 }
 
@@ -291,10 +301,134 @@ char * Data::tahu(int i, char * a)
 	return a;
 }
 
-void Data::readGPS()
-{
-
+//time coversion, only takes numbers. Returns -1 if it fails
+long int Data::timeConv(char* input){
+	for(int i = 0; i < 6; i++){
+		if((input[i] < 48 ) | (input[i] > 57)) return -1;
+	}
+	//s + s*10 + m*60 + m*600 + h*3600 + h*36000
+	return (input[5]-48) + (input[4]-48)*10 + (input[3]-48)*60 + (input[2]-48)*600 + (input[1]-48)*3600 + (input[0]-48)*36000;
 }
+
+//degree conversion
+long int Data::degConv(char* input){
+	for(int i = 0; i < 9; i++){
+		if(input[i] == '.') continue;
+		if((input[i] < 48 ) | (input[i] > 57)) return -1;
+	}
+	//in microdegrees
+	long int degree = 1000000*(input[0]-48)*10 + (input[1]-48);
+	degree += 10000000*(input[2]-48)/60 + 1000000*(input[3]-48)/60 + 100000*(input[5]-48)/60 + 10000*(input[6]-48)/60 + 1000*(input[7]-48)/60 + 100*(input[8]-48)/60;
+	return degree;
+}
+
+//altitude conversion to decimeters
+long int Data::altConv(char* input){
+	int decimal = 0;
+	long int multiplier = 10;
+	for(int i = 0; i < 9; i++){
+		if(input[i] == '.'){
+			decimal = i;
+			break;
+		}
+		if((input[i] < 48 ) | (input[i] > 57)) return -1;
+	}
+	if((input[decimal+1] < 48 ) | (input[decimal+1] > 57)) return -1;
+
+
+	long int altitude = (input[decimal+1] - 48);
+	for(int i = decimal-1; i > 0; i--){
+		altitude += (input[i]-48)*multiplier;
+		multiplier *= 10;
+	}
+
+	return altitude*100;
+}
+
+//void Data::readGPS()
+//{
+//	char latitude[12];
+//	char longitude[12];
+//	char altitude[12];	//needs null-terminating character
+//	char time[12];
+//
+//	char array[101];
+//	char checksum[2];
+//	//fill with null characters
+//	for(int i = 0; i < 100; i++){
+//		array[i] = '\0';
+//	}
+//	
+//
+//	//get a line
+//	gps.readBytesUntil('$', array, 100);
+//	memset(array,100,'\0');
+//	int number = gps.readBytesUntil('*',array,100);
+//	char check = array[0];
+//	for(int i = 1; i < number; i++){
+//		check = check ^ array[i];
+//	}
+//	gps.readBytes(checksum,2);
+//
+//	//check to see if we want these points
+//	if(check != htoi(checksum)){
+//		return;
+//	}
+//
+//	if(array[3] != 'G'){
+//		return;
+//	}
+//	if(array[18] == ','){
+//		return;
+//	}
+//
+//	memset(time,12,0);
+//	memset(altitude,12,0);
+//	memset(longitude,12,0);
+//	memset(latitude,12,0);
+//	//GPGGA
+//	int total = getline(array,',');
+//	int count = total;
+//	//time
+//	count = getline(&array[total],time,',');
+//	total += count;
+//	//latitude
+//	count = getline(&array[total],latitude,',');
+//	total += count;
+//	//N
+//	count = getline(&array[total],',');
+//	total += count;
+//	//longitude
+//	count = getline(&array[total],longitude,',');
+//	total += count;
+//	//W
+//	count = getline(&array[total],',');
+//	total += count;
+//	//1
+//	count = getline(&array[total],',');
+//	total += count;
+//	//8
+//	count = getline(&array[total],',');
+//	total += count;
+//	//1.14
+//	count = getline(&array[total],',');
+//	total += count;
+//	//altitude
+//	count = getline(&array[total], altitude,',');
+//	//M
+//	//-34.0
+//	//M
+//	//<blank>
+//
+//	long int tmp = timeConv(time);
+//	if(tmp >= 0) dataArray[GPS_TIME] = tmp;
+//	tmp = degConv(latitude);
+//	if(tmp >= 0) dataArray[GPS_LAT] = tmp;
+//	tmp = degConv(&longitude[1]);
+//	if(tmp >= 0) dataArray[GPS_LONG] = tmp;
+//	tmp = altConv(altitude);
+//	if(tmp >= 0) dataArray[GPS_ALT] = tmp;
+//}
 
 unsigned long int Data::timeSince()
 {
