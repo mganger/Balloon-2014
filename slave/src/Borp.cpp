@@ -48,7 +48,7 @@ void Borp::broadcast(unsigned long int * dataArray,int size){
 //				tmp[h] = num % 10;
 //				num /= 10;
 //			}
-		}
+//		}
 }
 
 bool Borp::compareArrays(char * array1, char* array2, int size){
