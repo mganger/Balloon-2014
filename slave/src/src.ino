@@ -83,23 +83,25 @@ void setup(){
 
 	//Constuct data object to store points
 	Data data;
-//	Borp radio;
+	Borp radio;
+unsigned long int array[5] = {12309,3982,19082,9992,298211};
+while(1) radio.broadcast(array,5);
 
-	for(;;){
-		//Collects sensor data, indexes the point
-		data.readSensorData();
-		Serial.println("Read the sensor data"); //TODO
-		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
-		if(!data.saveData()){
-			Serial.println("Data saved"); //TODO
-		}
-		//New function to transmit over radio connection
+//	for(;;){
+//		//Collects sensor data, indexes the point
+//		data.readSensorData();
+//		Serial.println("Read the sensor data"); //TODO
+//		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
+//		if(!data.saveData()){
+//			Serial.println("Data saved"); //TODO
+//		}
+//		//New function to transmit over radio connection
 //		radio.broadcast(data.dataArray,SIZE);
-		data.printData();
-
-		//Pause so data is collected on even time intervals
-		while((millis() - data.timeSince())<PERIOD);
-	}
+//		data.printData();
+//
+//		//Pause so data is collected on even time intervals
+//		while((millis() - data.timeSince())<PERIOD);
+//	}
 }
 
 //We leave the loop empty. This makes object creation much easier
