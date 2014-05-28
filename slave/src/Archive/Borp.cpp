@@ -45,7 +45,7 @@ void Borp::broadcast(unsigned long int * dataArray,int size){
 	if(serialOpen){
 		for(int i = 1; i < size; i++ ){
 				int num = dataArray[i];
-				char tmp[10] = '/0/0/0/0/0/0/0/0/0/0';
+				char tmp[10] = {0,0,0,0,0,0,0,0,0,0};
 			for(int h = size;h >=0 ;h--){
 				tmp[h] = num % 10;
 				num /= 10;
