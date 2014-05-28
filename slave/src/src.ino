@@ -83,7 +83,7 @@ void setup(){
 
 	//Constuct data object to store points
 	Data data;
-	Borp radio;
+//	Borp radio;
 
 	for(;;){
 		//Collects sensor data, indexes the point
