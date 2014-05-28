@@ -121,55 +121,22 @@ void Data::readSensorData()
 {
 	reset();
 	dataArray[TIMECOLLECT] = millis();
-//	readLUX();
-//	readPres();
-//	readUV();
-//	readHumi();
-//	readCO2();
-//	readTemp();
-//	readO3();
-//	readMidIR();
 	readGPS();
-}
-
-void Data::readCO2()
-{
 	dataArray[CO2] = analogRead(0);
-}
-
-void Data::readTemp()
-{
 	dataArray[TEMP] = analogRead(1);
-}
-
-void Data::readHumi()
-{
 	dataArray[HUMI] = analogRead(2);
-}
-
-void Data::readUV()
-{
 	dataArray[UV] = analogRead(2);
-}
-
-void Data::readO3()
-{
 	dataArray[O3] = analogRead(3);
-}
 
-void Data::readPres(){
-//	baro.init();
-//	dataArray[PRES] = baro.getHeightCentiMeters();
-}
+//Code to read from Pesky Parallax Barometer/pressure sensor
+	baro.init();
+	dataArray[PRES] = baro.getHeightCentiMeters();
 
-void Data::readMidIR()
-{
+
+//Code for TMP006 non-contact temperature sensor. Only needed for Monkey Team
 	Adafruit_TMP006 tmp(0x40);  //Create tmp sensor with address 0x40  [GND,GND]
 	Adafruit_TMP006 tmp2(0x44);  //Create tmp sensor with address 0x44 [VCC,GND]
 	
-	//you can also use tmp.begin(TMP006_CFG_1SAMPLE) or 2SAMPLE/4SAMPLE/8SAMPLE to have
-	//lower precision, higher rate sampling. default is TMP006_CFG_16SAMPLE which takes
-	//4 seconds per reading (16 samples)
 	if(!tmp.begin(TMP006_CFG_1SAMPLE)) 
 	{
 		Serial.println("No top IR thermometer found");
@@ -178,33 +145,24 @@ void Data::readMidIR()
 	{
 		Serial.println("No bottom IR thermometer found");
 	}
-	
-	//Loop
 	float objt = tmp.readObjTempC();		//Returns Kelvins 
 	float objt2 = tmp2.readObjTempC(); 		//Returns Kelvins
 
 	dataArray[MIDIRUP] = objt;
 	dataArray[MIDIRDOWN] = objt2;
 
-//	float diet = tmp.readDieTempC(); 		//Returns Kelvins
-//	float diet2 = tmp2.readDieTempC(); 		//Returns Kelvins
-}
-void Data::readLUX()
-{
+//Code for Adafruit Lux/Luminosity sensor. Only needed for Monkey Team
 	TSL2561 tsl(TSL2561_ADDR_LOW);
 	TSL2561 tsl2(TSL2561_ADDR_FLOAT);
 	//Set address to bottom lux sensor
 	if(tsl.begin())
 	{
 	//Set settings for lux sensor
-//		Serial.println("Lux sensor connected");
 		tsl.setGain(TSL2561_GAIN_0X);	//Bright situations
-//		tsl.setGain(TSL2561_GAIN_16X);	//Dim situations
 		tsl.setTiming(TSL2561_INTEGRATIONTIME_13MS);
 
 	//Take readings from light sensor
 		uint16_t vis = tsl.getLuminosity(TSL2561_VISIBLE);
-//		uint16_t full = tsl.getLuminosity(TSL2561_FULLSPECTRUM);
 		uint16_t ir = tsl.getLuminosity(TSL2561_INFRARED);
 
 	//Save data from top sensor
@@ -220,14 +178,11 @@ void Data::readLUX()
 	if(tsl2.begin())
 	{
 	//Set settings for lux sensor
-//		Serial.println("Lux sensor connected");
 		tsl2.setGain(TSL2561_GAIN_0X);	//Bright situations
-//		tsl2.setGain(TSL2561_GAIN_16X);	//Dim situations
 		tsl2.setTiming(TSL2561_INTEGRATIONTIME_13MS);
 
 	//Take readings from light sensor
 		uint16_t vis = tsl2.getLuminosity(TSL2561_VISIBLE);
-//		uint16_t full = tsl2.getLuminosity(TSL2561_FULLSPECTRUM);
 		uint16_t ir = tsl2.getLuminosity(TSL2561_INFRARED);
 		dataArray[IRUP] = ir;
 		dataArray[VISUP] = vis;
@@ -236,6 +191,7 @@ void Data::readLUX()
 	{
 		Serial.println("LUX sensor 2 is broked");
 	}
+
 }
 
 bool Data::saveData()

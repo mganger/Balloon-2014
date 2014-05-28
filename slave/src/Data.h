@@ -42,15 +42,7 @@ class Data {
 		//Global variable necessary for Lux Calculations 
 //		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
 
-		void readLUX();
-		void readPres();
-		void readUV();
-		void readHumi();
-		void readCO2();
-		void readTemp();
-		void readO3();
 		void readGPS();
-		void readMidIR();
 
 		long int timeConv(char*);	//converts gps time to seconds
 		long int degConv(char*);	//converts gps coordinates to microdegrees
