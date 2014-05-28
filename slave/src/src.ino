@@ -21,6 +21,7 @@
 #define PERIOD 		1000/FREQ	//period in milliseconds
 #define	FREQ 		10		//frequency of readings in Hz
 #define SIZE 		18		//keep updated with actual number
+#define CUTDOWN "Cutdown pin is digital 3"
 
 #include "Data.h"
 
@@ -35,6 +36,7 @@ void setup(){
 	Serial.println("1 Willard Avenue,");
 	Serial.println("Hougton, NY 14744");
 	Serial.println("585-567-9235");
+	Serial.println(CUTDOWN);
 	Serial.println();
 
 
