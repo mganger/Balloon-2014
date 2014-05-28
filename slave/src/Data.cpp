@@ -124,15 +124,7 @@ void Data::readSensorData()
 //Code for TMP006 non-contact temperature sensor. Only needed for Monkey Team
 	Adafruit_TMP006 tmp(0x40);  //Create tmp sensor with address 0x40  [GND,GND]
 	Adafruit_TMP006 tmp2(0x44);  //Create tmp sensor with address 0x44 [VCC,GND]
-	
-	if(!tmp.begin(TMP006_CFG_1SAMPLE)) 
-	{
-		Serial.println("No top IR thermometer found");
-	}
-	if(!tmp2.begin(TMP006_CFG_1SAMPLE)) 
-	{
-		Serial.println("No bottom IR thermometer found");
-	}
+
 	float objt = tmp.readObjTempC();		//Returns Kelvins 
 	float objt2 = tmp2.readObjTempC(); 		//Returns Kelvins
 
@@ -185,57 +177,25 @@ void Data::readSensorData()
 bool Data::saveData()
 {
 	File dataFile;		//dataFile for SD card
-//	if(!SD.begin(10))
-//	{
-//		Serial.println("SD Card cannot open");
-//		reset();
-//		return 1;
-//	}
-
-//	if(dataArray[INDEX] % PACKETSIZE == 0)
-//	{
-//		char filename[18] = "0/0/0/0/0/0/0.CSV";
-//		char foldername[18] = "0/0/0/0/0/0/0.CSV";
-//		tahu(dataArray[INDEX],filename);
-//		tahu(dataArray[INDEX],foldername);
-//		foldername[11] = '\0';
-//		Serial.print(foldername);
-//		Serial.print(": ");
-//		Serial.println(filename);
-//		SD.mkdir(foldername);
-//		if(!SD.exists(filename))
-//		{
-//			dataFile.close();
-//			dataFile = SD.open(filename, FILE_WRITE);
-//			Serial.println(dataFile);
-//			delay(1000);
-//			if(!dataFile)
-//			{
-//				Serial.print("Could not create file: ");
-//				Serial.println(filename);
-//				reset();
-//				return 1;
-//			}else
-//			{
-//				Serial.print("Logging to: ");
-//				Serial.println(filename);
-//			}
-//		}
-//	}
-
-//	dataFile = SD.open("Log.log",FILE_WRITE);
-//	Serial.println("Datafile: Log.log has been opened for writing");
-//	for(int i = 0; i < SIZE;i++)
-//	{
-//		dataFile.print(dataArray[i]);
-//		dataFile.print(",");
-//	}
-//	dataFile.println();
-//	dataFile.flush();
-//	dataFile.close();
+	if(!SD.begin(10))
+	{
+		Serial.println("SD Card cannot open");
+		return 1;
+	}
+	dataFile = SD.open("dataFile.txt",FILE_WRITE);
+	for(int i = 0; i < SIZE; i++)
+	{
+		dataFile.print(dataArray[i];
+		dataFile.print(",");
+	}
+	if(!dataFile.println();)
+	{
+		Serial.println("Data has been saved");
+	}else{
+		Serial.println("SD CARD FAILED... Data has been lost");
 	return 0;
+	}
 }
-
 char * Data::tahu(int i, char * a)
 {
 	for(int h = 12; h >= 0; h -=2)
