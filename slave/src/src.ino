@@ -82,6 +82,7 @@ void setup(){
 
 	//Constuct data object to store points
 	Data data;
+	Borp radio;
 
 	for(;;){
 		//Collects sensor data, indexes the point
@@ -92,6 +93,9 @@ void setup(){
 			Serial.println("Data saved"); //TODO
 		}
 
+		data.saveData();
+		//New function to transmit over radio connection
+		radio.broadcast(dataArray[],SIZE)
 		data.printData();
 
 		//Pause so data is collected on even time intervals
