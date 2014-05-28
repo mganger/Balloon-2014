@@ -138,15 +138,7 @@ void Data::readSensorData()
 //Code for TMP006 non-contact temperature sensor. Only needed for Monkey Team
 	Adafruit_TMP006 tmp(0x40);  //Create tmp sensor with address 0x40  [GND,GND]
 	Adafruit_TMP006 tmp2(0x44);  //Create tmp sensor with address 0x44 [VCC,GND]
-	
-	if(!tmp.begin(TMP006_CFG_1SAMPLE)) 
-	{
-		Serial.println("No top IR thermometer found");
-	}
-	if(!tmp2.begin(TMP006_CFG_1SAMPLE)) 
-	{
-		Serial.println("No bottom IR thermometer found");
-	}
+
 	float objt = tmp.readObjTempC();		//Returns Kelvins 
 	float objt2 = tmp2.readObjTempC(); 		//Returns Kelvins
 
