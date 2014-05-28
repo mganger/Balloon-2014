@@ -80,7 +80,6 @@ Data::Data(){
 	}
 	memset(dataArray,INIT,SIZE*4);
 	Serial.println("Initialized Array");
-	printData();
 	dataArray[INDEX] = dataArray[INDEX] +1;
 	//initialize the pressure sensor
 }
