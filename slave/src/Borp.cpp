@@ -41,15 +41,14 @@ Borp::Borp(){
 
 //Manually writes the long int array as ascii to the hardware serial
 void Borp::broadcast(unsigned long int * dataArray,int size){
-//		for(int i = 0; i < size; i++ ){
-			int i = 0;
-				int num = dataArray[i];
-				char tmp[10] = {0,0,0,0,0,0,0,0,0,0};
+		for(int i = 0; i < size; i++ ){
+//				int num = dataArray[i];
+//				char tmp[10] = {0,0,0,0,0,0,0,0,0,0};
 			for(int h = size - 1;h >=0 ;h--){
-				tmp[h] = num % 10;
-				num /= 10;
+//				tmp[h] = num % 10;
+//				num /= 10;
 			}
-//		}
+		}
 }
 
 bool Borp::compareArrays(char * array1, char* array2, int size){
