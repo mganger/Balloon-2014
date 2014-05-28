@@ -41,11 +41,11 @@ Borp::Borp(){
 //Manually writes the long int array as ascii to the hardware serial
 void Borp::broadcast(unsigned long int * dataArray,int size){
 		for(int i = 0; i < size; i++ ){
-				int num = dataArray[i];
+				unsigned long int num = dataArray[i];
 				char tmp[size];
 				memset(tmp,0,size);
 			for(int h = size - 1;h >=0 ;h--){
-				tmp[h] = num % 10;
+				tmp[h] = num % 10 +48;
 				num /= 10;
 			}
 			Serial.println(tmp);
