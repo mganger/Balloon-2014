@@ -42,9 +42,9 @@ Borp::Borp(){
 void Borp::broadcast(unsigned long int * dataArray,int size){
 		for(int i = 0; i < size; i++ ){
 				unsigned long int num = dataArray[i];
-				char tmp[size];
-				memset(tmp,0,size);
-			for(int h = size - 1;h >=0 ;h--){
+				char tmp[10];
+				memset(tmp,0,10);
+			for(int h = 9;h >=0 ;h--){
 				tmp[h] = num % 10 +48;
 				num /= 10;
 			}
