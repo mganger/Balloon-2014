@@ -93,8 +93,6 @@ void setup(){
 		if(!data.saveData()){
 			Serial.println("Data saved"); //TODO
 		}
-
-		data.saveData();
 		//New function to transmit over radio connection
 		radio.broadcast(dataArray,SIZE)
 		data.printData();
