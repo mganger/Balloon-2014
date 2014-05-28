@@ -24,6 +24,7 @@
 #define CUTDOWN "Cutdown pin is digital 3"
 
 #include "Data.h"
+#include "Borp.h"
 
 void setup(){
 	//Open diagnostics communication
@@ -41,22 +42,26 @@ void setup(){
 
 
 	//Constuct data object to store points
-//	Data data;
+	Data data;
+	Borp radio;
 
-//	for(;;){
-//		//Collects sensor data, indexes the point
-//		data.readSensorData();
-//		Serial.println("Read the sensor data"); //TODO
-//		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
-//		if(!data.saveData()){
-//			Serial.println("Data saved"); //TODO
-//		}
-//
-//		data.printData();
-//
-//		//Pause so data is collected on even time intervals
-//		while((millis() - data.timeSince())<PERIOD);
-//	}
+	for(;;){
+		//Collects sensor data, indexes the point
+		data.readSensorData();
+		Serial.println("Read the sensor data"); //TODO
+		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
+		if(!data.saveData()){
+			Serial.println("Data saved"); //TODO
+		}
+
+		data.saveData();
+		//New function to transmit over radio connection
+		radio.broadcast(dataArray,SIZE)
+		data.printData();
+
+		//Pause so data is collected on even time intervals
+		while((millis() - data.timeSince())<PERIOD);
+	}
 }
 
 //We leave the loop empty. This makes object creation much easier

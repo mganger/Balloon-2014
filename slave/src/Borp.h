@@ -34,6 +34,8 @@ class Borp
 
 		//This function takes an array (from the data class) and sends it
 		void phoneHome(unsigned long int* dataArray,int size);
+		void broadcast(unsigned long int* dataArray,int size);
+		
 
 		//Checks the serial buffer, returns commands as ints
 		long int listen();

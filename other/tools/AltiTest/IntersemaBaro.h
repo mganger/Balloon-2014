@@ -31,6 +31,11 @@ protected:
     virtual int32_t AcquireAveragedSampleCm(const uint8_t nSamples) = 0;
     virtual uint32_t ConvertPressureTemperature(uint32_t pressure, uint32_t temperature) = 0;
     
+    int32_t PascalToCentimeter(const int32_t pressurePa)
+    {
+	return pressurePa;
+    }
+    
     static const uint8_t NUM_SAMP_FOR_AVG = 4;
 
     unsigned int coefficients_[6];
@@ -140,7 +145,9 @@ private:
         }
 
         const int32_t pressAvg = pressAccum / nSamples;        
-        return pressAvg;
+        const int32_t AltCm = PascalToCentimeter(pressAvg);
+	
+        return AltCm;	
     }
     
     int32_t ReadAdc(const uint8_t cmd)
