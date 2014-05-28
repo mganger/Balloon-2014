@@ -22,6 +22,7 @@
 #define __DATA_H_INCLUDED__		//Define this variable and read the code
 #define SIZE 18
 
+
 class Data { 
 
 	public:
