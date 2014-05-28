@@ -59,7 +59,7 @@ AltSoftSerial gps; //(8=Rx,9=Tx)
 
 //Global variable necessary for Lux Calculations
 //Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
-//Intersema::BaroPressure_MS5607B baro(true);
+Intersema::BaroPressure_MS5607B baro(true);
 
 //******************************************************************************
 //Constructor, reset, init
@@ -121,7 +121,9 @@ void Data::readSensorData()
 {
 	reset();
 	dataArray[TIMECOLLECT] = millis();
+//GPS read
 	readGPS();
+//Analog Read
 	dataArray[CO2] = analogRead(0);
 	dataArray[TEMP] = analogRead(1);
 	dataArray[HUMI] = analogRead(2);
@@ -130,7 +132,7 @@ void Data::readSensorData()
 
 //Code to read from Pesky Parallax Barometer/pressure sensor
 	baro.init();
-	dataArray[PRES] = baro.getHeightCentiMeters();
+	dataArray[PRES] = baro.getPressure();
 
 
 //Code for TMP006 non-contact temperature sensor. Only needed for Monkey Team
@@ -341,7 +343,7 @@ void Data::readGPS()
 		array[i] = '\0';
 	}
 	int number = gps.readBytesUntil('*',array,100);
-	Serial.println(array);
+//	Serial.println(array);
 	if (number = 0) return;
 	char check = array[0];
 	for(int i = 1; i < number; i++){
