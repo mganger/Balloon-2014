@@ -49,7 +49,9 @@ void Borp::broadcast(unsigned long int * dataArray,int size){
 				num /= 10;
 			}
 		Serial.write((byte*)tmp,10);
+		Serial.write(',');
 		}
+		Serial.println();
 }
 
 bool Borp::compareArrays(char * array1, char* array2, int size){

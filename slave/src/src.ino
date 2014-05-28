@@ -82,7 +82,7 @@ void setup(){
 
 
 	//Constuct data object to store points
-//	Data data;
+	Data data;
 	Borp radio;
 unsigned long int array[5] = {12309,3982,19082,9992,298211};
 	while(1){ 
