@@ -47,7 +47,7 @@ void Borp::broadcast(unsigned long int * dataArray,int size){
 //			for(int h = size - 1;h >=0 ;h--){
 //				tmp[h] = num % 10;
 //				num /= 10;
-			}
+//			}
 		}
 }
 
