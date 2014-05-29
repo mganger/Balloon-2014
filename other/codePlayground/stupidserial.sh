@@ -16,7 +16,7 @@ if [ -z "$2" ]
 		exit
 fi
 
-stty -F $1 115200
 mkdir -p $2
 cd $2
-more $1 > $(date +"%T;%m-%d-%y")
+stty -F $1 115200
+more $1 | tee $(date +"%T;%m-%d-%y")
