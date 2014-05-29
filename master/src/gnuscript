@@ -41,3 +41,9 @@ set output 'graphs/IR.svg';
 set title 'InfraRed';
 set datafile separator ',';
 plot 'rawData.csv' using 2:9 title 'IR up' with lines, 'rawData.csv' using 2:10 title 'IR down' with lines, 'rawData.csv' using 2:11 title 'Visible Up' with lines,'rawData.csv' using 2:12 title 'Visible Down' with lines
+
+#Mid IR
+set output 'graphs/midIR.svg';
+set title 'mid Infrared Light';
+set datafile separator ',';
+plot 'rawData.csv' using 2:13 title 'IR up' with lines, 'rawData.csv' using 2:14 title 'IR down' with lines
