@@ -119,8 +119,8 @@ void Data::readSensorData()
 	dataArray[TIMECOLLECT] = millis();
 
 
-//GPS
-	if(gps.available()) readGPS();
+//GPS (transmits every second)
+	readGPS();
 
 
 //Analog
@@ -160,7 +160,6 @@ bool Data::saveData()
 	File dataFile;		//dataFile for SD card
 	if(!SD.begin(10))
 	{
-		Serial.println("SD Card cannot open");
 		return 1;
 	}
 	dataFile = SD.open("dataFile.txt",FILE_WRITE);
@@ -171,9 +170,7 @@ bool Data::saveData()
 	}
 	if(!dataFile.println())
 	{
-		Serial.println("Data has been saved");
 	}else{
-		Serial.println("SD CARD FAILED... Data has been lost");
 	return 0;
 	}
 }
@@ -245,6 +242,7 @@ long int Data::altConv(char* input){
 
 void Data::readGPS()
 {
+	Serial.println("reading gps");
 	char latitude[12];
 	char longitude[12];
 	char altitude[12];	//needs null-terminating character
@@ -261,30 +259,34 @@ void Data::readGPS()
 	char check = 0;
 
 	//get a line
-	for(int i = 0; gps.read() != '$' & i < 100; i++)delay(2);
-	delay(4);
-	char tmpchar;
-	for(int i = 0; i < 100;){
-		tmpchar = gps.read();
-		if (tmpchar == -1) continue;
-		if (tmpchar == '*') break;
-		array[i] = tmpchar;
-		check = check ^ tmpchar;
-		i++;
+	for(int i = 0; i < 5; i++){
+		for(int i = 0; gps.read() != '$' & i < 300; i++)delay(2);
+		delay(4);
+		char tmpchar;
+		for(int i = 0; i < 100;){
+			tmpchar = gps.read();
+			if (tmpchar == -1) continue;
+			if (tmpchar == '*') break;
+			array[i] = tmpchar;
+			check = check ^ tmpchar;
+			i++;
+		}
+	
+		gps.readBytes(checksum,2);
+		//check to see if we want these points
+		if(check != htoi(checksum)) return;
+		//see if it's a GPGGA line
+		if(array[3] == 'G') break;
+		if(i == 4) return;
 	}
 
-	gps.readBytes(checksum,2);
-	//check to see if we want these points
-	if(check != htoi(checksum)){
-		return;
-	}
-
-	if(array[3] != 'G'){
-		return;
-	}
+	//see if there is any data in it
 	if(array[18] == ','){
 		return;
 	}
+
+	//flush the remaining data in the buffer
+	while(gps.available()) gps.read();
 
 	memset(time,12,0);
 	memset(altitude,12,0);

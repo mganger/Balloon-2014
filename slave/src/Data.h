@@ -37,16 +37,12 @@ class Data {
 		void readSensorData();		//reads from the sensors
 
 	private:
-
-
-		//Global variable necessary for Lux Calculations 
-//		Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); 
-
 		void readGPS();
 
 		long int timeConv(char*);	//converts gps time to seconds
 		long int degConv(char*);	//converts gps coordinates to microdegrees
 		long int altConv(char*);	//converts gps altitude to mm
+		unsigned long int gpsTimeLast;	//the last time we read from the gps
 
 		char* tahu(int,char*);		//itoa for file wrtiting
 
