@@ -30,7 +30,7 @@
 #include "Arduino.h"
 
 #define BASE 10
-#define SIZE 7
+#define SIZE 8
 
 //Manually writes the long int array as ascii to the hardware serial
 void broadcast(unsigned long int * dataArray,int length){
