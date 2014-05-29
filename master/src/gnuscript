@@ -47,3 +47,15 @@ set output 'graphs/midIR.svg';
 set title 'mid Infrared Light';
 set datafile separator ',';
 plot 'rawData.csv' using 2:13 title 'IR up' with lines, 'rawData.csv' using 2:14 title 'IR down' with lines
+
+#GPS coordinates
+set output 'graphs/2Dcoordinates.svg'
+set title 'Coordinates'
+set datafile separator ',';
+plot 'rawData.csv' using 2:15 title 'Lattitude' with lines, 'rawData.csv' using 2:16 title 'Longitude' with lines
+
+#GPS coordinates
+set output 'graphs/3Dcoordinates.svg'
+set title 'graphs/coordinates.svg'
+set datafile separator ',';
+splot 'rawData.csv' using 15:16:17 title 'position' with lines 
