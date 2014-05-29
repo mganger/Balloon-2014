@@ -74,8 +74,9 @@ TSL2561 lux2(0x39);		//lux
 //Constructor, reset, init
 Data::Data(){
 	gps.begin(9600);
-	memset(dataArray,INIT,SIZE*4);
+	memset(dataArray,INIT,SIZE*4-16);
 	dataArray[INDEX] = 0;
+	
 }
 
 void Data::reset(){

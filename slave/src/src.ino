@@ -44,17 +44,17 @@ void setup(){
 	Serial.println(CUTDOWN);
 	Serial.println();
 
+	//Sacred SD code: Bought with many tears
 	pinMode(10,OUTPUT);
 	SD.begin(10);
 	file = SD.open("DATA.TXT",FILE_WRITE);
 
 	//Constuct data object to store points
 	Data data;
-//	Borp radio;
 
 	for(;;){
 		//Collects sensor data, indexes the point
-//		data.readSensorData();
+		data.readSensorData();
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
 
 		//Function to transmit over radio connection
@@ -69,7 +69,7 @@ void setup(){
 		file.flush();
 
 		//Pause so data is collected on even time intervals
-//		while((millis() - data.timeSince())<PERIOD);
+		while((millis() - data.timeSince())<PERIOD);
 	}
 }
 
