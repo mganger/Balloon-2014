@@ -47,6 +47,7 @@ void broadcast(unsigned long int * dataArray,int length){
 			check = check ^ tmp[h];
 		}
 		Serial.write((byte*)tmp,SIZE);
+		check = check ^ ',';
 		Serial.write(',');
 	}
 	checksum[1] = check/16 +48;
