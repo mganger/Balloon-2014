@@ -49,15 +49,15 @@ void setup(){
 	file = SD.open("DATA.TXT",FILE_WRITE);
 	
 	Serial.println(file.println("HELLO"));
-	file.close();
 
 	//Constuct data object to store points
 	Data data;
+	Serial.println("after data constr");
 //	Borp radio;
 
 	for(;;){
 		//Collects sensor data, indexes the point
-		data.readSensorData();
+//		data.readSensorData();
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
 
 		//Function to transmit over radio connection
@@ -65,10 +65,10 @@ void setup(){
 
 		for(int i = 0; i < SIZE; i++)
 		{
-		        dataFile.print(dataArray[i]);
-		        dataFile.print(",");
+		        file.print(data.dataArray[i]);
+		        file.print(",");
 		}
-		dataFile.flush();
+		file.flush();
 
 		//Pause so data is collected on even time intervals
 //		while((millis() - data.timeSince())<PERIOD);
