@@ -1,15 +1,27 @@
 #!/bin/bash
 
+read -s -p "Enter password for remote server: " remotepass
+
+if [[ ! -f $1 ]]
+then
+	echo "Using $1"
+else
+	echo "$1 is not a device"
+	exit
+fi
+
+#./master.cc $ 115200
+
 while :
-
-do
-
-#mkdir ./graphs
-gnuplot -persist -e "load 'gnuscript'"
-
-echo "Waiting for new data"
-sleep 5
-echo "Back to Work"
+	do
+	
+	#mkdir ./graphs
+	gnuplot -persist -e "load 'gnuscript'"
+	
+	sshpass -p $remotepass scp graphs/*.svg pi@ganger.webhop.org:/var/www/science_honors/
+	echo "Waiting for new data"
+	sleep 5
+	echo "Back to Work"
 done 
 
 #Extraneous information for reference.
