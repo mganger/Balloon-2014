@@ -51,7 +51,7 @@ void setup(){
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
 
 //		data.saveData();
-		//New function to transmit over radio connection
+		//Function to transmit over radio connection
 		broadcast(data.dataArray,SIZE);
 
 		//Pause so data is collected on even time intervals

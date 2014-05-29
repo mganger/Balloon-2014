@@ -67,7 +67,7 @@ Adafruit_TMP006 ir2(0x44);		//top ir sensor with address 0x44 [VCC,GND]
 
 //create lux sensor objects
 TSL2561 lux(0x29);		//lux
-TSL2561 lux2(0x39);	//lux
+TSL2561 lux2(0x39);		//lux
 
 
 //******************************************************************************
@@ -77,6 +77,7 @@ Data::Data(){
 	File initFile;
 	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	gps.begin(9600);
+//	gps.setTimeout(1000);
 //	if(!SD.begin(10)){
 //		Serial.println("The SD reader has failed or is not present");
 //	}
@@ -105,7 +106,7 @@ Data::Data(){
 
 void Data::reset(){
 	//Set the readings to sentinal value
-	memset(&dataArray[TIMECOLLECT+1],INIT,(SIZE-2)*4);
+	memset(&dataArray[TIMECOLLECT+1],INIT,(12)*4);
 	dataArray[INDEX]++;
 }
 
@@ -205,8 +206,6 @@ long int Data::degConv(char* input){
 	long int degree = 10000000*(input[0]-48);
 	degree += 1000000*(input[1]-48);
 
-	Serial.print(degree);Serial.print("   ");
-
 	long int min = 0;
 	min += (long)100000*(input[2]-48);
 	min += (long)10000*(input[3]-48);
@@ -218,7 +217,6 @@ long int Data::degConv(char* input){
 	degree += 100*min/60;
 
 
-//	Serial.print(degree);Serial.print("   ");
 	return degree;
 }
 
@@ -237,7 +235,7 @@ long int Data::altConv(char* input){
 
 
 	long int altitude = (input[decimal+1] - 48);
-	for(int i = decimal-1; i > 0; i--){
+	for(int i = decimal-1; i >= 0; i--){
 		altitude += (long)(input[i]-48)*multiplier;
 		multiplier *= 10;
 	}
@@ -258,26 +256,24 @@ void Data::readGPS()
 	memset(time,0,12);
 
 	char array[101];
+	memset(array,0,101);
 	char checksum[2];
-	//fill with null characters
-
-	
+	char check = 0;
 
 	//get a line
-	gps.readBytesUntil('$', array, 100);
-	for(int i = 0; i < 100; i++){
-		array[i] = '\0';
+	while(gps.read() != '$')delay(2);
+	delay(4);
+	char tmpchar;
+	for(int i = 0; i < 100;){
+		tmpchar = gps.read();
+		if (tmpchar == -1) continue;
+		if (tmpchar == '*') break;
+		array[i] = tmpchar;
+		check = check ^ tmpchar;
+		i++;
 	}
-	int number = gps.readBytesUntil('*',array,100);
-//	Serial.println(array);
-	if (number = 0) return;
-	char check = array[0];
-	for(int i = 1; i < number; i++){
-		check = check ^ array[i];
-	}
-//	Serial.write((byte*)array,number);Serial.println();
-	gps.readBytes(checksum,2);
 
+	gps.readBytes(checksum,2);
 	//check to see if we want these points
 	if(check != htoi(checksum)){
 		return;
