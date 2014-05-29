@@ -40,7 +40,7 @@ void broadcast(unsigned long int * dataArray,int length){
 	char check = 0;
 	char checksum[3] = {'*',0,0};
 	Serial.write('$');
-	for(int i = 1; i < length; i++ ){
+	for(int i = 0; i < length; i++ ){
 		unsigned long int num = dataArray[i];
 		char tmp[SIZE];
 		memset(tmp,0,SIZE);
