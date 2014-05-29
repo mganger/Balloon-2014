@@ -61,6 +61,15 @@ AltSoftSerial gps; //(8=Rx,9=Tx)
 //Adafruit_TSL2561_Unified tsl3 = Adafruit_TSL2561_Unified(TSL2561_ADDR_GROUND, 12345);
 Intersema::BaroPressure_MS5607B baro(true);
 
+//create the ir sensor objects
+Adafruit_TMP006 ir(0x40);		//Create ir sensor with address 0x40  [GND,GND]
+Adafruit_TMP006 ir2(0x44);		//Create ir sensor with address 0x44 [VCC,GND]
+
+//create lux sensor objects
+TSL2561 lux(TSL2561_ADDR_LOW);		//lux
+TSL2561 lux2(TSL2561_ADDR_FLOAT);	//lux
+
+
 //******************************************************************************
 //Constructor, reset, init
 
@@ -68,10 +77,10 @@ Data::Data(){
 	File initFile;
 	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	gps.begin(9600);
-	if(!SD.begin(10)){
-		Serial.println("The SD reader has failed or is not present");
-	}
-	else{
+//	if(!SD.begin(10)){
+//		Serial.println("The SD reader has failed or is not present");
+//	}
+//	else{
 		Serial.println("CREATING STARTUP LOG FILES");
 //		initFile = SD.open("start.log",FILE_WRITE);
 		if(!initFile){
@@ -87,7 +96,7 @@ Data::Data(){
 		initFile.flush();
 		initFile.close();
 		}
-	}
+//	}
 	memset(dataArray,INIT,SIZE*4);
 	Serial.println("Initialized Array");
 	dataArray[INDEX] = 0;
@@ -107,71 +116,42 @@ void Data::readSensorData()
 {
 	reset();
 	dataArray[TIMECOLLECT] = millis();
-//GPS read
+
+
+//GPS
 	readGPS();
-//Analog Read
+
+
+//Analog
 	dataArray[CO2] = analogRead(0);
 	dataArray[TEMP] = analogRead(1);
 	dataArray[HUMI] = analogRead(2);
 	dataArray[UV] = analogRead(2);
 	dataArray[O3] = analogRead(3);
 
-//Code to read from Pesky Parallax Barometer/pressure sensor
+
+//Pressure
 	baro.init();
 	dataArray[PRES] = baro.getPressure();
 
 
-//Code for TMP006 non-contact temperature sensor. Only needed for Monkey Team
-	Adafruit_TMP006 tmp(0x40);  //Create tmp sensor with address 0x40  [GND,GND]
-	Adafruit_TMP006 tmp2(0x44);  //Create tmp sensor with address 0x44 [VCC,GND]
+//IR sensors
+	dataArray[MIDIRUP] = ir.readObjTempC();		//in Celsius
+	dataArray[MIDIRDOWN] = ir2.readObjTempC();
 
-	float objt = tmp.readObjTempC();		//Returns Kelvins 
-	float objt2 = tmp2.readObjTempC(); 		//Returns Kelvins
 
-	dataArray[MIDIRUP] = objt;
-	dataArray[MIDIRDOWN] = objt2;
+//Lux
+	lux.setGain(TSL2561_GAIN_0X);	//Bright situations
+	lux.setTiming(TSL2561_INTEGRATIONTIME_13MS);
+	dataArray[VISDOWN] = lux.getLuminosity(TSL2561_VISIBLE);
+	dataArray[IRDOWN] = lux.getLuminosity(TSL2561_INFRARED);
 
-//Code for Adafruit Lux/Luminosity sensor. Only needed for Monkey Team
-	TSL2561 tsl(TSL2561_ADDR_LOW);
-	TSL2561 tsl2(TSL2561_ADDR_FLOAT);
-	//Set address to bottom lux sensor
-	if(tsl.begin())
-	{
-	//Set settings for lux sensor
-		tsl.setGain(TSL2561_GAIN_0X);	//Bright situations
-		tsl.setTiming(TSL2561_INTEGRATIONTIME_13MS);
 
-	//Take readings from light sensor
-		uint16_t vis = tsl.getLuminosity(TSL2561_VISIBLE);
-		uint16_t ir = tsl.getLuminosity(TSL2561_INFRARED);
 
-	//Save data from top sensor
-
-		dataArray[VISDOWN] = vis;
-		dataArray[IRDOWN] = ir;
-	}
-	else
-	{
-		Serial.println("LUX sensor 1 is broked");
-	}
-
-	if(tsl2.begin())
-	{
-	//Set settings for lux sensor
-		tsl2.setGain(TSL2561_GAIN_0X);	//Bright situations
-		tsl2.setTiming(TSL2561_INTEGRATIONTIME_13MS);
-
-	//Take readings from light sensor
-		uint16_t vis = tsl2.getLuminosity(TSL2561_VISIBLE);
-		uint16_t ir = tsl2.getLuminosity(TSL2561_INFRARED);
-		dataArray[IRUP] = ir;
-		dataArray[VISUP] = vis;
-	}
-	else
-	{
-		Serial.println("LUX sensor 2 is broked");
-	}
-
+	lux2.setGain(TSL2561_GAIN_0X);	//Bright situations
+	lux2.setTiming(TSL2561_INTEGRATIONTIME_13MS);
+	dataArray[IRUP]  = lux2.getLuminosity(TSL2561_VISIBLE);
+	dataArray[VISUP] = lux2.getLuminosity(TSL2561_INFRARED);
 }
 
 bool Data::saveData()
@@ -185,10 +165,10 @@ bool Data::saveData()
 	dataFile = SD.open("dataFile.txt",FILE_WRITE);
 	for(int i = 0; i < SIZE; i++)
 	{
-		dataFile.print(dataArray[i];
+		dataFile.print(dataArray[i]);
 		dataFile.print(",");
 	}
-	if(!dataFile.println();)
+	if(!dataFile.println())
 	{
 		Serial.println("Data has been saved");
 	}else{

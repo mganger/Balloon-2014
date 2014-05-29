@@ -33,7 +33,7 @@
 #include "Arduino.h"
 
 #define BASE 10
-#define SIZE 10
+#define SIZE 7
 
 //Manually writes the long int array as ascii to the hardware serial
 void broadcast(unsigned long int * dataArray,int length){
@@ -41,7 +41,7 @@ void broadcast(unsigned long int * dataArray,int length){
 	char checksum[3] = {'*',0,0};
 	Serial.write('$');
 	for(int i = 1; i < length; i++ ){
-		int num = dataArray[i];
+		unsigned long int num = dataArray[i];
 		char tmp[SIZE];
 		memset(tmp,0,SIZE);
 		for(int h = SIZE-1;h >=0 ;h--){
@@ -52,8 +52,8 @@ void broadcast(unsigned long int * dataArray,int length){
 		Serial.write((byte*)tmp,SIZE);
 		Serial.write(',');
 	}
-	checksum[1] = check/16;
-	checksum[2] = check%16;
+	checksum[1] = check/16 +48;
+	checksum[2] = check%16 +48;
 	Serial.write((byte*)checksum,3);
 	Serial.write((byte*)"\r\n",2);
 }

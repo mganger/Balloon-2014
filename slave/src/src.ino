@@ -50,11 +50,11 @@ void setup(){
 		data.readSensorData();
 		Serial.println("Read the sensor data"); //TODO
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
-		if(!data.saveData()){
-			Serial.println("Data saved"); //TODO
-		}
+//		if(!data.saveData()){
+//			Serial.println("Data saved"); //TODO
+//		}
 
-		data.saveData();
+//		data.saveData();
 		//New function to transmit over radio connection
 		broadcast(data.dataArray,SIZE);
 
