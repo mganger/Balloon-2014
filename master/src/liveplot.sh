@@ -1,8 +1,8 @@
 #!/bin/bash
 
 while :
+
 do
-./aggregate
 
 #mkdir ./graphs
 gnuplot -persist -e "load 'gnuscript'"
