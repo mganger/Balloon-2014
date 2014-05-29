@@ -47,12 +47,9 @@ void setup(){
 	pinMode(10,OUTPUT);
 	SD.begin(10);
 	file = SD.open("DATA.TXT",FILE_WRITE);
-	
-	Serial.println(file.println("HELLO"));
 
 	//Constuct data object to store points
 	Data data;
-	Serial.println("after data constr");
 //	Borp radio;
 
 	for(;;){
@@ -68,6 +65,7 @@ void setup(){
 		        file.print(data.dataArray[i]);
 		        file.print(",");
 		}
+		file.println();
 		file.flush();
 
 		//Pause so data is collected on even time intervals
