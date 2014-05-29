@@ -25,6 +25,10 @@
 
 #include "Data.h"
 #include "Borp.h"
+#include <SD.h>
+#include <SPI.h>
+
+File file;
 
 void setup(){
 	//Open diagnostics communication
@@ -40,19 +44,25 @@ void setup(){
 	Serial.println(CUTDOWN);
 	Serial.println();
 
+	pinMode(10,OUTPUT);
+	SD.begin(10);
+	file = SD.open("FILE.TXT",FILE_WRITE);
+	
+	Serial.println(file.println("HELLO"));
+	file.close();
 
 	//Constuct data object to store points
-	Data data;
+//	Data data;
 //	Borp radio;
 
 	for(;;){
 		//Collects sensor data, indexes the point
-		data.readSensorData();
+//		data.readSensorData();
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
 
-		data.saveData();
+//		data.saveData();
 		//Function to transmit over radio connection
-		broadcast(data.dataArray,SIZE);
+		//broadcast(data.dataArray,SIZE);
 
 		//Pause so data is collected on even time intervals
 //		while((millis() - data.timeSince())<PERIOD);

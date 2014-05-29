@@ -43,8 +43,8 @@
 #include "Data.h"
 #include "Arduino.h"
 #include "global.h"
-#include "SPI.h"		//Library for SPI communications
-#include "SD.h"			//Library for SD  communications
+#include <SD.h>			//Library for SD  communications
+#include <SPI.h>		//Library for SPI communications
 #include "IntersemaBaro.h"	//Library for altimeter data
 #include "Adafruit_Sensor.h"	//Library for Adafruit sensors
 #include "Wire.h"		//Library for i2c communication
@@ -72,36 +72,22 @@ TSL2561 lux2(0x39);		//lux
 
 //******************************************************************************
 //Constructor, reset, init
-
+	File dataFile;		//dataFile for SD card
 Data::Data(){
-	File initFile;
-	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	gps.begin(9600);
-//	gps.setTimeout(1000);
-//	if(!SD.begin(10)){
-//		Serial.println("The SD reader has failed or is not present");
-//	}
-//	else{
 		Serial.println("CREATING STARTUP LOG FILES");
-//		initFile = SD.open("start.log",FILE_WRITE);
-		if(!initFile){
-			Serial.println("Could not create startup file");
-		}else{
-		initFile.println();
-		initFile.println();
-		initFile.println("---------------");
-		initFile.print("Time since boot: ");
-		initFile.println(micros());
-		initFile.print("GPS Status: ");
-		//Check to see what i2c sensors are ready
-		initFile.flush();
-		initFile.close();
-		}
-//	}
+		dataFile = SD.open("DATAFILE.TXT",FILE_WRITE);
+		Serial.println(dataFile.println());
+		dataFile.println();
+		dataFile.println("---------------");
+		dataFile.print("Time since boot: ");
+		dataFile.println(micros());
+		dataFile.print("GPS Status: ");
+		dataFile.flush();
+		dataFile.close();
 	memset(dataArray,INIT,SIZE*4);
 	Serial.println("Initialized Array");
 	dataArray[INDEX] = 0;
-	//initialize the pressure sensor
 }
 
 void Data::reset(){
@@ -157,22 +143,13 @@ void Data::readSensorData()
 
 bool Data::saveData()
 {
-	File dataFile;		//dataFile for SD card
-	if(!SD.begin(10))
-	{
-		return 1;
-	}
-	dataFile = SD.open("dataFile.txt",FILE_WRITE);
 	for(int i = 0; i < SIZE; i++)
 	{
 		dataFile.print(dataArray[i]);
 		dataFile.print(",");
 	}
-	if(!dataFile.println())
-	{
-	}else{
+	dataFile.flush();
 	return 0;
-	}
 }
 char * Data::tahu(int i, char * a)
 {
