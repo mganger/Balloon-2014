@@ -120,7 +120,7 @@ void Data::readSensorData()
 
 
 //GPS
-	readGPS();
+	if(gps.available()) readGPS();
 
 
 //Analog
@@ -261,7 +261,7 @@ void Data::readGPS()
 	char check = 0;
 
 	//get a line
-	while(gps.read() != '$')delay(2);
+	for(int i = 0; gps.read() != '$' & i < 100; i++)delay(2);
 	delay(4);
 	char tmpchar;
 	for(int i = 0; i < 100;){
