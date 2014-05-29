@@ -25,9 +25,6 @@
 
 //Constructor for Borp declares what pin the serial connection to the radio is 
 //and and the baud rate to be used in transmission.
-//Baud rate should be the lowest baud rate required to transmit the amount of 
-//data we are collecting. Baud rates that are too high can max out the 
-//processing power of the Arduino and ultimately slow transmissions down.
 
 #include "Borp.h"
 #include "Arduino.h"

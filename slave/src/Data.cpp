@@ -62,12 +62,12 @@ AltSoftSerial gps; //(8=Rx,9=Tx)
 Intersema::BaroPressure_MS5607B baro(true);
 
 //create the ir sensor objects
-Adafruit_TMP006 ir(0x40);		//Create ir sensor with address 0x40  [GND,GND]
-Adafruit_TMP006 ir2(0x44);		//Create ir sensor with address 0x44 [VCC,GND]
+Adafruit_TMP006 ir(0x40);		//bottom ir sensor with address 0x40  [GND,GND]
+Adafruit_TMP006 ir2(0x44);		//top ir sensor with address 0x44 [VCC,GND]
 
 //create lux sensor objects
-TSL2561 lux(TSL2561_ADDR_LOW);		//lux
-TSL2561 lux2(TSL2561_ADDR_FLOAT);	//lux
+TSL2561 lux(0x29);		//lux
+TSL2561 lux2(0x39);	//lux
 
 
 //******************************************************************************
