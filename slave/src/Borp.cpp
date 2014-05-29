@@ -25,22 +25,19 @@
 
 //Constructor for Borp declares what pin the serial connection to the radio is 
 //and and the baud rate to be used in transmission.
-//Baud rate should be the lowest baud rate required to transmit the amount of 
-//data we are collecting. Baud rates that are too high can max out the 
-//processing power of the Arduino and ultimately slow transmissions down.
 
 #include "Borp.h"
 #include "Arduino.h"
 
 #define BASE 10
-#define SIZE 7
+#define SIZE 8
 
 //Manually writes the long int array as ascii to the hardware serial
 void broadcast(unsigned long int * dataArray,int length){
 	char check = 0;
 	char checksum[3] = {'*',0,0};
 	Serial.write('$');
-	for(int i = 1; i < length; i++ ){
+	for(int i = 0; i < length; i++ ){
 		unsigned long int num = dataArray[i];
 		char tmp[SIZE];
 		memset(tmp,0,SIZE);
@@ -50,6 +47,7 @@ void broadcast(unsigned long int * dataArray,int length){
 			check = check ^ tmp[h];
 		}
 		Serial.write((byte*)tmp,SIZE);
+		check = check ^ ',';
 		Serial.write(',');
 	}
 	checksum[1] = check/16 +48;

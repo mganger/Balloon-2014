@@ -48,18 +48,14 @@ void setup(){
 	for(;;){
 		//Collects sensor data, indexes the point
 		data.readSensorData();
-		Serial.println("Read the sensor data"); //TODO
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
-//		if(!data.saveData()){
-//			Serial.println("Data saved"); //TODO
-//		}
 
-//		data.saveData();
-		//New function to transmit over radio connection
+		data.saveData();
+		//Function to transmit over radio connection
 		broadcast(data.dataArray,SIZE);
 
 		//Pause so data is collected on even time intervals
-		while((millis() - data.timeSince())<PERIOD);
+//		while((millis() - data.timeSince())<PERIOD);
 	}
 }
 

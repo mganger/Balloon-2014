@@ -62,12 +62,12 @@ AltSoftSerial gps; //(8=Rx,9=Tx)
 Intersema::BaroPressure_MS5607B baro(true);
 
 //create the ir sensor objects
-Adafruit_TMP006 ir(0x40);		//Create ir sensor with address 0x40  [GND,GND]
-Adafruit_TMP006 ir2(0x44);		//Create ir sensor with address 0x44 [VCC,GND]
+Adafruit_TMP006 ir(0x40);		//bottom ir sensor with address 0x40  [GND,GND]
+Adafruit_TMP006 ir2(0x44);		//top ir sensor with address 0x44 [VCC,GND]
 
 //create lux sensor objects
-TSL2561 lux(TSL2561_ADDR_LOW);		//lux
-TSL2561 lux2(TSL2561_ADDR_FLOAT);	//lux
+TSL2561 lux(0x29);		//lux
+TSL2561 lux2(0x39);		//lux
 
 
 //******************************************************************************
@@ -77,6 +77,7 @@ Data::Data(){
 	File initFile;
 	pinMode(10,OUTPUT);	//set Digital 10 to CS for SD card
 	gps.begin(9600);
+//	gps.setTimeout(1000);
 //	if(!SD.begin(10)){
 //		Serial.println("The SD reader has failed or is not present");
 //	}
@@ -105,7 +106,7 @@ Data::Data(){
 
 void Data::reset(){
 	//Set the readings to sentinal value
-	memset(&dataArray[TIMECOLLECT+1],INIT,(SIZE-2)*4);
+	memset(&dataArray[TIMECOLLECT+1],INIT,(12)*4);
 	dataArray[INDEX]++;
 }
 
@@ -118,7 +119,7 @@ void Data::readSensorData()
 	dataArray[TIMECOLLECT] = millis();
 
 
-//GPS
+//GPS (transmits every second)
 	readGPS();
 
 
@@ -159,7 +160,6 @@ bool Data::saveData()
 	File dataFile;		//dataFile for SD card
 	if(!SD.begin(10))
 	{
-		Serial.println("SD Card cannot open");
 		return 1;
 	}
 	dataFile = SD.open("dataFile.txt",FILE_WRITE);
@@ -170,9 +170,7 @@ bool Data::saveData()
 	}
 	if(!dataFile.println())
 	{
-		Serial.println("Data has been saved");
 	}else{
-		Serial.println("SD CARD FAILED... Data has been lost");
 	return 0;
 	}
 }
@@ -205,8 +203,6 @@ long int Data::degConv(char* input){
 	long int degree = 10000000*(input[0]-48);
 	degree += 1000000*(input[1]-48);
 
-	Serial.print(degree);Serial.print("   ");
-
 	long int min = 0;
 	min += (long)100000*(input[2]-48);
 	min += (long)10000*(input[3]-48);
@@ -218,7 +214,6 @@ long int Data::degConv(char* input){
 	degree += 100*min/60;
 
 
-//	Serial.print(degree);Serial.print("   ");
 	return degree;
 }
 
@@ -237,7 +232,7 @@ long int Data::altConv(char* input){
 
 
 	long int altitude = (input[decimal+1] - 48);
-	for(int i = decimal-1; i > 0; i--){
+	for(int i = decimal-1; i >= 0; i--){
 		altitude += (long)(input[i]-48)*multiplier;
 		multiplier *= 10;
 	}
@@ -247,6 +242,7 @@ long int Data::altConv(char* input){
 
 void Data::readGPS()
 {
+	Serial.println("reading gps");
 	char latitude[12];
 	char longitude[12];
 	char altitude[12];	//needs null-terminating character
@@ -258,37 +254,39 @@ void Data::readGPS()
 	memset(time,0,12);
 
 	char array[101];
+	memset(array,0,101);
 	char checksum[2];
-	//fill with null characters
-
-	
+	char check = 0;
 
 	//get a line
-	gps.readBytesUntil('$', array, 100);
-	for(int i = 0; i < 100; i++){
-		array[i] = '\0';
+	for(int i = 0; i < 5; i++){
+		for(int i = 0; gps.read() != '$' & i < 300; i++)delay(2);
+		delay(4);
+		char tmpchar;
+		for(int i = 0; i < 100;){
+			tmpchar = gps.read();
+			if (tmpchar == -1) continue;
+			if (tmpchar == '*') break;
+			array[i] = tmpchar;
+			check = check ^ tmpchar;
+			i++;
+		}
+	
+		gps.readBytes(checksum,2);
+		//check to see if we want these points
+		if(check != htoi(checksum)) return;
+		//see if it's a GPGGA line
+		if(array[3] == 'G') break;
+		if(i == 4) return;
 	}
-	int number = gps.readBytesUntil('*',array,100);
-//	Serial.println(array);
-	if (number = 0) return;
-	char check = array[0];
-	for(int i = 1; i < number; i++){
-		check = check ^ array[i];
-	}
-//	Serial.write((byte*)array,number);Serial.println();
-	gps.readBytes(checksum,2);
 
-	//check to see if we want these points
-	if(check != htoi(checksum)){
-		return;
-	}
-
-	if(array[3] != 'G'){
-		return;
-	}
+	//see if there is any data in it
 	if(array[18] == ','){
 		return;
 	}
+
+	//flush the remaining data in the buffer
+	while(gps.available()) gps.read();
 
 	memset(time,12,0);
 	memset(altitude,12,0);
