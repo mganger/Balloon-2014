@@ -26,21 +26,30 @@
 //take input
 
 //Usage:
-//	./serialstreamtest $DEVICEPATH
+//	./serialstreamtest $DEVICEPATH $BAUD
 
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 using namespace std;
 
 int main(int argc, char** argv){
 
 	//Argument testing
-	if(argc != 2){
+	if(argc != 3){
 		cerr << "Can't take " << argc -1 << " arguments." << endl;
 		return 0;
 	}
+
+	string sttyControl = "stty -F ";
+	sttyControl += argv[1];
+	sttyControl += " ";
+	sttyControl += argv[2];
+	cout << sttyControl;
+	system(sttyControl.c_str());
 
 	fstream device;
 	device.open(argv[1]);
