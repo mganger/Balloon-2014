@@ -72,21 +72,9 @@ TSL2561 lux2(0x39);		//lux
 
 //******************************************************************************
 //Constructor, reset, init
-	File dataFile;		//dataFile for SD card
 Data::Data(){
 	gps.begin(9600);
-		Serial.println("CREATING STARTUP LOG FILES");
-		dataFile = SD.open("DATAFILE.TXT",FILE_WRITE);
-		Serial.println(dataFile.println());
-		dataFile.println();
-		dataFile.println("---------------");
-		dataFile.print("Time since boot: ");
-		dataFile.println(micros());
-		dataFile.print("GPS Status: ");
-		dataFile.flush();
-		dataFile.close();
 	memset(dataArray,INIT,SIZE*4);
-	Serial.println("Initialized Array");
 	dataArray[INDEX] = 0;
 }
 
@@ -141,16 +129,6 @@ void Data::readSensorData()
 	dataArray[VISUP] = lux2.getLuminosity(TSL2561_INFRARED);
 }
 
-bool Data::saveData()
-{
-	for(int i = 0; i < SIZE; i++)
-	{
-		dataFile.print(dataArray[i]);
-		dataFile.print(",");
-	}
-	dataFile.flush();
-	return 0;
-}
 char * Data::tahu(int i, char * a)
 {
 	for(int h = 12; h >= 0; h -=2)
