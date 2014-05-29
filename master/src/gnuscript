@@ -2,60 +2,80 @@ set term svg;
 
 #Altitude sourced from column 3#
 set output 'graphs/altitude.svg';
-set title 'altitude';
+#set title 'altitude';
+set key off;
 set datafile separator ',';
 plot 'rawData.csv' using 2:3 with lines
+unset output
 
 #Pressure sourced from column 4#
 set output 'graphs/pressure.svg';
-set title 'pressure';
+#set title 'pressure';
+set key off;
 set datafile separator ',';
 plot 'rawData.csv' using 2:4 with lines
+unset output
 
 #Humidity sourced from column 5#
 set output 'graphs/humidity.svg';
-set title 'humidity';
+set key off;
+#set title 'humidity';
 set datafile separator ',';
 plot 'rawData.csv' using 2:5 with lines
+unset output
 
 #CO2 sourced from column 6#
 set output 'graphs/CO2.svg';
-set title 'CO2';
+set key off;
+#set title 'CO2';
 set datafile separator ',';
 plot 'rawData.csv' using 2:6 with lines
+unset output
 
 #UV sourced from column 7#
 set output 'graphs/UV.svg';
-set title 'Ultra Violet';
+set key off;
+#set title 'Ultra Violet';
 set datafile separator ',';
 plot 'rawData.csv' using 2:7 with lines
+unset output
 
 #Ozone sourced from column 8#
 set output 'graphs/O3.svg';
-set title 'Ozone';
+set key off;
+#set title 'Ozone';
 set datafile separator ',';
 plot 'rawData.csv' using 2:8 with lines
+unset output
 
 #IR and Visible Up/Down sourced from columns 9,10,11,12#
 set output 'graphs/IR.svg';
-set title 'InfraRed';
+set key off;
+#set title 'InfraRed';
 set datafile separator ',';
 plot 'rawData.csv' using 2:9 title 'IR up' with lines, 'rawData.csv' using 2:10 title 'IR down' with lines, 'rawData.csv' using 2:11 title 'Visible Up' with lines,'rawData.csv' using 2:12 title 'Visible Down' with lines
+unset output
 
 #Mid IR
 set output 'graphs/midIR.svg';
-set title 'mid Infrared Light';
+set key off;
+#set title 'mid Infrared Light';
 set datafile separator ',';
 plot 'rawData.csv' using 2:13 title 'IR up' with lines, 'rawData.csv' using 2:14 title 'IR down' with lines
+unset output
 
 #GPS coordinates
 set output 'graphs/2Dcoordinates.svg'
-set title 'Coordinates'
+set key off;
+#set title 'Coordinates'
 set datafile separator ',';
 plot 'rawData.csv' using 2:15 title 'Lattitude' with lines, 'rawData.csv' using 2:16 title 'Longitude' with lines
+unset output
 
 #GPS coordinates
 set output 'graphs/3Dcoordinates.svg'
-set title 'graphs/coordinates.svg'
+set key off;
+#set title 'graphs/coordinates.svg'
 set datafile separator ',';
 splot 'rawData.csv' using 15:16:17 title 'position' with lines 
+unset output
