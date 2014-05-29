@@ -1,165 +1,95 @@
+#include <iostream>
+#include <fstream>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sstream>
+using namespace std;
+
+int calcSum(string data){
+	char b = 0;
+	for(int i = 0;i < data.length();i++)
+	{
+		b = b ^ data.at(i);
+	}
+	return b;
+}
+
+int main(int argc, char** argv){
+
+	//Argument testing
+	if(argc != 3){
+		cerr << "Can't take " << argc -1 << " arguments." << endl;
+		return 0;
+	}
+
+	string sttyControl = "stty -F ";
+	sttyControl += argv[1];
+	sttyControl += " ";
+	sttyControl += argv[2];
+	cout << sttyControl;
+	system(sttyControl.c_str());
+
+	fstream device;
+	device.open(argv[1]);
+
+	//Error handling
+	if(!device.is_open()){
+		cerr << "Can't open " << argv[1] << endl;
+	}
+
+	ofstream rawDataFile("rawData.csv",ios::app);
+	ofstream badDataFile("badData.csv",ios::app);
+	while(1){
+		string garbage;
+		string data;
+		string check = "00";
+		getline(device,garbage,'$');
+		cout << garbage;
+		getline(device,data,'*');
+		check[0] = device.get();
+		check[1] = device.get();
+		cout << data << check << ',';
+		int checksum = calcSum(data);
+		int humansum = ((int)check.at(0) - 48) * 16 + (int)check.at(1) - 48;
+		if(checksum == humansum)
+		{
+			rawDataFile << data << endl;
+		}else{
+		cout << "CORRUPTED DATA HAS BEEN RECEIVED";
+			badDataFile << data << endl;
+		};
+//		cout << calcSum(data) << ',';
+//		cout << ((int)check.at(0) - 48) * 16 + (int)check.at(1) - 48 << endl;
+	}
+}
 /*
- * master.cc
- * This file is part of Borp
+ * serialstreamtest.cc
+ * This file is part of Balloon 2014
  *
  * Copyright (C) 2014 - Houghton College Science Honors
  *
- * Borp is free software; you can redistribute it and/or modify
+ * Balloon 2014 is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * Borp is distributed in the hope that it will be useful,
+ * Balloon 2014 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Borp. If not, see <http://www.gnu.org/licenses/>.
- *
- * USAGE: ./master <DEVICE PATH> ...
- * Explicitly uses 115200 baud
+ * along with Balloon 2014. If not, see <http://www.gnu.org/licenses/>.
  */
 
+//This code reads streams from a tty
+//It does not set the baud rate, so it must be used within a script that sets
+//the baud rate (like stty)
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include "../lib/Communications.h"
-#include "../lib/Communications.cc"
+//NOTE: This is far superior to the original serialtest! It currently does not
+//take input
 
-using namespace std;
+//Usage:
+//	./serialstreamtest $DEVICEPATH $BAUD
 
-//takes a string, parses index, writes to unique file, returns 1 with success,
-//0 with error. Note that the files it generates don't have filler zeros (not
-//necessary)
-int writePoint(string data){
-	//generate the filename string
-	string indexString;
-	string fileName;
-	fileName = "datapoint_";
-	//extract index (the first number) to go in name
-	bool caseEnd = 1;
-	for(unsigned int i = 0; (i < data.length() ) & (caseEnd); i++){
-		switch (data.at(i)){
-			case ',':
-				caseEnd = 0;
-				break;
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				indexString += data.at(i);
-				break;
-			default:
-				cout << "Invalid character " << data.at(i) << " in index" << endl;
-				return 0;
-		}
-	}
-
-	//Check to see how many numbers are in it, put into file name with zeros
-	for(unsigned int i = 0; i < (15 - indexString.length()); i++){
-		fileName += '0';
-	}
-	fileName += indexString.c_str();
-
-
-	//if it already exists, we don't want to write over it
-	//we might be able to recursively runs some stuff
-	if (ifstream(fileName.c_str())){
-		cout << "File " << fileName.c_str() << " already exists" << endl;
-		return 0;
-	}
-
-	ofstream outfile;
-	outfile.open(fileName.c_str());
-	outfile << data;
-	outfile.close();
-
-
-//writes the largest point taken in the directory to "lastfile"
-	fstream filenumber;
-	filenumber.open("lastfile", ios::in);
-	string fileNumberToBeUsedForGetline;
-	getline(filenumber,fileNumberToBeUsedForGetline);
-	filenumber.close();
-	if(atoi(fileNumberToBeUsedForGetline.c_str()) < atoi(indexString.c_str())){
-		filenumber.open("lastfile", ios::trunc | ios::out);
-		filenumber << indexString.c_str();
-		filenumber.close();
-	}
-	return atoi(indexString.c_str());
-}
-
-//This function looks at all the data and returns the latest point that needs
-//TODO: have this function write the unreceived points to a file and read that
-//when returning need points. That way, it could probably handle billions of files
-int findPoint(int lastpoint){
-	for(int i = lastpoint-1; i; i--){
-		string filename;
-		filename = "datapoint_";
-		stringstream filenumber;
-		filenumber << i;
-		for(unsigned int j = 0; j < (15 - filenumber.str().length()); j++){
-			filename += '0';
-		}
-		filename += filenumber.str();
-
-		ifstream file(filename.c_str());
-		if(file.is_open() == 0){
-			return i;
-		}
-		file.close();
-	}
-
-	return 0;
-}
-
-int main(int argc, char** argv)
-{
-	if(argc != 2){
-		cerr << "Wrong number of arguments: " << argc - 1 << endl;
-		return 0;
-	}
-
-	fstream deviceFile;
-	deviceFile.open(argv[1], ios::in);
-
-	//Check to see if the file exists
-	if(!deviceFile.is_open()){
-		cerr << "Invalid device: " << argv[1] << endl;
-	}
-
-	int lastPoint;
-	for(;;){
-		string line;
-		getline(deviceFile, line);
-		lastPoint = writePoint(line);
-
-		int requestPoint;
-		if(lastPoint == 0){
-			cout << "Couldn't write file" << endl;
-			continue;
-		}
-		requestPoint = findPoint(lastPoint);
-
-		//If a point needs to be resent, it has to open and close the
-		//file connection. Otherwise, things break
-		if(requestPoint){
-			deviceFile.close();
-			deviceFile.open(argv[1], ios::out);
-			deviceFile << "request " << requestPoint << endl;
-			deviceFile.close();
-			deviceFile.open(argv[1], ios::in);
-		}
-	}
-	deviceFile.close();
-}
