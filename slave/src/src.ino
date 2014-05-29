@@ -90,6 +90,7 @@ unsigned long int array[5] = {12309,3982,19082,9992,298211};
 	radio.broadcast(array,5);
 }
 
+<<<<<<< Updated upstream
 //	for(;;){
 //		//Collects sensor data, indexes the point
 //		data.readSensorData();
@@ -105,6 +106,28 @@ unsigned long int array[5] = {12309,3982,19082,9992,298211};
 //		//Pause so data is collected on even time intervals
 //		while((millis() - data.timeSince())<PERIOD);
 //	}
+=======
+	for(;;){
+		//Collects sensor data, indexes the point
+		data.readSensorData();
+		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
+
+		//Function to transmit over radio connection
+		broadcast(data.dataArray,SIZE);
+
+		for(int i = 0; i < SIZE; i++)
+		{
+		        file.print(data.dataArray[i]);
+		        file.print(",");
+		}
+		file.println();
+		file.flush();
+
+		//Pause so data is collected on even time intervals
+		while((millis() - data.timeSince())<PERIOD);
+		cutdown();
+	}
+>>>>>>> Stashed changes
 }
 
 //We leave the loop empty. This makes object creation much easier
