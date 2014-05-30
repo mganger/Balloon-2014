@@ -30,6 +30,7 @@
 
 File file;
 
+
 void setup(){
 	//Open diagnostics communication
 	Serial.begin(115200);
@@ -59,6 +60,7 @@ void setup(){
 	for(;;){
 		//Collects sensor data, indexes the point
 		data.readSensorData();
+
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
 
 		//Function to transmit over radio connection

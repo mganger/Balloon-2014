@@ -6,7 +6,7 @@
 #define CENTER_LAT	41.996243	//latitude of center point
 #define CENTER_LONG	77.987309	//longitude of the center point
 #define MAXDISTANCE	80000		//distance (in meters) to stay within
-
+#define SIZE 		18
 
 int getline(char* input, char* output, char delim){
 	for(int i = 0; i < SIZE; i++){
