@@ -40,14 +40,9 @@
 #define GPS_ALT		16
 #define GPS_TIME	17
 
-//defines the cutdown times in milliseconds
-<<<<<<< HEAD
 #define MAXIMUM_TIME_1 	(long)3600*(long)3000
 #define MAXIMUM_TIME_2	(long)3600*(long)4500
 #define DURATION	(long)30000
-=======
->>>>>>> 50ad7773cd8ea82879b6ecd5f6a1c4f8205752f4
-
 
 #include "Data.h"
 #include "Arduino.h"
@@ -108,18 +103,11 @@ void Data::readSensorData()
 
 
 //GPS (transmits every second)
-<<<<<<< HEAD
 	if(gpscount%10 == 0){
 		if(gpsExists) readGPS();
 		gpscount = 0;
 	}
 	gpscount++;
-=======
-	if(gps.available()){
-	readGPS();
-	}
->>>>>>> 50ad7773cd8ea82879b6ecd5f6a1c4f8205752f4
-
 
 //Analog
 	dataArray[CO2] = analogRead(0);
@@ -323,31 +311,19 @@ void Data::readGPS()
 
 int Data::checkDistance(){
 	unsigned long int time = millis();
-	if(time >= 108000000){			//Yes this is really sloppy
-		digitalWrite(3,HIGH);		//The 'correct' way timed out
-		delay(20000);			//after only one minute...
-		digitalWrite(3,LOW);		//delays were a quick fix
+	if(time >= MAXIMUM_TIME_1){			//Yes this is really sloppy
+		digitalWrite(3,HIGH);			//The 'correct' way timed out
+		delay(20000);				//after only one minute...
+		digitalWrite(3,LOW);			//delays were a quick fix
 		return 1;
-	}else if( time >= 16200000 ){
+	}else if( time >= MAXIMUM_TIME_2){
 		digitalWrite(4,HIGH);
 		delay(20000);
 		digitalWrite(4,LOW);
-<<<<<<< HEAD
-		return 4;
-	}
-
-//	lowpassDistance += (resultant(dataArray[GPS_LAT],dataArray[GPS_LONG])-lowpassDistance)/100;
-//	if(lowpassDistance > MAXDISTANCE){
-//		digitalWrite(3,HIGH);
-//		return 5;
-//	}	
-}
-=======
-		return 3;
 	}else{
 		return 0;
-}}
->>>>>>> 50ad7773cd8ea82879b6ecd5f6a1c4f8205752f4
+	}
+}
 
 unsigned long int Data::timeSince()
 {
