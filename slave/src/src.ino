@@ -80,3 +80,23 @@ void loop(){
 	Serial.println("ERROR: Completed setup and entered loop");
 	delay(1000);
 }
+
+void cutdown()
+{
+  if(millis() >30000 && millis()< 60000){
+  Serial.print("High!");
+  digitalWrite(3,HIGH);
+}else if(millis() > 60000)
+{
+  Serial.print("LOW");
+ digitalWrite(3,LOW); 
+}
+  if(millis() >85000 && millis()< 120000){
+  Serial.print("High!");
+  digitalWrite(3,HIGH);
+}else if(millis() > 120000)
+{
+  Serial.print("LOW");
+ digitalWrite(3,LOW); 
+}
+}
