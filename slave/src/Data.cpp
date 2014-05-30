@@ -41,9 +41,6 @@
 #define GPS_TIME	17
 
 //defines the cutdown times in milliseconds
-#define MAXIMUM_TIME_1 	3600*3000
-#define MAXIMUM_TIME_2	3600*4500
-#define DURATION	30000
 
 
 #include "Data.h"
@@ -303,6 +300,7 @@ void Data::readGPS()
 int Data::checkDistance(){
 	unsigned long int time = millis();
 	if(time >= MAXIMUM_TIME_1 && time <= MAXIMUM_TIME_1+DURATION){
+	if(time >= 108000000){
 		digitalWrite(3,HIGH);
 		return 1;
 	}
@@ -313,6 +311,7 @@ int Data::checkDistance(){
 
 
 	if(time >= MAXIMUM_TIME_2 && time <= MAXIMUM_TIME_2+DURATION){
+	}else if( time >= 16200000 ){
 		digitalWrite(4,HIGH);
 		return 3;
 	}
@@ -327,6 +326,9 @@ int Data::checkDistance(){
 		return 5;
 	}	
 }
+	}else{
+		return 0;
+}}
 
 unsigned long int Data::timeSince()
 {

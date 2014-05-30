@@ -74,11 +74,9 @@ void setup(){
 		switch(status)
 		{
 			case 1: Serial.println("Burn-in has commenced due to time constraints");
-				break;
 			case 2: Serial.println("Ballon Cut, Radiosonde has enetered free-fall");
 				break;
 			case 3: Serial.println("Parachute detatchment has begun");
-				break;
 			case 4: Serial.println("Radiosonde has been freed from it's parachute");
 				break;
 			case 5: Serial.println("The Radiosonde has left the acceptable perimeter");
@@ -97,9 +95,11 @@ void loop(){
 }
 
 void sdPrint(unsigned long int * dataArray,int length){
+	File sdcard;
 	char check = 0;
 	char checksum[3] = {'*',0,0};
 	Serial.write('$');
+	sdcard.write('$');
 	for(int i = 0; i < length; i++ ){
 		unsigned long int num = dataArray[i];
 		char tmp[SIZE];
@@ -110,11 +110,15 @@ void sdPrint(unsigned long int * dataArray,int length){
 			check = check ^ tmp[h];
 		}
 		Serial.write((byte*)tmp,SIZE);
+		sdcard.write((byte*)tmp,SIZE);
 		check = check ^ ',';
 		Serial.write(',');
+		sdcard.write(',');
 	}
 	checksum[1] = check/16 +48;
 	checksum[2] = check%16 +48;
 	file.write((byte*)checksum,3);
 	file.write((byte*)"\r\n",2);
+	sdcard.write((byte*)checksum,3);
+	sdcard.write((byte*)"\r\n",2);
 }
