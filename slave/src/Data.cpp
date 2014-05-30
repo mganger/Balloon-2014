@@ -100,7 +100,9 @@ void Data::readSensorData()
 
 
 //GPS (transmits every second)
+	if(gps.available()){
 	readGPS();
+	}
 
 
 //Analog
