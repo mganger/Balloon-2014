@@ -78,3 +78,26 @@ void loop(){
 	Serial.println("ERROR: Completed setup and entered loop");
 	delay(1000);
 }
+
+void SD(unsigned long int * dataArray,int length){
+	char check = 0;
+	char checksum[3] = {'*',0,0};
+	Serial.write('$');
+	for(int i = 0; i < length; i++ ){
+		unsigned long int num = dataArray[i];
+		char tmp[SIZE];
+		memset(tmp,0,SIZE);
+		for(int h = SIZE-1;h >=0 ;h--){
+			tmp[h] = num % BASE + 48;
+			num /= BASE;
+			check = check ^ tmp[h];
+		}
+		Serial.write((byte*)tmp,SIZE);
+		check = check ^ ',';
+		Serial.write(',');
+	}
+	checksum[1] = check/16 +48;
+	checksum[2] = check%16 +48;
+	SD.write((byte*)checksum,3);
+	SD.write((byte*)"\r\n",2);
+}
