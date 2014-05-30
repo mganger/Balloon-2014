@@ -74,10 +74,15 @@ void setup(){
 		switch(status)
 		{
 			case 1: Serial.println("Burn-in has commenced due to time constraints");
+				break;
 			case 2: Serial.println("Ballon Cut, Radiosonde has enetered free-fall");
+				break;
 			case 3: Serial.println("Parachute detatchment has begun");
+				break;
 			case 4: Serial.println("Radiosonde has been freed from it's parachute");
+				break;
 			case 5: Serial.println("The Radiosonde has left the acceptable perimeter");
+				break;
 		}
 
 		//Pause so data is collected on even time intervals
