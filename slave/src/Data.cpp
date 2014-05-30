@@ -41,9 +41,9 @@
 #define GPS_TIME	17
 
 //defines the cutdown times in milliseconds
-#define MAXIMUM_TIME_1 	3600*3000
-#define MAXIMUM_TIME_2	3600*4500
-#define DURATION	30000
+#define MAXIMUM_TIME_1 	(long)3600*(long)3000
+#define MAXIMUM_TIME_2	(long)3600*(long)4500
+#define DURATION	(long)30000
 
 
 #include "Data.h"

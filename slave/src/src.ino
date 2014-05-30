@@ -45,6 +45,8 @@ void setup(){
 	Serial.println(CUTDOWN);
 	Serial.println();
 
+
+
 	//set cutdown pins to 3(1st) and 4(2nd)
 	pinMode(3,OUTPUT);
 	pinMode(4,OUTPUT);
@@ -99,7 +101,7 @@ void loop(){
 void sdPrint(unsigned long int * dataArray,int length){
 	char check = 0;
 	char checksum[3] = {'*',0,0};
-	Serial.write('$');
+	file.write('$');
 	for(int i = 0; i < length; i++ ){
 		unsigned long int num = dataArray[i];
 		char tmp[SIZE];
@@ -109,9 +111,7 @@ void sdPrint(unsigned long int * dataArray,int length){
 			num /= 10;
 			check = check ^ tmp[h];
 		}
-		Serial.write((byte*)tmp,SIZE);
 		check = check ^ ',';
-		Serial.write(',');
 	}
 	checksum[1] = check/16 +48;
 	checksum[2] = check%16 +48;

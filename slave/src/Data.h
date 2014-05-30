@@ -34,7 +34,7 @@ class Data {
 
 		void printData();		//Diagnostics
 		void readSensorData();		//reads from the sensors
-		void checkDistance();		//checks the time and distance
+		int checkDistance();		//checks the time and distance
 
 	private:
 		void readGPS();

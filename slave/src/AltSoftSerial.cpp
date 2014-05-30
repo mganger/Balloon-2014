@@ -42,7 +42,7 @@ static uint16_t rx_target;
 static uint16_t rx_stop_ticks=0;
 static volatile uint8_t rx_buffer_head;
 static volatile uint8_t rx_buffer_tail;
-#define RX_BUFFER_SIZE 10
+#define RX_BUFFER_SIZE 50
 static volatile uint8_t rx_buffer[RX_BUFFER_SIZE];
 
 static volatile uint8_t tx_state=0;
