@@ -217,8 +217,8 @@ void Data::readGPS()
 	memset(altitude,0,12);	//needs null-terminating character
 	memset(time,0,12);
 
-	char array[101];
-	memset(array,0,101);
+	char array[290];
+	memset(array,0,290);
 	char checksum[2];
 	char check = 0;
 
