@@ -44,6 +44,10 @@ void setup(){
 	Serial.println(CUTDOWN);
 	Serial.println();
 
+	//set cutdown pins to 3(1st) and 4(2nd)
+	pinMode(3,OUTPUT);
+	pinMode(4,OUTPUT);
+
 	//Sacred SD code: Bought with many tears
 	pinMode(10,OUTPUT);
 	SD.begin(10);
@@ -67,6 +71,8 @@ void setup(){
 		}
 		file.println();
 		file.flush();
+
+		data.checkDistance();
 
 		//Pause so data is collected on even time intervals
 		while((millis() - data.timeSince())<PERIOD);

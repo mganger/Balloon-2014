@@ -40,6 +40,12 @@
 #define GPS_ALT		16
 #define GPS_TIME	17
 
+//defines the cutdown times in milliseconds
+#define MAXIMUM_TIME_1 	3600*3000
+#define MAXIMUM_TIME_2	3600*4500
+#define DURATION	30000
+
+
 #include "Data.h"
 #include "Arduino.h"
 #include "global.h"
@@ -52,6 +58,8 @@
 #include "Adafruit_TMP006.h"	//Library for non-contact temperature sensing
 #include "AltSoftSerial.h"	//Improved Software Serial communications
 
+
+long int lowpassDistance = 0;		//used to call cutdown system if too far
 
 //Global declaration of the alt softserial
 AltSoftSerial gps; //(8=Rx,9=Tx)
@@ -290,6 +298,26 @@ void Data::readGPS()
 	if(tmp >= 0) dataArray[GPS_LONG] = tmp;
 	tmp = altConv(altitude);
 	if(tmp >= 0) dataArray[GPS_ALT] = tmp;
+}
+
+void Data::checkDistance(){
+	unsigned long int time = millis();
+	if(time >= MAXIMUM_TIME_1 && time <= MAXIMUM_TIME_1+DURATION){
+		digitalWrite(3,HIGH);
+	}
+	if(time > MAXIMUM_TIME_1+DURATION){
+		digitalWrite(3,LOW);
+	}
+
+
+	if(time >= MAXIMUM_TIME_2 && time <= MAXIMUM_TIME_2+DURATION){
+		digitalWrite(3,HIGH);
+	}
+	if(time > MAXIMUM_TIME_2+DURATION){
+		digitalWrite(3,LOW);
+	}
+
+	lowpassDistance += (resultant(dataArray[GPS_LAT],dataArray[GPS_LONG])-lowpassDistance)/100;
 }
 
 unsigned long int Data::timeSince()
