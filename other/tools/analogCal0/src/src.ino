@@ -53,28 +53,37 @@ void setup(){
 	Serial.begin(115200);
 	Serial.print("Intitializing...\n");
 	unsigned long int timeLast = 0;
+	double pinAvg = 0;
 
 	for(;;){
-		if(millis() - timeLast >= PERIOD){
-			timeLast = millis();
-			Serial.print("\r\n");
-			Serial.print(timeLast);
-			Serial.print(",");
-			printTime(timeLast);
-			Serial.print(",");
-			Serial.print(analogRead(PIN));
-		}
+//		if(millis() - timeLast >= PERIOD){
+//			timeLast = millis();
+//			Serial.print("\r\n");
+//			Serial.print(timeLast);
+//			Serial.print(",");
+//			printTime(timeLast);
+//			Serial.print(",");
+//			Serial.print(analogRead(PIN));
+//		}
+
+		pinAvg += (analogRead(PIN) - pinAvg) / 1000000;
+
 
 		if(Serial.available()){
 			char array[50];
+			memset(array,0,50);
 			delay(10);
 			int number;
 			for(int i = 0; Serial.available() && i < 50; i++){
 				array[i] = Serial.read();
 				number = i+1;
 			}
-			Serial.write(',');
-			Serial.write((byte*)array,number);			
+
+			timeLast = millis();
+			Serial.print(timeLast);Serial.print(',');
+			printTime(timeLast);Serial.print(',');
+			Serial.print(pinAvg, 7);Serial.print(',');
+			Serial.println(array);
 		}
 	}
 }
