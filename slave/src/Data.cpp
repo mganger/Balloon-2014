@@ -299,33 +299,12 @@ void Data::readGPS()
 
 int Data::checkDistance(){
 	unsigned long int time = millis();
-	if(time >= MAXIMUM_TIME_1 && time <= MAXIMUM_TIME_1+DURATION){
 	if(time >= 108000000){
 		digitalWrite(3,HIGH);
 		return 1;
-	}
-	if(time > MAXIMUM_TIME_1+DURATION){
-		digitalWrite(3,LOW);
-		return 2;
-	}
-
-
-	if(time >= MAXIMUM_TIME_2 && time <= MAXIMUM_TIME_2+DURATION){
 	}else if( time >= 16200000 ){
 		digitalWrite(4,HIGH);
 		return 3;
-	}
-	if(time > MAXIMUM_TIME_2+DURATION){
-		digitalWrite(4,LOW);
-		return 4;
-	}
-
-	lowpassDistance += (resultant(dataArray[GPS_LAT],dataArray[GPS_LONG])-lowpassDistance)/100;
-	if(lowpassDistance > MAXDISTANCE){
-		digitalWrite(3,HIGH);
-		return 5;
-	}	
-}
 	}else{
 		return 0;
 }}

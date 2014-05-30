@@ -98,7 +98,6 @@ void sdPrint(unsigned long int * dataArray,int length){
 	File sdcard;
 	char check = 0;
 	char checksum[3] = {'*',0,0};
-	Serial.write('$');
 	sdcard.write('$');
 	for(int i = 0; i < length; i++ ){
 		unsigned long int num = dataArray[i];
@@ -109,16 +108,12 @@ void sdPrint(unsigned long int * dataArray,int length){
 			num /= 10;
 			check = check ^ tmp[h];
 		}
-		Serial.write((byte*)tmp,SIZE);
 		sdcard.write((byte*)tmp,SIZE);
 		check = check ^ ',';
-		Serial.write(',');
 		sdcard.write(',');
 	}
 	checksum[1] = check/16 +48;
 	checksum[2] = check%16 +48;
-	file.write((byte*)checksum,3);
-	file.write((byte*)"\r\n",2);
 	sdcard.write((byte*)checksum,3);
 	sdcard.write((byte*)"\r\n",2);
 }
