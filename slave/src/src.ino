@@ -30,7 +30,6 @@
 
 File file;
 
-
 void setup(){
 	//Open diagnostics communication
 	Serial.begin(115200);
@@ -48,17 +47,16 @@ void setup(){
 	//set cutdown pins to 3(1st) and 4(2nd)
 	pinMode(3,OUTPUT);
 	pinMode(4,OUTPUT);
-
 	//Sacred SD code: Bought with many tears
 	pinMode(10,OUTPUT);
 	SD.begin(10);
-	file = SD.open("DATA.TXT",FILE_WRITE);
 
 	//Constuct data object to store points
 	Data data;
 
 	for(;;){
 		//Collects sensor data, indexes the point
+		file = SD.open("DATA2.TXT",FILE_WRITE);
 		data.readSensorData();
 
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
@@ -66,7 +64,6 @@ void setup(){
 		//Function to transmit over radio connection
 		broadcast(data.dataArray,SIZE);
 		sdPrint(data.dataArray,SIZE);
-		file.println();
 		file.flush();
 
 		int status = data.checkDistance();
@@ -82,7 +79,7 @@ void setup(){
 			case 5: Serial.println("The Radiosonde has left the acceptable perimeter");
 				break;
 		}
-
+		file.close();
 		//Pause so data is collected on even time intervals
 		while((millis() - data.timeSince())<PERIOD);
 	}
@@ -95,10 +92,9 @@ void loop(){
 }
 
 void sdPrint(unsigned long int * dataArray,int length){
-	File sdcard;
 	char check = 0;
 	char checksum[3] = {'*',0,0};
-	sdcard.write('$');
+	file.write('$');
 	for(int i = 0; i < length; i++ ){
 		unsigned long int num = dataArray[i];
 		char tmp[SIZE];
@@ -108,12 +104,12 @@ void sdPrint(unsigned long int * dataArray,int length){
 			num /= 10;
 			check = check ^ tmp[h];
 		}
-		sdcard.write((byte*)tmp,SIZE);
+		file.write((byte*)tmp,SIZE);
 		check = check ^ ',';
-		sdcard.write(',');
+		file.write(',');
 	}
 	checksum[1] = check/16 +48;
 	checksum[2] = check%16 +48;
-	sdcard.write((byte*)checksum,3);
-	sdcard.write((byte*)"\r\n",2);
+	file.write((byte*)checksum,3);
+	file.write((byte*)"\r\n",2);
 }
