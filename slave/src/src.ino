@@ -59,12 +59,7 @@ void setup(){
 
 		//Function to transmit over radio connection
 		broadcast(data.dataArray,SIZE);
-
-		for(int i = 0; i < SIZE; i++)
-		{
-		        file.print(data.dataArray[i]);
-		        file.print(",");
-		}
+		SD(data.dataArray,SIZE);
 		file.println();
 		file.flush();
 
