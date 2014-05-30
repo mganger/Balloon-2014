@@ -53,7 +53,7 @@ void setup(){
 	Serial.begin(115200);
 	Serial.print("Intitializing...\n");
 	unsigned long int timeLast = 0;
-	double pinAvg = 0;
+	double pinAvg = (analogRead(PIN)+analogRead(PIN)+analogRead(PIN)+analogRead(PIN)+analogRead(PIN)+analogRead(PIN))/6;
 
 	for(;;){
 //		if(millis() - timeLast >= PERIOD){
@@ -63,10 +63,10 @@ void setup(){
 //			Serial.print(",");
 //			printTime(timeLast);
 //			Serial.print(",");
-//			Serial.print(analogRead(PIN));
+//			Serial.println(pinAvg,7);
 //		}
 
-		pinAvg += (analogRead(PIN) - pinAvg) / 1000000;
+		pinAvg += (analogRead(PIN) - pinAvg) / 100000;
 
 
 		if(Serial.available()){
