@@ -30,7 +30,6 @@
 
 File file;
 
-
 void setup(){
 	//Open diagnostics communication
 	Serial.begin(115200);
@@ -50,17 +49,16 @@ void setup(){
 	//set cutdown pins to 3(1st) and 4(2nd)
 	pinMode(3,OUTPUT);
 	pinMode(4,OUTPUT);
-
 	//Sacred SD code: Bought with many tears
 	pinMode(10,OUTPUT);
 	SD.begin(10);
-	file = SD.open("DATA.TXT",FILE_WRITE);
 
 	//Constuct data object to store points
 	Data data;
 
 	for(;;){
 		//Collects sensor data, indexes the point
+		file = SD.open("DATA.TXT",FILE_WRITE);
 		data.readSensorData();
 
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
@@ -74,17 +72,15 @@ void setup(){
 		switch(status)
 		{
 			case 1: Serial.println("Burn-in has commenced due to time constraints");
-				break;
 			case 2: Serial.println("Ballon Cut, Radiosonde has enetered free-fall");
 				break;
 			case 3: Serial.println("Parachute detatchment has begun");
-				break;
 			case 4: Serial.println("Radiosonde has been freed from it's parachute");
 				break;
 			case 5: Serial.println("The Radiosonde has left the acceptable perimeter");
 				break;
 		}
-
+		file.close();
 		//Pause so data is collected on even time intervals
 		while((millis() - data.timeSince())<PERIOD);
 	}
@@ -109,7 +105,9 @@ void sdPrint(unsigned long int * dataArray,int length){
 			num /= 10;
 			check = check ^ tmp[h];
 		}
+		file.write((byte*)tmp,SIZE);
 		check = check ^ ',';
+		file.write(',');
 	}
 	checksum[1] = check/16 +48;
 	checksum[2] = check%16 +48;
