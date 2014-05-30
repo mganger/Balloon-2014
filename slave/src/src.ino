@@ -65,7 +65,7 @@ void setup(){
 
 		//Function to transmit over radio connection
 		broadcast(data.dataArray,SIZE);
-		SD(data.dataArray,SIZE);
+		sdPrint(data.dataArray,SIZE);
 		file.println();
 		file.flush();
 
@@ -82,7 +82,7 @@ void loop(){
 	delay(1000);
 }
 
-void SD(unsigned long int * dataArray,int length){
+void sdPrint(unsigned long int * dataArray,int length){
 	char check = 0;
 	char checksum[3] = {'*',0,0};
 	Serial.write('$');
@@ -91,8 +91,8 @@ void SD(unsigned long int * dataArray,int length){
 		char tmp[SIZE];
 		memset(tmp,0,SIZE);
 		for(int h = SIZE-1;h >=0 ;h--){
-			tmp[h] = num % BASE + 48;
-			num /= BASE;
+			tmp[h] = num % 10 + 48;
+			num /= 10;
 			check = check ^ tmp[h];
 		}
 		Serial.write((byte*)tmp,SIZE);
@@ -101,6 +101,6 @@ void SD(unsigned long int * dataArray,int length){
 	}
 	checksum[1] = check/16 +48;
 	checksum[2] = check%16 +48;
-	SD.write((byte*)checksum,3);
-	SD.write((byte*)"\r\n",2);
+	file.write((byte*)checksum,3);
+	file.write((byte*)"\r\n",2);
 }
