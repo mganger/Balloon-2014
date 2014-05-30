@@ -7,6 +7,9 @@
 #define CENTER_LONG	77.987309	//longitude of the center point
 #define MAXDISTANCE	80000		//distance (in meters) to stay within
 
+cutdown(){
+	Serial.println("cutting down now");
+}
 
 int getline(char* input, char* output, char delim){
 	for(int i = 0; i < SIZE; i++){

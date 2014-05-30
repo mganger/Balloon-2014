@@ -68,6 +68,8 @@ void setup(){
 		file.println();
 		file.flush();
 
+		cutdown();
+
 		//Pause so data is collected on even time intervals
 		while((millis() - data.timeSince())<PERIOD);
 	}
