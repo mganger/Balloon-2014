@@ -56,7 +56,7 @@ void setup(){
 
 	for(;;){
 		//Collects sensor data, indexes the point
-		file = SD.open("DATA2.TXT",FILE_WRITE);
+		file = SD.open("DATA.TXT",FILE_WRITE);
 		data.readSensorData();
 
 		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
