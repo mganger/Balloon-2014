@@ -301,11 +301,15 @@ void Data::readGPS()
 
 int Data::checkDistance(){
 	unsigned long int time = millis();
-	if(time >= 108000000){
-		digitalWrite(3,HIGH);
+	if(time >= 108000000){			//Yes this is really sloppy
+		digitalWrite(3,HIGH);		//The 'correct' way timed out
+		delay(20000);			//after only one minute...
+		digitalWrite(3,LOW);		//delays were a quick fix
 		return 1;
 	}else if( time >= 16200000 ){
 		digitalWrite(4,HIGH);
+		delay(20000);
+		digitalWrite(4,LOW);
 		return 3;
 	}else{
 		return 0;
