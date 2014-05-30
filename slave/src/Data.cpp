@@ -300,24 +300,32 @@ void Data::readGPS()
 	if(tmp >= 0) dataArray[GPS_ALT] = tmp;
 }
 
-void Data::checkDistance(){
+int Data::checkDistance(){
 	unsigned long int time = millis();
 	if(time >= MAXIMUM_TIME_1 && time <= MAXIMUM_TIME_1+DURATION){
 		digitalWrite(3,HIGH);
+		return 1;
 	}
 	if(time > MAXIMUM_TIME_1+DURATION){
 		digitalWrite(3,LOW);
+		return 2;
 	}
 
 
 	if(time >= MAXIMUM_TIME_2 && time <= MAXIMUM_TIME_2+DURATION){
-		digitalWrite(3,HIGH);
+		digitalWrite(4,HIGH);
+		return 3;
 	}
 	if(time > MAXIMUM_TIME_2+DURATION){
-		digitalWrite(3,LOW);
+		digitalWrite(4,LOW);
+		return 4;
 	}
 
 	lowpassDistance += (resultant(dataArray[GPS_LAT],dataArray[GPS_LONG])-lowpassDistance)/100;
+	if(lowpassDistance > MAXDISTANCE){
+		digitalWrite(3,HIGH);
+		return 5;
+	}	
 }
 
 unsigned long int Data::timeSince()

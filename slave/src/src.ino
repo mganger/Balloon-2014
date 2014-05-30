@@ -69,7 +69,16 @@ void setup(){
 		file.println();
 		file.flush();
 
-		data.checkDistance();
+		int status = data.checkDistance();
+
+		switch(status)
+		{
+			case 1: Serial.println("Burn-in has commenced due to time constraints");
+			case 2: Serial.println("Ballon Cut, Radiosonde has enetered free-fall");
+			case 3: Serial.println("Parachute detatchment has begun");
+			case 4: Serial.println("Radiosonde has been freed from it's parachute");
+			case 5: Serial.println("The Radiosonde has left the acceptable perimeter");
+		}
 
 		//Pause so data is collected on even time intervals
 		while((millis() - data.timeSince())<PERIOD);
