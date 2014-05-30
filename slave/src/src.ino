@@ -68,8 +68,6 @@ void setup(){
 		//Function to transmit over radio connection
 		broadcast(data.dataArray,SIZE);
 		sdPrint(data.dataArray,SIZE);
-		file.println();
-		file.flush();
 
 		int status = data.checkDistance();
 
@@ -117,4 +115,5 @@ void sdPrint(unsigned long int * dataArray,int length){
 	checksum[2] = check%16 +48;
 	file.write((byte*)checksum,3);
 	file.write((byte*)"\r\n",2);
+	file.flush();
 }

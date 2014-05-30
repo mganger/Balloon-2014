@@ -59,7 +59,9 @@
 #include "AltSoftSerial.h"	//Improved Software Serial communications
 
 
-long int lowpassDistance = 0;		//used to call cutdown system if too far
+//long int lowpassDistance = 0;		//used to call cutdown system if too far
+long int gpsExists = 1;
+int gpscount = 0;
 
 //Global declaration of the alt softserial
 AltSoftSerial gps; //(8=Rx,9=Tx)
@@ -103,7 +105,11 @@ void Data::readSensorData()
 
 
 //GPS (transmits every second)
-	readGPS();
+	if(gpscount%10 == 0){
+		if(gpsExists) readGPS();
+		gpscount = 0;
+	}
+	gpscount++;
 
 
 //Analog
@@ -217,8 +223,8 @@ void Data::readGPS()
 	memset(altitude,0,12);	//needs null-terminating character
 	memset(time,0,12);
 
-	char array[290];
-	memset(array,0,290);
+	char array[100];
+	memset(array,0,100);
 	char checksum[2];
 	char check = 0;
 
@@ -227,8 +233,14 @@ void Data::readGPS()
 		for(int i = 0; gps.read() != '$' & i < 300; i++)delay(2);
 		delay(4);
 		char tmpchar;
+		unsigned long int time = millis();
 		for(int i = 0; i < 100;){
 			tmpchar = gps.read();
+			if (millis() - time >= 5000){
+				gpsExists = 0;
+				Serial.println("GPS must not work anymore");
+				return;
+			}
 			if (tmpchar == -1) continue;
 			if (tmpchar == '*') break;
 			array[i] = tmpchar;
@@ -321,11 +333,11 @@ int Data::checkDistance(){
 		return 4;
 	}
 
-	lowpassDistance += (resultant(dataArray[GPS_LAT],dataArray[GPS_LONG])-lowpassDistance)/100;
-	if(lowpassDistance > MAXDISTANCE){
-		digitalWrite(3,HIGH);
-		return 5;
-	}	
+//	lowpassDistance += (resultant(dataArray[GPS_LAT],dataArray[GPS_LONG])-lowpassDistance)/100;
+//	if(lowpassDistance > MAXDISTANCE){
+//		digitalWrite(3,HIGH);
+//		return 5;
+//	}	
 }
 
 unsigned long int Data::timeSince()
