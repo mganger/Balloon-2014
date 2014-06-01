@@ -56,33 +56,44 @@ void setup(){
 	//Constuct data object to store points
 	Data data;
 
-	for(;;){
+	for(int i = 3479;i <= 99999;i++){
 		//Collects sensor data, indexes the point
-		file = SD.open("DATA.TXT",FILE_WRITE);
-		data.readSensorData();
-
-		//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
-
-		//Function to transmit over radio connection
-		broadcast(data.dataArray,SIZE);
-		sdPrint(data.dataArray,SIZE);
-
-		int status = data.checkDistance();
-
-		switch(status)
+		char[] filename = "00000.TXT";
+		filename[4] = i % 10 + 48;
+		filename[3] = i /10 %10 + 48;
+		filename[2] = i /100 % 10 + 48;
+		filename[1] = i /1000 % 10 + 48;
+		filename[0] = i /10000 % 10 + 48;
+		Serial.println(filename);
+		file = SD.open(filename,FILE_WRITE);
+		for(int h = 0; h < 5000;h++)
 		{
-			case 1: Serial.println("Burn-in has commenced due to time constraints");
-			case 2: Serial.println("Ballon Cut, Radiosonde has enetered free-fall");
-				break;
-			case 3: Serial.println("Parachute detatchment has begun");
-			case 4: Serial.println("Radiosonde has been freed from it's parachute");
-				break;
-			case 5: Serial.println("The Radiosonde has left the acceptable perimeter");
-				break;
+			data.readSensorData();
+
+			//Writes point to the SD card. Counts up to 9,999,999*PACKETSIZE points
+
+			//Function to transmit over radio connection
+			broadcast(data.dataArray,SIZE);
+			sdPrint(data.dataArray,SIZE);
+
+			int status = data.checkDistance();
+
+			switch(status)
+			{
+				case 1: Serial.println("Burn-in has commenced due to time constraints");
+				case 2: Serial.println("Ballon Cut, Radiosonde has enetered free-fall");
+					break;
+				case 3: Serial.println("Parachute detatchment has begun");
+				case 4: Serial.println("Radiosonde has been freed from it's parachute");
+					break;
+				case 5: Serial.println("The Radiosonde has left the acceptable perimeter");
+					break;
+			}
+			file.flush();
+			//Pause so data is collected on even time intervals
+			while((millis() - data.timeSince())<PERIOD);
 		}
 		file.close();
-		//Pause so data is collected on even time intervals
-		while((millis() - data.timeSince())<PERIOD);
 	}
 }
 
