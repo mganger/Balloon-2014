@@ -162,16 +162,20 @@ int main(int argc, char ** argv){
 	cout << "Normalized filter to " << log(1/sum)*10 << " dB" << endl;
 
 	//Convolve the input signal in three parts, on the end pretending like
-	//the edges are zero ( or that they don't exist)
+	//the edges are zero (or that they don't exist)
+
+
 
 	//front edge
 	cout << "Convolving front edge" << endl;
 	for(int i = 0; i < filterSize; i++){
-		double buffer = input[i] *sincFilter[0];
+		double buffer = input[i] * sincFilter[0];
 		for(int j = 1; j < filterSize; j++){
 			buffer += input[i + j] * sincFilter[j];
 			if(i-j >= 0) {
 				buffer += input[i-j] * sincFilter[j];
+			}else{
+				buffer += input[0] * sincFilter[j];
 			}
 		}
 		output[i] = buffer;
@@ -185,10 +189,14 @@ int main(int argc, char ** argv){
 			buffer += input[i - j] * sincFilter[j];
 			if(i+j <= length) {
 				buffer += input[i+j] * sincFilter[j];
+			}else{
+				buffer += input[length-1] * sincFilter[j];
 			}
 		}
 		output[i] = buffer;
 	}
+
+//	cout << input[length-1] << endl;
 
 	//main convolution
 	cout << "Performing main convolution" << endl;
@@ -202,8 +210,17 @@ int main(int argc, char ** argv){
 	}
 
 	cout << "Writing to file with 16 significant figures" << endl;
+
+	//change the name of the file
+	stringstream ifilename;
+	ifilename << argv[3];
+	string ofilename;
+	getline(ifilename,ofilename, '.');
+	ofilename += "_lowpass.csv";
+
+
 	ofstream outfile;
-	outfile.open("lowpass.csv");
+	outfile.open(ofilename.c_str());
 	outfile << setprecision(16);
 	for (int i = 0; i < length; i++){
 		outfile << output[i] << endl;

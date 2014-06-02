@@ -5,7 +5,7 @@ set output 'graphs/altitude.svg';
 #set title 'altitude';
 set key off;
 set datafile separator ',';
-plot 'rawData.csv' using 2:3 with lines
+plot 'rawData.csv' using 2:(column(3)/3600000) every 100 with lines smooth csplines
 unset output
 
 #Pressure sourced from column 4#
@@ -13,7 +13,7 @@ set output 'graphs/pressure.svg';
 #set title 'pressure';
 set key off;
 set datafile separator ',';
-plot 'rawData.csv' using 2:4 with lines
+plot 'rawData.csv' using 2:4 every 100 with lines smooth csplines
 unset output
 
 #Humidity sourced from column 5#
@@ -21,7 +21,7 @@ set output 'graphs/humidity.svg';
 set key off;
 #set title 'humidity';
 set datafile separator ',';
-plot 'rawData.csv' using 2:5 with lines
+plot 'rawData.csv' using 2:5 every 100 with lines smooth csplines
 unset output
 
 #CO2 sourced from column 6#
@@ -29,7 +29,7 @@ set output 'graphs/CO2.svg';
 set key off;
 #set title 'CO2';
 set datafile separator ',';
-plot 'rawData.csv' using 2:6 with lines
+plot 'rawData.csv' using 2:6 every 100 with lines smooth csplines
 unset output
 
 #UV sourced from column 7#
@@ -37,7 +37,7 @@ set output 'graphs/UV.svg';
 set key off;
 #set title 'Ultra Violet';
 set datafile separator ',';
-plot 'rawData.csv' using 2:7 with lines
+plot 'rawData.csv' using 2:7 every 100 with lines smooth csplines
 unset output
 
 #Ozone sourced from column 8#
@@ -45,7 +45,7 @@ set output 'graphs/O3.svg';
 set key off;
 #set title 'Ozone';
 set datafile separator ',';
-plot 'rawData.csv' using 2:8 with lines
+plot 'rawData.csv' using 2:8 every 100 with lines smooth csplines
 unset output
 
 #IR and Visible Up/Down sourced from columns 9,10,11,12#
@@ -53,7 +53,7 @@ set output 'graphs/IR.svg';
 set key off;
 #set title 'InfraRed';
 set datafile separator ',';
-plot 'rawData.csv' using 2:9 title 'IR up' with lines, 'rawData.csv' using 2:10 title 'IR down' with lines, 'rawData.csv' using 2:11 title 'Visible Up' with lines,'rawData.csv' using 2:12 title 'Visible Down' with lines
+plot 'rawData.csv' using 2:9 title 'IR up' every 100 with lines smooth csplines, using 2:10 title 'IR down' every 100 with lines smooth csplines, using 2:11 title 'Visible Up' every 100 with lines smooth csplines, using 2:12 title 'Visible Down' every 100 with lines smooth csplines;
 unset output
 
 #Mid IR
@@ -61,7 +61,7 @@ set output 'graphs/midIR.svg';
 set key off;
 #set title 'mid Infrared Light';
 set datafile separator ',';
-plot 'rawData.csv' using 2:13 title 'IR up' with lines, 'rawData.csv' using 2:14 title 'IR down' with lines
+plot 'rawData.csv' using 2:13 title 'IR up' with lines, 'rawData.csv' using 2:14 title 'IR down' every 100 with lines smooth csplines
 unset output
 
 #GPS coordinates
@@ -69,7 +69,7 @@ set output 'graphs/2Dcoordinates.svg'
 set key off;
 #set title 'Coordinates'
 set datafile separator ',';
-plot 'rawData.csv' using 2:15 title 'Lattitude' with lines, 'rawData.csv' using 2:16 title 'Longitude' with lines
+plot 'rawData.csv' using 2:15 title 'Lattitude' every 100 with lines smooth csplines, 'rawData.csv' using 2:16 title 'Longitude' every 100 with lines smooth csplines
 unset output
 
 #GPS coordinates
@@ -77,5 +77,5 @@ set output 'graphs/3Dcoordinates.svg'
 set key off;
 #set title 'graphs/coordinates.svg'
 set datafile separator ',';
-splot 'rawData.csv' using 15:16:17 title 'position' with lines 
+splot 'rawData.csv' using 15:16:17 title 'position' every 100 with lines smooth csplines 
 unset output
