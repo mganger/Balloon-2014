@@ -20,7 +20,7 @@
 
 //This program is designed to test pin A0 (and help too calibrate it)
 //It opens the Serial port at 115200 and sends a millisecond timestamp, a pretty
-//timestamp, and a reading from the port.
+//timestamp, and a reading from the port. Takes an average of 100 points
 
 #define PERIOD	1000
 #define PIN	A0
@@ -53,7 +53,6 @@ void setup(){
 	Serial.begin(115200);
 	Serial.print("Intitializing...\n");
 	unsigned long int timeLast = 0;
-	double pinAvg = (analogRead(PIN)+analogRead(PIN)+analogRead(PIN)+analogRead(PIN)+analogRead(PIN)+analogRead(PIN))/6;
 
 	for(;;){
 //		if(millis() - timeLast >= PERIOD){
@@ -63,13 +62,11 @@ void setup(){
 //			Serial.print(",");
 //			printTime(timeLast);
 //			Serial.print(",");
-//			Serial.println(pinAvg,7);
+//			Serial.println(analogRead(PIN));
 //		}
 
-		pinAvg += (analogRead(PIN) - pinAvg) / 100000;
-
-
 		if(Serial.available()){
+			delay(10);
 			char array[50];
 			memset(array,0,50);
 			delay(10);
@@ -82,7 +79,11 @@ void setup(){
 			timeLast = millis();
 			Serial.print(timeLast);Serial.print(',');
 			printTime(timeLast);Serial.print(',');
-			Serial.print(pinAvg, 7);Serial.print(',');
+			long int pinAvg = 0;
+			for(int i = 0; i < 100; i++){
+				pinAvg += analogRead(PIN);
+			}
+			Serial.print((double)pinAvg/100);Serial.print(',');
 			Serial.println(array);
 		}
 	}
